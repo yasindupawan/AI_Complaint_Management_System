@@ -35,6 +35,12 @@ const userSchema = new mongoose.Schema(
       default: "citizen",
     },
 
+    department: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "Department",
+  default: null,
+},
+
     preferredLanguage: {
       type: String,
       enum: ["english", "sinhala", "tamil"],

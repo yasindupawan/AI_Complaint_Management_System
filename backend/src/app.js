@@ -6,6 +6,9 @@ const morgan = require("morgan");
 const healthRoutes = require("./routes/healthRoutes");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const authRoutes = require("./routes/authRoutes");
+const complaintRoutes = require("./routes/complaintRoutes");
+const departmentRoutes = require("./routes/departmentRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
@@ -19,6 +22,9 @@ app.use(morgan("dev"));
 // Routes
 app.use("/api/health", healthRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/complaints", complaintRoutes);
+app.use("/api/departments", departmentRoutes);
+app.use("/api/users", userRoutes);
 
 // Test Route
 app.get("/", (req, res) => {
