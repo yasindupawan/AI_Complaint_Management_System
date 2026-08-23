@@ -1,0 +1,78 @@
+# =========================
+# Node.js
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =========================
+# Environment Variables
+# =========================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# =========================
+# React Build
+# =========================
+frontend/dist/
+frontend/build/
+
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+
+# =========================
+# Jupyter
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# AI / ML Model Files
+# =========================
+*.pkl
+*.joblib
+*.h5
+*.pt
+*.pth
+
+# =========================
+# Dataset Files
+# =========================
+datasets/raw/
+datasets/processed/
+
+# =========================
+# Uploads / Temporary Files
+# =========================
+uploads/
+temp/
+tmp/
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+
+# =========================
+# VS Code
+# =========================
+.vscode/
+
+# =========================
+# Operating System
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
