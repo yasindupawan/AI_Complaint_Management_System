@@ -23,7 +23,6 @@ const {
   deleteMultipleImagesFromCloudinary,
 } = require("../services/cloudinaryService");
 
-
 // =========================================================
 // SAFE NOTIFICATION HELPER
 // =========================================================
@@ -41,7 +40,6 @@ const sendNotificationSafely = async (
     );
   }
 };
-
 
 // =========================================================
 // CREATE COMPLAINT
@@ -72,14 +70,11 @@ const createComplaint = async (req, res, next) => {
       location.trim()
     ) {
       try {
-        location = JSON.parse(
-          location
-        );
+        location = JSON.parse(location);
       } catch (error) {
         return res.status(400).json({
           success: false,
-          message:
-            "Invalid location format",
+          message: "Invalid location format",
         });
       }
     }
@@ -113,8 +108,7 @@ const createComplaint = async (req, res, next) => {
 
     const existingComplaints =
       await Complaint.find({
-        category:
-          aiResult.category,
+        category: aiResult.category,
 
         status: {
           $nin: [
@@ -146,9 +140,7 @@ const createComplaint = async (req, res, next) => {
 
           return {
             id:
-              existingComplaint
-                ._id
-                .toString(),
+              existingComplaint._id.toString(),
 
             text:
               comparisonText,
@@ -187,11 +179,8 @@ const createComplaint = async (req, res, next) => {
     ) {
       routedDepartment =
         await Department.findOne({
-          categories:
-            aiResult.category,
-
-          isActive:
-            true,
+          categories: aiResult.category,
+          isActive: true,
         });
     }
 
@@ -215,8 +204,7 @@ const createComplaint = async (req, res, next) => {
 
     const complaint =
       await Complaint.create({
-        citizen:
-          req.user._id,
+        citizen: req.user._id,
 
         title,
         description,
@@ -401,10 +389,6 @@ const createComplaint = async (req, res, next) => {
       },
     });
   } catch (error) {
-    // -----------------------------------------------------
-    // Cleanup Cloudinary files if later processing fails
-    // -----------------------------------------------------
-
     if (
       Array.isArray(uploadedImages) &&
       uploadedImages.length > 0
@@ -424,7 +408,6 @@ const createComplaint = async (req, res, next) => {
     next(error);
   }
 };
-
 
 // =========================================================
 // GET MY COMPLAINTS
@@ -467,9 +450,8 @@ const getMyComplaints = async (
   }
 };
 
-
 // =========================================================
-// GET SINGLE COMPLAINT
+// GET SINGLE COMPLAINT - CITIZEN
 // =========================================================
 
 const getComplaintById = async (
@@ -516,9 +498,8 @@ const getComplaintById = async (
   }
 };
 
-
 // =========================================================
-// GET COMPLAINT HISTORY
+// GET COMPLAINT HISTORY - CITIZEN
 // =========================================================
 
 const getComplaintHistory = async (
@@ -576,7 +557,6 @@ const getComplaintHistory = async (
   }
 };
 
-
 // =========================================================
 // ADMIN - GET ALL COMPLAINTS
 // =========================================================
@@ -619,6 +599,111 @@ const getAllComplaints = async (
   }
 };
 
+// =========================================================
+// ADMIN - GET SINGLE COMPLAINT
+// =========================================================
+
+const getAdminComplaintById = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const complaint =
+      await Complaint.findById(
+        req.params.id
+      )
+        .populate(
+          "citizen",
+          "fullName email preferredLanguage"
+        )
+        .populate(
+          "department",
+          "name code categories"
+        )
+        .populate(
+          "assignedOfficer",
+          "fullName email role"
+        )
+        .populate(
+          "duplicateInfo.matchedComplaint",
+          "title description category priority status citizen createdAt"
+        );
+
+    if (!complaint) {
+      return res.status(404).json({
+        success: false,
+        message:
+          "Complaint not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      complaint,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// =========================================================
+// ADMIN - GET COMPLAINT HISTORY
+// =========================================================
+
+// @desc    Get complete complaint status history
+// @route   GET /api/complaints/admin/:id/history
+// @access  Private - Admin
+const getAdminComplaintHistory = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const complaint =
+      await Complaint.findById(
+        req.params.id
+      );
+
+    if (!complaint) {
+      return res.status(404).json({
+        success: false,
+        message:
+          "Complaint not found",
+      });
+    }
+
+    const history =
+      await StatusHistory.find({
+        complaint:
+          complaint._id,
+      })
+        .populate(
+          "changedBy",
+          "fullName email role"
+        )
+        .sort({
+          createdAt: 1,
+        });
+
+    res.status(200).json({
+      success: true,
+
+      complaintId:
+        complaint._id,
+
+      currentStatus:
+        complaint.status,
+
+      count:
+        history.length,
+
+      history,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 // =========================================================
 // ADMIN - UPDATE COMPLAINT STATUS
@@ -736,7 +821,6 @@ const updateComplaintStatus = async (
     next(error);
   }
 };
-
 
 // =========================================================
 // ADMIN - ASSIGN COMPLAINT
@@ -892,7 +976,6 @@ const assignComplaint = async (
   }
 };
 
-
 // =========================================================
 // OFFICER - GET ASSIGNED COMPLAINTS
 // =========================================================
@@ -930,7 +1013,6 @@ const getAssignedComplaints = async (
     next(error);
   }
 };
-
 
 // =========================================================
 // OFFICER - UPDATE ASSIGNED COMPLAINT STATUS
@@ -1075,7 +1157,6 @@ const updateAssignedComplaintStatus =
     }
   };
 
-
 // =========================================================
 // ADMIN - CONFIRM DUPLICATE
 // =========================================================
@@ -1203,7 +1284,6 @@ const confirmDuplicate = async (
     next(error);
   }
 };
-
 
 // =========================================================
 // ADMIN - REJECT DUPLICATE FLAG
@@ -1374,21 +1454,27 @@ const rejectDuplicateFlag = async (
   }
 };
 
-
 // =========================================================
 // EXPORTS
 // =========================================================
 
 module.exports = {
+  // Citizen
   createComplaint,
   getMyComplaints,
   getComplaintById,
   getComplaintHistory,
+
+  // Admin
   getAllComplaints,
+  getAdminComplaintById,
+  getAdminComplaintHistory,
   updateComplaintStatus,
   assignComplaint,
-  getAssignedComplaints,
-  updateAssignedComplaintStatus,
   confirmDuplicate,
   rejectDuplicateFlag,
+
+  // Officer
+  getAssignedComplaints,
+  updateAssignedComplaintStatus,
 };
