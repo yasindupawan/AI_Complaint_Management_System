@@ -301,6 +301,79 @@ const getAssignedComplaints = async (req, res, next) => {
   }
 };
 
+// @desc    Update status of complaint assigned to logged-in officer
+// @route   PATCH /api/complaints/officer/:id/status
+// @access  Private - Officer
+const updateAssignedComplaintStatus = async (req, res, next) => {
+  try {
+    const { status, remarks } = req.body;
+
+    // Officer can only update a complaint assigned to them
+    const complaint = await Complaint.findOne({
+      _id: req.params.id,
+      assignedOfficer: req.user._id,
+    });
+
+    if (!complaint) {
+      return res.status(404).json({
+        success: false,
+        message: "Assigned complaint not found",
+      });
+    }
+
+    const previousStatus = complaint.status;
+
+    // Prevent resolving before complaint is in progress
+    if (status === "resolved" && previousStatus !== "in_progress") {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Complaint must be in progress before it can be resolved",
+      });
+    }
+
+    // Prevent invalid transition back to in_progress
+    if (
+      status === "in_progress" &&
+      !["assigned", "in_progress"].includes(previousStatus)
+    ) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Only an assigned complaint can be moved to in progress",
+      });
+    }
+
+    complaint.status = status;
+
+    await complaint.save();
+
+    // Create audit trail
+    await StatusHistory.create({
+      complaint: complaint._id,
+      previousStatus,
+      newStatus: status,
+      changedBy: req.user._id,
+      remarks: remarks || "",
+    });
+
+    const updatedComplaint = await Complaint.findById(
+      complaint._id
+    )
+      .populate("citizen", "fullName email")
+      .populate("department", "name code")
+      .populate("assignedOfficer", "fullName email role");
+
+    res.status(200).json({
+      success: true,
+      message: "Complaint status updated successfully",
+      complaint: updatedComplaint,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createComplaint,
   getMyComplaints,
@@ -310,4 +383,5 @@ module.exports = {
   updateComplaintStatus,
   assignComplaint,
   getAssignedComplaints,
+  updateAssignedComplaintStatus,
 };

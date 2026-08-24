@@ -9,12 +9,14 @@ const {
   updateComplaintStatus,
   assignComplaint,
   getAssignedComplaints,
+  updateAssignedComplaintStatus,
 } = require("../controllers/complaintController");
 
 const {
   createComplaintValidation,
   updateComplaintStatusValidation,
   assignComplaintValidation,
+  officerUpdateStatusValidation,
   validateRequest,
 } = require("../middleware/validationMiddleware");
 
@@ -25,6 +27,11 @@ const {
 
 const router = express.Router();
 
+// ======================================================
+// CITIZEN ROUTES
+// ======================================================
+
+// Submit a new complaint
 router.post(
   "/",
   protect,
@@ -34,6 +41,7 @@ router.post(
   createComplaint
 );
 
+// Get complaints submitted by logged-in citizen
 router.get(
   "/my",
   protect,
@@ -41,6 +49,11 @@ router.get(
   getMyComplaints
 );
 
+// ======================================================
+// ADMIN ROUTES
+// ======================================================
+
+// Get all complaints
 router.get(
   "/admin/all",
   protect,
@@ -48,6 +61,7 @@ router.get(
   getAllComplaints
 );
 
+// Update complaint status
 router.patch(
   "/admin/:id/status",
   protect,
@@ -57,6 +71,7 @@ router.patch(
   updateComplaintStatus
 );
 
+// Assign complaint to department and officer
 router.patch(
   "/admin/:id/assign",
   protect,
@@ -66,6 +81,11 @@ router.patch(
   assignComplaint
 );
 
+// ======================================================
+// OFFICER ROUTES
+// ======================================================
+
+// Get complaints assigned to logged-in officer
 router.get(
   "/officer/assigned",
   protect,
@@ -73,6 +93,21 @@ router.get(
   getAssignedComplaints
 );
 
+// Update status of complaint assigned to logged-in officer
+router.patch(
+  "/officer/:id/status",
+  protect,
+  authorize("officer"),
+  officerUpdateStatusValidation,
+  validateRequest,
+  updateAssignedComplaintStatus
+);
+
+// ======================================================
+// CITIZEN COMPLAINT DETAILS / TRACKING ROUTES
+// ======================================================
+
+// Get complaint status history
 router.get(
   "/:id/history",
   protect,
@@ -80,6 +115,7 @@ router.get(
   getComplaintHistory
 );
 
+// Get single complaint
 router.get(
   "/:id",
   protect,
