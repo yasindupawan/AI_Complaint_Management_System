@@ -10,6 +10,10 @@ const {
   assignComplaint,
   getAssignedComplaints,
   updateAssignedComplaintStatus,
+
+  // Admin duplicate review
+  confirmDuplicate,
+  rejectDuplicateFlag,
 } = require("../controllers/complaintController");
 
 const {
@@ -25,19 +29,36 @@ const {
   authorize,
 } = require("../middleware/authMiddleware");
 
+// ======================================================
+// IMAGE UPLOAD MIDDLEWARE
+// ======================================================
+
+const {
+  uploadComplaintImages,
+} = require("../middleware/uploadMiddleware");
+
 const router = express.Router();
+
 
 // ======================================================
 // CITIZEN ROUTES
 // ======================================================
 
 // Submit a new complaint
+// Supports maximum 5 complaint images
 router.post(
   "/",
   protect,
   authorize("citizen"),
+
+  // Process multipart/form-data images
+  uploadComplaintImages,
+
+  // Validate complaint fields
   createComplaintValidation,
   validateRequest,
+
+  // Create complaint
   createComplaint
 );
 
@@ -48,6 +69,7 @@ router.get(
   authorize("citizen"),
   getMyComplaints
 );
+
 
 // ======================================================
 // ADMIN ROUTES
@@ -81,6 +103,28 @@ router.patch(
   assignComplaint
 );
 
+
+// ======================================================
+// ADMIN - DUPLICATE REVIEW ROUTES
+// ======================================================
+
+// Confirm AI-flagged complaint as duplicate
+router.patch(
+  "/admin/:id/confirm-duplicate",
+  protect,
+  authorize("admin"),
+  confirmDuplicate
+);
+
+// Reject duplicate flag and continue normal processing
+router.patch(
+  "/admin/:id/reject-duplicate",
+  protect,
+  authorize("admin"),
+  rejectDuplicateFlag
+);
+
+
 // ======================================================
 // OFFICER ROUTES
 // ======================================================
@@ -103,6 +147,7 @@ router.patch(
   updateAssignedComplaintStatus
 );
 
+
 // ======================================================
 // CITIZEN COMPLAINT DETAILS / TRACKING ROUTES
 // ======================================================
@@ -122,5 +167,10 @@ router.get(
   authorize("citizen"),
   getComplaintById
 );
+
+
+// ======================================================
+// EXPORT ROUTER
+// ======================================================
 
 module.exports = router;

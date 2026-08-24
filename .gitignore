@@ -75,4 +75,6 @@ logs/
 # =========================
 .DS_Store
 Thumbs.db
-desktop.ini
+desktop.iniai-service/datasets/311-service-requests-from-2010-to-present.csv
+
+ai-service/datasets/311-service-requests-from-2010-to-present.csv

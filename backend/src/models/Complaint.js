@@ -2,11 +2,19 @@ const mongoose = require("mongoose");
 
 const complaintSchema = new mongoose.Schema(
   {
+    // =====================================================
+    // CITIZEN
+    // =====================================================
+
     citizen: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
+
+    // =====================================================
+    // COMPLAINT DETAILS
+    // =====================================================
 
     title: {
       type: String,
@@ -30,29 +38,44 @@ const complaintSchema = new mongoose.Schema(
       required: true,
     },
 
+    // =====================================================
+    // LOCATION
+    // =====================================================
+
     location: {
       address: {
         type: String,
         trim: true,
       },
+
       latitude: {
         type: Number,
       },
+
       longitude: {
         type: Number,
       },
     },
+
+    // =====================================================
+    // IMAGES
+    // =====================================================
 
     images: [
       {
         url: {
           type: String,
         },
+
         publicId: {
           type: String,
         },
       },
     ],
+
+    // =====================================================
+    // AI CLASSIFICATION
+    // =====================================================
 
     category: {
       type: String,
@@ -78,24 +101,50 @@ const complaintSchema = new mongoose.Schema(
         type: Number,
         min: 0,
         max: 1,
+        default: null,
       },
+
       priorityConfidence: {
         type: Number,
         min: 0,
         max: 1,
+        default: null,
+      },
+
+      detectedLanguage: {
+        type: String,
+        enum: ["en", "si", "ta"],
+        default: null,
+      },
+
+      translatedText: {
+        type: String,
+        trim: true,
+        default: null,
+      },
+
+      requiresManualReview: {
+        type: Boolean,
+        default: false,
       },
     },
+
+    // =====================================================
+    // DUPLICATE DETECTION
+    // =====================================================
 
     duplicateInfo: {
       isPotentialDuplicate: {
         type: Boolean,
         default: false,
       },
+
       matchedComplaint: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Complaint",
         default: null,
       },
+
       similarityScore: {
         type: Number,
         min: 0,
@@ -103,6 +152,10 @@ const complaintSchema = new mongoose.Schema(
         default: null,
       },
     },
+
+    // =====================================================
+    // DEPARTMENT / OFFICER ASSIGNMENT
+    // =====================================================
 
     department: {
       type: mongoose.Schema.Types.ObjectId,
@@ -115,6 +168,10 @@ const complaintSchema = new mongoose.Schema(
       ref: "User",
       default: null,
     },
+
+    // =====================================================
+    // COMPLAINT STATUS
+    // =====================================================
 
     status: {
       type: String,
@@ -130,6 +187,10 @@ const complaintSchema = new mongoose.Schema(
       default: "submitted",
     },
 
+    // =====================================================
+    // ADMIN REMARKS
+    // =====================================================
+
     adminRemarks: {
       type: String,
       trim: true,
@@ -142,6 +203,13 @@ const complaintSchema = new mongoose.Schema(
   }
 );
 
-const Complaint = mongoose.model("Complaint", complaintSchema);
+// =========================================================
+// MODEL
+// =========================================================
+
+const Complaint = mongoose.model(
+  "Complaint",
+  complaintSchema
+);
 
 module.exports = Complaint;

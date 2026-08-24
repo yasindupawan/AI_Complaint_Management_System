@@ -1,0 +1,79 @@
+training_text,category,Complaint Type,Descriptor,Agency,Agency Name,Borough
+Standing Water Sewer or Drain,drainage,Standing Water,Sewer or Drain,DOHMH,Department of Health and Mental Hygiene,QUEENS
+Street Condition Wear & Tear,roads,Street Condition,Wear & Tear,DOT,Department of Transportation,MANHATTAN
+Indoor Sewage Sewage Odor,drainage,Indoor Sewage,Sewage Odor,DOHMH,Department of Health and Mental Hygiene,BROOKLYN
+Street Condition Defective Hardware,roads,Street Condition,Defective Hardware,DOT,Department of Transportation,MANHATTAN
+Sidewalk Condition Defective Hardware,roads,Sidewalk Condition,Defective Hardware,DOT,Department of Transportation,MANHATTAN
+"Air Quality Air: Dust, Construction/Demolition (AE4)",environment,Air Quality,"Air: Dust, Construction/Demolition (AE4)",DEP,Department of Environmental Protection,MANHATTAN
+Sewer Sewer Backup (Use Comments) (SA),drainage,Sewer,Sewer Backup (Use Comments) (SA),DEP,Department of Environmental Protection,BRONX
+"Street Condition Rough, Pitted or Cracked Roads",roads,Street Condition,"Rough, Pitted or Cracked Roads",DOT,Department of Transportation,BRONX
+Street Light Condition Lamppost Knocked Down,electricity,Street Light Condition,Lamppost Knocked Down,DOT,Department of Transportation,Unspecified
+"Hazardous Materials Oil Spill On Street, Small (HQS)",environment,Hazardous Materials,"Oil Spill On Street, Small (HQS)",DEP,Department of Environmental Protection,BROOKLYN
+Indoor Air Quality Ventilation,environment,Indoor Air Quality,Ventilation,DOHMH,Department of Health and Mental Hygiene,STATEN ISLAND
+WATER LEAK HEAVY FLOW,water_supply,WATER LEAK,HEAVY FLOW,HPD,Department of Housing Preservation and Development,MANHATTAN
+"Hazardous Materials Oil Spill On Street, Large (HQL)",environment,Hazardous Materials,"Oil Spill On Street, Large (HQL)",DEP,Department of Environmental Protection,BROOKLYN
+ELECTRIC POWER OUTAGE,electricity,ELECTRIC,POWER OUTAGE,HPD,Department of Housing Preservation and Development,MANHATTAN
+Water System Leak (Use Comments) (WA2),water_supply,Water System,Leak (Use Comments) (WA2),DEP,Department of Environmental Protection,QUEENS
+Sanitation Condition 15 Street Cond/Dump-Out/Drop-Off,garbage,Sanitation Condition,15 Street Cond/Dump-Out/Drop-Off,DSNY,Bronx 11,BRONX
+DEP Street Condition Ponding,drainage,DEP Street Condition,Ponding,DOT,Department of Transportation,BRONX
+ELECTRIC WIRING,electricity,ELECTRIC,WIRING,HPD,Department of Housing Preservation and Development,BRONX
+Highway Condition Pothole - Highway,roads,Highway Condition,Pothole - Highway,DOT,Department of Transportation,Unspecified
+Curb Condition Curb Defect-Metal Protruding,roads,Curb Condition,Curb Defect-Metal Protruding,DOT,Department of Transportation,BROOKLYN
+Sewer Catch Basin Clogged/Flooding (Use Comments) (SC),drainage,Sewer,Catch Basin Clogged/Flooding (Use Comments) (SC),DEP,Department of Environmental Protection,QUEENS
+Missed Collection (All Materials) 1 Missed Collection,garbage,Missed Collection (All Materials),1 Missed Collection,DSNY,BCC - Staten Island,STATEN ISLAND
+"Hazardous Materials Unsafe Chemical, Abandoned (HC2)",environment,Hazardous Materials,"Unsafe Chemical, Abandoned (HC2)",DEP,Department of Environmental Protection,QUEENS
+ELECTRIC LIGHTING,electricity,ELECTRIC,LIGHTING,HPD,Department of Housing Preservation and Development,BROOKLYN
+Missed Collection (All Materials) 2R Bulk-Missed Recy Collection,garbage,Missed Collection (All Materials),2R Bulk-Missed Recy Collection,DSNY,BCC - Queens East,QUEENS
+"Water Quality Taste/Odor, Bitter/Metallic (QA3)",water_supply,Water Quality,"Taste/Odor, Bitter/Metallic (QA3)",DEP,Department of Environmental Protection,MANHATTAN
+Dirty Conditions E3 Dirty Sidewalk,garbage,Dirty Conditions,E3 Dirty Sidewalk,DSNY,A - Manhattan,MANHATTAN
+Dirty Conditions E2 Receptacle Violation,garbage,Dirty Conditions,E2 Receptacle Violation,DSNY,BCC - Queens East,QUEENS
+Street Light Condition Street Light Out,electricity,Street Light Condition,Street Light Out,DOT,Department of Transportation,BRONX
+Street Condition Cave-in,roads,Street Condition,Cave-in,DOT,Department of Transportation,QUEENS
+Sewer Street Flooding (SJ),drainage,Sewer,Street Flooding (SJ),DEP,Department of Environmental Protection,MANHATTAN
+"Air Quality Air: Dust, Other (Use Comments) (AE5)",environment,Air Quality,"Air: Dust, Other (Use Comments) (AE5)",DEP,Department of Environmental Protection,BROOKLYN
+Missed Collection (All Materials) 1R Missed Recycling-All Materials,garbage,Missed Collection (All Materials),1R Missed Recycling-All Materials,DSNY,BCC - Staten Island,STATEN ISLAND
+Hazardous Materials Chemical Odor (HD1),environment,Hazardous Materials,Chemical Odor (HD1),DEP,Department of Environmental Protection,BROOKLYN
+WATER LEAK SLOW LEAK,water_supply,WATER LEAK,SLOW LEAK,HPD,Department of Housing Preservation and Development,QUEENS
+"Air Quality Air: Smoke, Vehicular (AA4)",environment,Air Quality,"Air: Smoke, Vehicular (AA4)",DEP,Department of Environmental Protection,QUEENS
+Water System No Water (WNW),water_supply,Water System,No Water (WNW),DEP,Department of Environmental Protection,BROOKLYN
+Street Light Condition Street Light Lamp Dim,electricity,Street Light Condition,Street Light Lamp Dim,DOT,Department of Transportation,QUEENS
+Curb Condition Broken Curb,roads,Curb Condition,Broken Curb,DOT,Department of Transportation,BROOKLYN
+Electrical Electrical Wiring Defective/Exposed,electricity,Electrical,Electrical Wiring Defective/Exposed,DOB,Department of Buildings,QUEENS
+Bridge Condition Pothole,roads,Bridge Condition,Pothole,DOT,Department of Transportation,Unspecified
+"Water Quality Taste/Odor, Chlorine (QA1)",water_supply,Water Quality,"Taste/Odor, Chlorine (QA1)",DEP,Department of Environmental Protection,QUEENS
+Missed Collection (All Materials) 1RG Missed Recycling Paper,garbage,Missed Collection (All Materials),1RG Missed Recycling Paper,DSNY,BCC - Staten Island,STATEN ISLAND
+DEP Sidewalk Condition Cave-in,roads,DEP Sidewalk Condition,Cave-in,DOT,Department of Transportation,BRONX
+"Air Quality Air: Smoke, Chimney or vent (AS1)",environment,Air Quality,"Air: Smoke, Chimney or vent (AS1)",DEP,Department of Environmental Protection,BROOKLYN
+Street Condition Failed Street Repair,roads,Street Condition,Failed Street Repair,DOT,Department of Transportation,MANHATTAN
+Sewer Culvert Blocked/Needs Cleaning (SE),drainage,Sewer,Culvert Blocked/Needs Cleaning (SE),DEP,Department of Environmental Protection,QUEENS
+Asbestos Asbestos Complaint (B1),environment,Asbestos,Asbestos Complaint (B1),DEP,Department of Environmental Protection,QUEENS
+"Air Quality Air: Odor/Fumes, Vehicle Idling (AD3)",environment,Air Quality,"Air: Odor/Fumes, Vehicle Idling (AD3)",DEP,Department of Environmental Protection,BROOKLYN
+Dirty Conditions E1 Improper Disposal,garbage,Dirty Conditions,E1 Improper Disposal,DSNY,A - Brooklyn,BROOKLYN
+Air Quality Air: Other Air Problem (Use Comments) (AZZ),environment,Air Quality,Air: Other Air Problem (Use Comments) (AZZ),DEP,Department of Environmental Protection,QUEENS
+Water Quality unknown odor/taste in drinking water (QA6),water_supply,Water Quality,unknown odor/taste in drinking water (QA6),DEP,Department of Environmental Protection,MANHATTAN
+Sewer RAIN GARDEN FLOODING (SRGFLD),drainage,Sewer,RAIN GARDEN FLOODING (SRGFLD),DEP,Department of Environmental Protection,STATEN ISLAND
+Dirty Conditions E3A Dirty Area/Alleyway,garbage,Dirty Conditions,E3A Dirty Area/Alleyway,DSNY,A - Bronx,BRONX
+Water System Dirty Water (WE),water_supply,Water System,Dirty Water (WE),DEP,Department of Environmental Protection,MANHATTAN
+Missed Collection (All Materials) 1RB Missed Recycling - M/G/Pl,garbage,Missed Collection (All Materials),1RB Missed Recycling - M/G/Pl,DSNY,BCC - Brooklyn South,BROOKLYN
+WATER LEAK DAMP SPOT,water_supply,WATER LEAK,DAMP SPOT,HPD,Department of Housing Preservation and Development,BROOKLYN
+Missed Collection (All Materials) 2 Bulk-Missed Collection,garbage,Missed Collection (All Materials),2 Bulk-Missed Collection,DSNY,BCC - Staten Island,STATEN ISLAND
+Hazardous Materials Chemical Spill/Release (HA1),environment,Hazardous Materials,Chemical Spill/Release (HA1),DEP,Department of Environmental Protection,BRONX
+ELECTRIC NO LIGHTING,electricity,ELECTRIC,NO LIGHTING,HPD,Department of Housing Preservation and Development,BRONX
+Highway Condition Cave-in,roads,Highway Condition,Cave-in,DOT,Department of Transportation,QUEENS
+Indoor Sewage Sewage Leak,drainage,Indoor Sewage,Sewage Leak,DOHMH,Department of Health and Mental Hygiene,QUEENS
+"Hazardous Materials Unsafe Chemical, Storage (HC1)",environment,Hazardous Materials,"Unsafe Chemical, Storage (HC1)",DEP,Department of Environmental Protection,QUEENS
+ELECTRIC OUTLET/SWITCH,electricity,ELECTRIC,OUTLET/SWITCH,HPD,Department of Housing Preservation and Development,BRONX
+"Air Quality Air: Odor/Fumes, Restaurant (AD2)",environment,Air Quality,"Air: Odor/Fumes, Restaurant (AD2)",DEP,Department of Environmental Protection,MANHATTAN
+Mosquitoes Large Number of Mosquitoes,environment,Mosquitoes,Large Number of Mosquitoes,DOHMH,Department of Health and Mental Hygiene,BRONX
+Dirty Conditions E5 Loose Rubbish,garbage,Dirty Conditions,E5 Loose Rubbish,DSNY,A - Staten Island,STATEN ISLAND
+Sewer Manhole Overflow (Use Comments) (SA1),drainage,Sewer,Manhole Overflow (Use Comments) (SA1),DEP,Department of Environmental Protection,QUEENS
+DEP Street Condition Cave-in,roads,DEP Street Condition,Cave-in,DOT,Department of Transportation,BRONX
+Street Light Condition Lamppost Wire Exposed,electricity,Street Light Condition,Lamppost Wire Exposed,DOT,Department of Transportation,MANHATTAN
+"Water Quality Cloudy Or Milky, Other (Use Comments) (QBZ)",water_supply,Water Quality,"Cloudy Or Milky, Other (Use Comments) (QBZ)",DEP,Department of Environmental Protection,MANHATTAN
+Street Condition Pothole,roads,Street Condition,Pothole,DOT,Department of Transportation,MANHATTAN
+Water System Possible Water Main Break (Use Comments) (WA1),water_supply,Water System,Possible Water Main Break (Use Comments) (WA1),DEP,Department of Environmental Protection,QUEENS
+Water System Hydrant Leaking (WC1),water_supply,Water System,Hydrant Leaking (WC1),DEP,Department of Environmental Protection,BROOKLYN
+Indoor Air Quality Chemical Vapors/Gases/Odors,environment,Indoor Air Quality,Chemical Vapors/Gases/Odors,DOHMH,Department of Health and Mental Hygiene,BROOKLYN
+Food Establishment Ventilation,environment,Food Establishment,Ventilation,DOHMH,Department of Health and Mental Hygiene,BROOKLYN
+Water System LOW WATER PRESSURE - WLWP,water_supply,Water System,LOW WATER PRESSURE - WLWP,DEP,Department of Environmental Protection,STATEN ISLAND
+Street Light Condition Multiple Street Lights Out,electricity,Street Light Condition,Multiple Street Lights Out,DOT,Department of Transportation,BRONX
