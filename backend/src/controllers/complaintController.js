@@ -24,6 +24,235 @@ const {
 } = require("../services/cloudinaryService");
 
 // =========================================================
+// DUPLICATE DETECTION CONFIGURATION
+// =========================================================
+
+// Complaints must be geographically close enough to
+// reasonably represent the same physical incident.
+const DUPLICATE_DISTANCE_KM = 1.0;
+
+// Old incidents should not automatically cause a new
+// complaint to be treated as a duplicate.
+const DUPLICATE_LOOKBACK_DAYS = 30;
+
+// Semantic similarity threshold used by FastAPI.
+const DUPLICATE_SIMILARITY_THRESHOLD = 0.75;
+
+// Only unresolved/active complaints are considered
+// possible duplicate candidates.
+const DUPLICATE_ACTIVE_STATUSES = [
+  "submitted",
+  "under_review",
+  "assigned",
+  "in_progress",
+];
+
+// =========================================================
+// LOCATION HELPERS
+// =========================================================
+
+const normalizeAddress = (address) => {
+  if (
+    typeof address !== "string" ||
+    !address.trim()
+  ) {
+    return "";
+  }
+
+  return address
+    .toLowerCase()
+    .trim()
+    .replace(/[.,#/\\-]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+};
+
+const parseCoordinate = (value) => {
+  if (
+    value === null ||
+    value === undefined ||
+    value === ""
+  ) {
+    return null;
+  }
+
+  const parsedValue = Number(value);
+
+  return Number.isFinite(parsedValue)
+    ? parsedValue
+    : null;
+};
+
+const hasValidCoordinates = (
+  latitude,
+  longitude
+) => {
+  return (
+    typeof latitude === "number" &&
+    Number.isFinite(latitude) &&
+    latitude >= -90 &&
+    latitude <= 90 &&
+    typeof longitude === "number" &&
+    Number.isFinite(longitude) &&
+    longitude >= -180 &&
+    longitude <= 180
+  );
+};
+
+// =========================================================
+// LOCATION DISTANCE HELPER
+// =========================================================
+
+const calculateDistanceKm = (
+  lat1,
+  lon1,
+  lat2,
+  lon2
+) => {
+  if (
+    !hasValidCoordinates(
+      lat1,
+      lon1
+    ) ||
+    !hasValidCoordinates(
+      lat2,
+      lon2
+    )
+  ) {
+    return null;
+  }
+
+  const toRadians = (value) =>
+    (value * Math.PI) / 180;
+
+  const earthRadiusKm = 6371;
+
+  const dLat =
+    toRadians(
+      lat2 - lat1
+    );
+
+  const dLon =
+    toRadians(
+      lon2 - lon1
+    );
+
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(
+      toRadians(lat1)
+    ) *
+      Math.cos(
+        toRadians(lat2)
+      ) *
+      Math.sin(
+        dLon / 2
+      ) ** 2;
+
+  const c =
+    2 *
+    Math.atan2(
+      Math.sqrt(a),
+      Math.sqrt(1 - a)
+    );
+
+  return earthRadiusKm * c;
+};
+
+// =========================================================
+// LOCATION MATCHING
+// =========================================================
+
+const isNearbyLocation = (
+  newLocation,
+  existingLocation
+) => {
+  if (
+    !newLocation ||
+    !existingLocation
+  ) {
+    return false;
+  }
+
+  const newLatitude =
+    parseCoordinate(
+      newLocation.latitude
+    );
+
+  const newLongitude =
+    parseCoordinate(
+      newLocation.longitude
+    );
+
+  const existingLatitude =
+    parseCoordinate(
+      existingLocation.latitude
+    );
+
+  const existingLongitude =
+    parseCoordinate(
+      existingLocation.longitude
+    );
+
+  // -------------------------------------------------------
+  // Preferred method: GPS distance
+  // -------------------------------------------------------
+
+  if (
+    hasValidCoordinates(
+      newLatitude,
+      newLongitude
+    ) &&
+    hasValidCoordinates(
+      existingLatitude,
+      existingLongitude
+    )
+  ) {
+    const distanceKm =
+      calculateDistanceKm(
+        newLatitude,
+        newLongitude,
+        existingLatitude,
+        existingLongitude
+      );
+
+    return (
+      distanceKm !== null &&
+      distanceKm <=
+        DUPLICATE_DISTANCE_KM
+    );
+  }
+
+  // -------------------------------------------------------
+  // Fallback:
+  // If GPS is unavailable, require matching normalized
+  // address text.
+  // -------------------------------------------------------
+
+  const newAddress =
+    normalizeAddress(
+      newLocation.address
+    );
+
+  const existingAddress =
+    normalizeAddress(
+      existingLocation.address
+    );
+
+  if (
+    !newAddress ||
+    !existingAddress
+  ) {
+    return false;
+  }
+
+  return (
+    newAddress ===
+    existingAddress
+  );
+};
+
+// =========================================================
 // SAFE NOTIFICATION HELPER
 // =========================================================
 
@@ -32,7 +261,9 @@ const sendNotificationSafely = async (
   complaint
 ) => {
   try {
-    await notificationFunction(complaint);
+    await notificationFunction(
+      complaint
+    );
   } catch (error) {
     console.error(
       "Notification delivery failed:",
@@ -46,12 +277,16 @@ const sendNotificationSafely = async (
 // =========================================================
 
 // @desc    Create complaint with AI classification,
-//          semantic duplicate detection,
+//          location-aware semantic duplicate detection,
 //          image upload and department routing
 // @route   POST /api/complaints
 // @access  Private - Citizen
 
-const createComplaint = async (req, res, next) => {
+const createComplaint = async (
+  req,
+  res,
+  next
+) => {
   let uploadedImages = [];
 
   try {
@@ -63,7 +298,7 @@ const createComplaint = async (req, res, next) => {
     } = req.body;
 
     // -----------------------------------------------------
-    // 1. Parse multipart location if received as JSON text
+    // 1. Parse multipart location
     // -----------------------------------------------------
 
     if (
@@ -71,31 +306,79 @@ const createComplaint = async (req, res, next) => {
       location.trim()
     ) {
       try {
-        location = JSON.parse(location);
+        location =
+          JSON.parse(
+            location
+          );
       } catch (error) {
-        return res.status(400).json({
-          success: false,
-          message: "Invalid location format",
-        });
+        return res
+          .status(400)
+          .json({
+            success: false,
+            message:
+              "Invalid location format",
+          });
       }
     }
 
     if (
       !location ||
-      typeof location !== "object"
+      typeof location !== "object" ||
+      Array.isArray(location)
     ) {
       location = {};
     }
 
     // -----------------------------------------------------
-    // 2. Prepare complaint text
+    // 2. Normalize location
+    // -----------------------------------------------------
+
+    if (
+      typeof location.address ===
+      "string"
+    ) {
+      location.address =
+        location.address.trim();
+    }
+
+    const parsedLatitude =
+      parseCoordinate(
+        location.latitude
+      );
+
+    const parsedLongitude =
+      parseCoordinate(
+        location.longitude
+      );
+
+    if (
+      parsedLatitude !== null
+    ) {
+      location.latitude =
+        parsedLatitude;
+    } else {
+      delete location.latitude;
+    }
+
+    if (
+      parsedLongitude !== null
+    ) {
+      location.longitude =
+        parsedLongitude;
+    } else {
+      delete location.longitude;
+    }
+
+    // -----------------------------------------------------
+    // 3. Prepare complaint text
     // -----------------------------------------------------
 
     const complaintText =
-      `${title}. ${description}`.trim();
+      `${title}. ${description}`
+        .trim();
 
     // -----------------------------------------------------
-    // 3. AI category + priority prediction
+    // 4. AI category + priority prediction
     // -----------------------------------------------------
 
     const aiResult =
@@ -104,93 +387,177 @@ const createComplaint = async (req, res, next) => {
       );
 
     // -----------------------------------------------------
-    // 4. Find existing complaints in same category
+    // 5. Define duplicate lookback period
+    // -----------------------------------------------------
+
+    const duplicateLookbackDate =
+      new Date(
+        Date.now() -
+          DUPLICATE_LOOKBACK_DAYS *
+            24 *
+            60 *
+            60 *
+            1000
+      );
+
+    // -----------------------------------------------------
+    // 6. Database-level duplicate candidate filtering
+    //
+    // Conditions:
+    // - same AI category
+    // - active complaint
+    // - recent complaint
     // -----------------------------------------------------
 
     const existingComplaints =
       await Complaint.find({
-        category: aiResult.category,
+        category:
+          aiResult.category,
 
         status: {
-          $nin: [
-            "rejected",
-            "duplicate",
-          ],
+          $in:
+            DUPLICATE_ACTIVE_STATUSES,
+        },
+
+        createdAt: {
+          $gte:
+            duplicateLookbackDate,
         },
       })
         .select(
-          "_id title description aiPrediction.translatedText"
+          [
+            "_id",
+            "title",
+            "description",
+            "category",
+            "priority",
+            "status",
+            "createdAt",
+            "location",
+            "aiPrediction.translatedText",
+          ].join(" ")
         )
         .sort({
           createdAt: -1,
         })
-        .limit(100);
+        .limit(200);
 
     // -----------------------------------------------------
-    // 5. Prepare duplicate candidates
+    // 7. Location-aware candidate filtering
+    //
+    // A semantically similar complaint from another place
+    // is NOT treated as the same incident.
     // -----------------------------------------------------
 
-    const duplicateCandidates =
-      existingComplaints.map(
-        (existingComplaint) => {
-          const comparisonText =
-            existingComplaint
-              .aiPrediction
-              ?.translatedText ||
-            `${existingComplaint.title}. ${existingComplaint.description}`;
-
-          return {
-            id:
-              existingComplaint._id.toString(),
-
-            text:
-              comparisonText,
-          };
-        }
+    const nearbyComplaints =
+      existingComplaints.filter(
+        (
+          existingComplaint
+        ) =>
+          isNearbyLocation(
+            location,
+            existingComplaint.location
+          )
       );
 
     // -----------------------------------------------------
-    // 6. Semantic duplicate detection
+    // 8. Prepare semantic candidates
+    // -----------------------------------------------------
+
+    const duplicateCandidates =
+      nearbyComplaints
+        .map(
+          (
+            existingComplaint
+          ) => {
+            const comparisonText =
+              existingComplaint
+                .aiPrediction
+                ?.translatedText ||
+              `${existingComplaint.title}. ${existingComplaint.description}`;
+
+            return {
+              id:
+                existingComplaint
+                  ._id
+                  .toString(),
+
+              text:
+                String(
+                  comparisonText
+                ).trim(),
+            };
+          }
+        )
+        .filter(
+          (candidate) =>
+            candidate.id &&
+            candidate.text.length >=
+              3
+        );
+
+    // -----------------------------------------------------
+    // 9. Semantic duplicate detection
+    //
+    // FastAPI now compares ONLY:
+    // - same category
+    // - active
+    // - recent
+    // - nearby
+    // complaints.
     // -----------------------------------------------------
 
     const duplicateResult =
       await detectDuplicate(
         aiResult.translatedText,
         duplicateCandidates,
-        0.75
+        DUPLICATE_SIMILARITY_THRESHOLD
       );
 
     // -----------------------------------------------------
-    // 7. Manual-review decision
+    // 10. Final manual-review decision
     // -----------------------------------------------------
 
     const requiresManualReview =
-      aiResult.requiresManualReview ||
-      duplicateResult.isPotentialDuplicate;
+      Boolean(
+        aiResult
+          .requiresManualReview
+      ) ||
+      Boolean(
+        duplicateResult
+          .isPotentialDuplicate
+      );
 
     // -----------------------------------------------------
-    // 8. Automatic department routing
+    // 11. Automatic department routing
     // -----------------------------------------------------
 
-    let routedDepartment = null;
+    let routedDepartment =
+      null;
 
     if (
       aiResult.category &&
-      requiresManualReview === false
+      requiresManualReview ===
+        false
     ) {
       routedDepartment =
         await Department.findOne({
-          categories: aiResult.category,
-          isActive: true,
+          categories:
+            aiResult.category,
+
+          isActive:
+            true,
         });
     }
 
     // -----------------------------------------------------
-    // 9. Upload complaint images to Cloudinary
+    // 12. Upload images
     // -----------------------------------------------------
 
     if (
-      Array.isArray(req.files) &&
+      Array.isArray(
+        req.files
+      ) &&
       req.files.length > 0
     ) {
       uploadedImages =
@@ -200,15 +567,18 @@ const createComplaint = async (req, res, next) => {
     }
 
     // -----------------------------------------------------
-    // 10. Create complaint
+    // 13. Create complaint
     // -----------------------------------------------------
 
     const complaint =
       await Complaint.create({
-        citizen: req.user._id,
+        citizen:
+          req.user._id,
 
         title,
+
         description,
+
         submittedLanguage,
 
         location,
@@ -224,16 +594,20 @@ const createComplaint = async (req, res, next) => {
 
         aiPrediction: {
           categoryConfidence:
-            aiResult.categoryConfidence,
+            aiResult
+              .categoryConfidence,
 
           priorityConfidence:
-            aiResult.priorityConfidence,
+            aiResult
+              .priorityConfidence,
 
           detectedLanguage:
-            aiResult.detectedLanguage,
+            aiResult
+              .detectedLanguage,
 
           translatedText:
-            aiResult.translatedText,
+            aiResult
+              .translatedText,
 
           requiresManualReview:
             requiresManualReview,
@@ -241,8 +615,10 @@ const createComplaint = async (req, res, next) => {
 
         duplicateInfo: {
           isPotentialDuplicate:
-            duplicateResult
-              .isPotentialDuplicate,
+            Boolean(
+              duplicateResult
+                .isPotentialDuplicate
+            ),
 
           matchedComplaint:
             duplicateResult
@@ -269,17 +645,18 @@ const createComplaint = async (req, res, next) => {
       });
 
     // -----------------------------------------------------
-    // 11. Status history
+    // 14. Status history
     // -----------------------------------------------------
 
     let historyRemarks =
       "Complaint submitted by citizen";
 
     if (
-      duplicateResult.isPotentialDuplicate
+      duplicateResult
+        .isPotentialDuplicate
     ) {
       historyRemarks =
-        "Complaint submitted and flagged as a potential duplicate for manual review";
+        "Complaint submitted and flagged as a potential duplicate after category, location, recency, status and semantic similarity checks";
     }
 
     await StatusHistory.create({
@@ -300,7 +677,7 @@ const createComplaint = async (req, res, next) => {
     });
 
     // -----------------------------------------------------
-    // 12. Citizen notification
+    // 15. Citizen notification
     // -----------------------------------------------------
 
     await sendNotificationSafely(
@@ -309,7 +686,7 @@ const createComplaint = async (req, res, next) => {
     );
 
     // -----------------------------------------------------
-    // 13. Populate response
+    // 16. Populate response
     // -----------------------------------------------------
 
     const populatedComplaint =
@@ -326,79 +703,95 @@ const createComplaint = async (req, res, next) => {
         )
         .populate(
           "duplicateInfo.matchedComplaint",
-          "title description category priority status"
+          "title description category priority status location createdAt"
         );
 
-    res.status(201).json({
-      success: true,
+    return res
+      .status(201)
+      .json({
+        success: true,
 
-      message:
-        duplicateResult
-          .isPotentialDuplicate
-          ? "Complaint submitted and flagged as a potential duplicate"
-          : "Complaint submitted successfully",
+        message:
+          duplicateResult
+            .isPotentialDuplicate
+            ? "Complaint submitted and flagged as a potential duplicate"
+            : "Complaint submitted successfully",
 
-      complaint: {
-        id:
-          populatedComplaint._id,
+        complaint: {
+          id:
+            populatedComplaint._id,
 
-        citizen:
-          populatedComplaint.citizen,
+          citizen:
+            populatedComplaint
+              .citizen,
 
-        title:
-          populatedComplaint.title,
+          title:
+            populatedComplaint
+              .title,
 
-        description:
-          populatedComplaint.description,
+          description:
+            populatedComplaint
+              .description,
 
-        submittedLanguage:
-          populatedComplaint
-            .submittedLanguage,
+          submittedLanguage:
+            populatedComplaint
+              .submittedLanguage,
 
-        location:
-          populatedComplaint.location,
+          location:
+            populatedComplaint
+              .location,
 
-        images:
-          populatedComplaint.images,
+          images:
+            populatedComplaint
+              .images,
 
-        category:
-          populatedComplaint.category,
+          category:
+            populatedComplaint
+              .category,
 
-        priority:
-          populatedComplaint.priority,
+          priority:
+            populatedComplaint
+              .priority,
 
-        department:
-          populatedComplaint.department,
+          department:
+            populatedComplaint
+              .department,
 
-        assignedOfficer:
-          populatedComplaint
-            .assignedOfficer,
+          assignedOfficer:
+            populatedComplaint
+              .assignedOfficer,
 
-        aiPrediction:
-          populatedComplaint
-            .aiPrediction,
+          aiPrediction:
+            populatedComplaint
+              .aiPrediction,
 
-        duplicateInfo:
-          populatedComplaint
-            .duplicateInfo,
+          duplicateInfo:
+            populatedComplaint
+              .duplicateInfo,
 
-        status:
-          populatedComplaint.status,
+          status:
+            populatedComplaint
+              .status,
 
-        createdAt:
-          populatedComplaint.createdAt,
-      },
-    });
+          createdAt:
+            populatedComplaint
+              .createdAt,
+        },
+      });
   } catch (error) {
     if (
-      Array.isArray(uploadedImages) &&
+      Array.isArray(
+        uploadedImages
+      ) &&
       uploadedImages.length > 0
     ) {
       try {
         await deleteMultipleImagesFromCloudinary(
           uploadedImages
         );
-      } catch (cleanupError) {
+      } catch (
+        cleanupError
+      ) {
         console.error(
           "Cloudinary cleanup failed:",
           cleanupError.message
@@ -435,7 +828,7 @@ const getMyComplaints = async (
         )
         .populate(
           "duplicateInfo.matchedComplaint",
-          "title category status"
+          "title category status location createdAt"
         )
         .sort({
           createdAt: -1,
@@ -443,7 +836,8 @@ const getMyComplaints = async (
 
     res.status(200).json({
       success: true,
-      count: complaints.length,
+      count:
+        complaints.length,
       complaints,
     });
   } catch (error) {
@@ -479,15 +873,17 @@ const getComplaintById = async (
         )
         .populate(
           "duplicateInfo.matchedComplaint",
-          "title description category priority status"
+          "title description category priority status location createdAt"
         );
 
     if (!complaint) {
-      return res.status(404).json({
-        success: false,
-        message:
-          "Complaint not found",
-      });
+      return res
+        .status(404)
+        .json({
+          success: false,
+          message:
+            "Complaint not found",
+        });
     }
 
     res.status(200).json({
@@ -519,11 +915,13 @@ const getComplaintHistory = async (
       });
 
     if (!complaint) {
-      return res.status(404).json({
-        success: false,
-        message:
-          "Complaint not found",
-      });
+      return res
+        .status(404)
+        .json({
+          success: false,
+          message:
+            "Complaint not found",
+        });
     }
 
     const history =
@@ -584,7 +982,7 @@ const getAllComplaints = async (
         )
         .populate(
           "duplicateInfo.matchedComplaint",
-          "title description category priority status"
+          "title description category priority status location createdAt"
         )
         .sort({
           createdAt: -1,
@@ -592,7 +990,10 @@ const getAllComplaints = async (
 
     res.status(200).json({
       success: true,
-      count: complaints.length,
+
+      count:
+        complaints.length,
+
       complaints,
     });
   } catch (error) {
@@ -628,15 +1029,18 @@ const getAdminComplaintById = async (
         )
         .populate(
           "duplicateInfo.matchedComplaint",
-          "title description category priority status citizen createdAt"
+          "title description category priority status citizen location createdAt"
         );
 
     if (!complaint) {
-      return res.status(404).json({
-        success: false,
-        message:
-          "Complaint not found",
-      });
+      return res
+        .status(404)
+        .json({
+          success: false,
+
+          message:
+            "Complaint not found",
+        });
     }
 
     res.status(200).json({
@@ -652,10 +1056,6 @@ const getAdminComplaintById = async (
 // ADMIN - GET COMPLAINT HISTORY
 // =========================================================
 
-// @desc    Get complete complaint status history
-// @route   GET /api/complaints/admin/:id/history
-// @access  Private - Admin
-
 const getAdminComplaintHistory = async (
   req,
   res,
@@ -668,11 +1068,14 @@ const getAdminComplaintHistory = async (
       );
 
     if (!complaint) {
-      return res.status(404).json({
-        success: false,
-        message:
-          "Complaint not found",
-      });
+      return res
+        .status(404)
+        .json({
+          success: false,
+
+          message:
+            "Complaint not found",
+        });
     }
 
     const history =
@@ -728,11 +1131,14 @@ const updateComplaintStatus = async (
       );
 
     if (!complaint) {
-      return res.status(404).json({
-        success: false,
-        message:
-          "Complaint not found",
-      });
+      return res
+        .status(404)
+        .json({
+          success: false,
+
+          message:
+            "Complaint not found",
+        });
     }
 
     const previousStatus =
@@ -742,7 +1148,8 @@ const updateComplaintStatus = async (
       status;
 
     if (
-      typeof remarks === "string"
+      typeof remarks ===
+      "string"
     ) {
       complaint.adminRemarks =
         remarks;
@@ -788,7 +1195,8 @@ const updateComplaintStatus = async (
       }
 
       if (
-        status === "in_progress"
+        status ===
+        "in_progress"
       ) {
         await sendNotificationSafely(
           notifyComplaintInProgress,
@@ -846,11 +1254,14 @@ const assignComplaint = async (
       );
 
     if (!complaint) {
-      return res.status(404).json({
-        success: false,
-        message:
-          "Complaint not found",
-      });
+      return res
+        .status(404)
+        .json({
+          success: false,
+
+          message:
+            "Complaint not found",
+        });
     }
 
     const selectedDepartment =
@@ -863,12 +1274,14 @@ const assignComplaint = async (
       });
 
     if (!selectedDepartment) {
-      return res.status(404).json({
-        success: false,
+      return res
+        .status(404)
+        .json({
+          success: false,
 
-        message:
-          "Active department not found",
-      });
+          message:
+            "Active department not found",
+        });
     }
 
     const selectedOfficer =
@@ -887,12 +1300,14 @@ const assignComplaint = async (
       });
 
     if (!selectedOfficer) {
-      return res.status(400).json({
-        success: false,
+      return res
+        .status(400)
+        .json({
+          success: false,
 
-        message:
-          "Selected officer does not belong to the selected department",
-      });
+          message:
+            "Selected officer does not belong to the selected department",
+        });
     }
 
     const previousStatus =
@@ -908,7 +1323,8 @@ const assignComplaint = async (
       "assigned";
 
     if (
-      typeof remarks === "string"
+      typeof remarks ===
+      "string"
     ) {
       complaint.adminRemarks =
         remarks;
@@ -961,7 +1377,7 @@ const assignComplaint = async (
         )
         .populate(
           "duplicateInfo.matchedComplaint",
-          "title category status"
+          "title category status location createdAt"
         );
 
     res.status(200).json({
@@ -1011,8 +1427,10 @@ const getAssignedComplaints = async (
 
     res.status(200).json({
       success: true,
+
       count:
         complaints.length,
+
       complaints,
     });
   } catch (error) {
@@ -1023,10 +1441,6 @@ const getAssignedComplaints = async (
 // =========================================================
 // OFFICER - GET SINGLE ASSIGNED COMPLAINT
 // =========================================================
-
-// @desc    Get single complaint assigned to logged-in officer
-// @route   GET /api/complaints/officer/:id
-// @access  Private - Officer
 
 const getOfficerComplaintById = async (
   req,
@@ -1056,15 +1470,18 @@ const getOfficerComplaintById = async (
         )
         .populate(
           "duplicateInfo.matchedComplaint",
-          "title description category priority status"
+          "title description category priority status location createdAt"
         );
 
     if (!complaint) {
-      return res.status(404).json({
-        success: false,
-        message:
-          "Assigned complaint not found",
-      });
+      return res
+        .status(404)
+        .json({
+          success: false,
+
+          message:
+            "Assigned complaint not found",
+        });
     }
 
     const history =
@@ -1118,12 +1535,14 @@ const updateAssignedComplaintStatus =
         });
 
       if (!complaint) {
-        return res.status(404).json({
-          success: false,
+        return res
+          .status(404)
+          .json({
+            success: false,
 
-          message:
-            "Assigned complaint not found",
-        });
+            message:
+              "Assigned complaint not found",
+          });
       }
 
       const previousStatus =
@@ -1134,12 +1553,14 @@ const updateAssignedComplaintStatus =
         previousStatus !==
           "in_progress"
       ) {
-        return res.status(400).json({
-          success: false,
+        return res
+          .status(400)
+          .json({
+            success: false,
 
-          message:
-            "Complaint must be in progress before it can be resolved",
-        });
+            message:
+              "Complaint must be in progress before it can be resolved",
+          });
       }
 
       if (
@@ -1152,22 +1573,27 @@ const updateAssignedComplaintStatus =
           previousStatus
         )
       ) {
-        return res.status(400).json({
-          success: false,
+        return res
+          .status(400)
+          .json({
+            success: false,
 
-          message:
-            "Only an assigned complaint can be moved to in progress",
-        });
+            message:
+              "Only an assigned complaint can be moved to in progress",
+          });
       }
 
       if (
         status === previousStatus
       ) {
-        return res.status(400).json({
-          success: false,
-          message:
-            "Complaint already has this status",
-        });
+        return res
+          .status(400)
+          .json({
+            success: false,
+
+            message:
+              "Complaint already has this status",
+          });
       }
 
       complaint.status =
@@ -1192,7 +1618,8 @@ const updateAssignedComplaintStatus =
       });
 
       if (
-        previousStatus !== status
+        previousStatus !==
+        status
       ) {
         if (
           status ===
@@ -1205,7 +1632,8 @@ const updateAssignedComplaintStatus =
         }
 
         if (
-          status === "resolved"
+          status ===
+          "resolved"
         ) {
           await sendNotificationSafely(
             notifyComplaintResolved,
@@ -1280,37 +1708,46 @@ const confirmDuplicate = async (
       );
 
     if (!complaint) {
-      return res.status(404).json({
-        success: false,
-        message:
-          "Complaint not found",
-      });
+      return res
+        .status(404)
+        .json({
+          success: false,
+
+          message:
+            "Complaint not found",
+        });
     }
 
     if (
-      !complaint.duplicateInfo
+      !complaint
+        .duplicateInfo
         ?.isPotentialDuplicate ||
-      !complaint.duplicateInfo
+      !complaint
+        .duplicateInfo
         ?.matchedComplaint
     ) {
-      return res.status(400).json({
-        success: false,
+      return res
+        .status(400)
+        .json({
+          success: false,
 
-        message:
-          "Complaint is not currently flagged as a potential duplicate",
-      });
+          message:
+            "Complaint is not currently flagged as a potential duplicate",
+        });
     }
 
     if (
       complaint.status ===
       "duplicate"
     ) {
-      return res.status(400).json({
-        success: false,
+      return res
+        .status(400)
+        .json({
+          success: false,
 
-        message:
-          "Complaint has already been confirmed as a duplicate",
-      });
+          message:
+            "Complaint has already been confirmed as a duplicate",
+        });
     }
 
     const previousStatus =
@@ -1328,13 +1765,15 @@ const confirmDuplicate = async (
     if (
       complaint.aiPrediction
     ) {
-      complaint.aiPrediction
+      complaint
+        .aiPrediction
         .requiresManualReview =
         false;
     }
 
     if (
-      typeof remarks === "string" &&
+      typeof remarks ===
+        "string" &&
       remarks.trim()
     ) {
       complaint.adminRemarks =
@@ -1375,7 +1814,7 @@ const confirmDuplicate = async (
         )
         .populate(
           "duplicateInfo.matchedComplaint",
-          "title description category priority status"
+          "title description category priority status location createdAt"
         );
 
     res.status(200).json({
@@ -1412,51 +1851,65 @@ const rejectDuplicateFlag = async (
       );
 
     if (!complaint) {
-      return res.status(404).json({
-        success: false,
-        message:
-          "Complaint not found",
-      });
+      return res
+        .status(404)
+        .json({
+          success: false,
+
+          message:
+            "Complaint not found",
+        });
     }
 
     if (
-      !complaint.duplicateInfo
+      !complaint
+        .duplicateInfo
         ?.isPotentialDuplicate
     ) {
-      return res.status(400).json({
-        success: false,
+      return res
+        .status(400)
+        .json({
+          success: false,
 
-        message:
-          "Complaint is not currently flagged as a potential duplicate",
-      });
+          message:
+            "Complaint is not currently flagged as a potential duplicate",
+        });
     }
 
     const previousStatus =
       complaint.status;
 
     const previousSimilarityScore =
-      complaint.duplicateInfo
+      complaint
+        .duplicateInfo
         .similarityScore;
 
-    complaint.duplicateInfo
+    complaint
+      .duplicateInfo
       .isPotentialDuplicate =
       false;
 
-    complaint.duplicateInfo
+    complaint
+      .duplicateInfo
       .matchedComplaint =
       null;
 
-    complaint.duplicateInfo
+    complaint
+      .duplicateInfo
       .similarityScore =
       previousSimilarityScore;
 
     const categoryConfidence =
-      complaint.aiPrediction
-        ?.categoryConfidence ?? 0;
+      complaint
+        .aiPrediction
+        ?.categoryConfidence ??
+      0;
 
     const priorityConfidence =
-      complaint.aiPrediction
-        ?.priorityConfidence ?? 0;
+      complaint
+        .aiPrediction
+        ?.priorityConfidence ??
+      0;
 
     const classificationNeedsReview =
       categoryConfidence < 0.60 ||
@@ -1465,7 +1918,8 @@ const rejectDuplicateFlag = async (
     if (
       complaint.aiPrediction
     ) {
-      complaint.aiPrediction
+      complaint
+        .aiPrediction
         .requiresManualReview =
         classificationNeedsReview;
     }
@@ -1503,7 +1957,8 @@ const rejectDuplicateFlag = async (
       "submitted";
 
     if (
-      typeof remarks === "string" &&
+      typeof remarks ===
+        "string" &&
       remarks.trim()
     ) {
       complaint.adminRemarks =
