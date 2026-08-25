@@ -1,10 +1,10 @@
-from typing import List, Optional
+﻿from typing import List, Optional
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
-from predict_category import predict_complaint
-from duplicate_detector import find_best_duplicate
+from .predict_category import predict_complaint
+from .duplicate_detector import find_best_duplicate
 
 
 # =========================================================
@@ -252,3 +252,18 @@ def detect_duplicate(
                 "Unable to perform duplicate detection"
             ),
         )
+
+
+# =========================================================
+# START DEVELOPMENT SERVER
+# =========================================================
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(
+        "app:app",
+        host="127.0.0.1",
+        port=8000,
+        reload=False,
+    )

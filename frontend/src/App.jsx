@@ -27,6 +27,7 @@ import AdminComplaintsPage from "./pages/AdminComplaintsPage";
 import AdminComplaintDetailsPage from "./pages/AdminComplaintDetailsPage";
 import AdminUsersPage from "./pages/AdminUsersPage";
 import AdminDepartmentsPage from "./pages/AdminDepartmentsPage";
+import AdminOverviewPage from "./pages/AdminOverviewPage";
 
 /* =========================================================
    OFFICER PAGES
@@ -120,6 +121,11 @@ function App() {
       <Route
         path="/admin/departments"
         element={<AdminDepartmentsPage />}
+      />
+
+      <Route
+        path="/admin/overview"
+        element={<AdminOverviewPage />}
       />
 
       {/* =====================================================
