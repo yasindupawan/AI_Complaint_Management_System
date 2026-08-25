@@ -50,6 +50,7 @@ const sendNotificationSafely = async (
 //          image upload and department routing
 // @route   POST /api/complaints
 // @access  Private - Citizen
+
 const createComplaint = async (req, res, next) => {
   let uploadedImages = [];
 
@@ -654,6 +655,7 @@ const getAdminComplaintById = async (
 // @desc    Get complete complaint status history
 // @route   GET /api/complaints/admin/:id/history
 // @access  Private - Admin
+
 const getAdminComplaintHistory = async (
   req,
   res,
@@ -993,11 +995,15 @@ const getAssignedComplaints = async (
       })
         .populate(
           "citizen",
-          "fullName email"
+          "fullName email preferredLanguage"
         )
         .populate(
           "department",
           "name code categories"
+        )
+        .populate(
+          "assignedOfficer",
+          "fullName email role"
         )
         .sort({
           createdAt: -1,
@@ -1008,6 +1014,78 @@ const getAssignedComplaints = async (
       count:
         complaints.length,
       complaints,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// =========================================================
+// OFFICER - GET SINGLE ASSIGNED COMPLAINT
+// =========================================================
+
+// @desc    Get single complaint assigned to logged-in officer
+// @route   GET /api/complaints/officer/:id
+// @access  Private - Officer
+
+const getOfficerComplaintById = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const complaint =
+      await Complaint.findOne({
+        _id:
+          req.params.id,
+
+        assignedOfficer:
+          req.user._id,
+      })
+        .populate(
+          "citizen",
+          "fullName email preferredLanguage"
+        )
+        .populate(
+          "department",
+          "name code categories"
+        )
+        .populate(
+          "assignedOfficer",
+          "fullName email role"
+        )
+        .populate(
+          "duplicateInfo.matchedComplaint",
+          "title description category priority status"
+        );
+
+    if (!complaint) {
+      return res.status(404).json({
+        success: false,
+        message:
+          "Assigned complaint not found",
+      });
+    }
+
+    const history =
+      await StatusHistory.find({
+        complaint:
+          complaint._id,
+      })
+        .populate(
+          "changedBy",
+          "fullName email role"
+        )
+        .sort({
+          createdAt: 1,
+        });
+
+    res.status(200).json({
+      success: true,
+
+      complaint,
+
+      history,
     });
   } catch (error) {
     next(error);
@@ -1082,6 +1160,16 @@ const updateAssignedComplaintStatus =
         });
       }
 
+      if (
+        status === previousStatus
+      ) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Complaint already has this status",
+        });
+      }
+
       complaint.status =
         status;
 
@@ -1132,7 +1220,7 @@ const updateAssignedComplaintStatus =
         )
           .populate(
             "citizen",
-            "fullName email"
+            "fullName email preferredLanguage"
           )
           .populate(
             "department",
@@ -1143,6 +1231,19 @@ const updateAssignedComplaintStatus =
             "fullName email role"
           );
 
+      const history =
+        await StatusHistory.find({
+          complaint:
+            complaint._id,
+        })
+          .populate(
+            "changedBy",
+            "fullName email role"
+          )
+          .sort({
+            createdAt: 1,
+          });
+
       res.status(200).json({
         success: true,
 
@@ -1151,6 +1252,8 @@ const updateAssignedComplaintStatus =
 
         complaint:
           updatedComplaint,
+
+        history,
       });
     } catch (error) {
       next(error);
@@ -1222,9 +1325,13 @@ const confirmDuplicate = async (
     complaint.assignedOfficer =
       null;
 
-    complaint.aiPrediction
-      .requiresManualReview =
-      false;
+    if (
+      complaint.aiPrediction
+    ) {
+      complaint.aiPrediction
+        .requiresManualReview =
+        false;
+    }
 
     if (
       typeof remarks === "string" &&
@@ -1355,9 +1462,13 @@ const rejectDuplicateFlag = async (
       categoryConfidence < 0.60 ||
       priorityConfidence < 0.60;
 
-    complaint.aiPrediction
-      .requiresManualReview =
-      classificationNeedsReview;
+    if (
+      complaint.aiPrediction
+    ) {
+      complaint.aiPrediction
+        .requiresManualReview =
+        classificationNeedsReview;
+    }
 
     let routedDepartment =
       null;
@@ -1476,5 +1587,6 @@ module.exports = {
 
   // Officer
   getAssignedComplaints,
+  getOfficerComplaintById,
   updateAssignedComplaintStatus,
 };

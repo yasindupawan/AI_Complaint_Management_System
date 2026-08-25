@@ -63,6 +63,7 @@ const translations = {
     emailRequired: "Please enter your email address.",
     passwordRequired: "Please enter your password.",
     loginFailed: "Login failed. Please try again.",
+    invalidRole: "Invalid user role received from server.",
 
     footer:
       "AI-Powered Multilingual Public Complaint Management System",
@@ -112,12 +113,13 @@ const translations = {
     emailRequired: "කරුණාකර ඊමේල් ලිපිනය ඇතුළත් කරන්න.",
     passwordRequired: "කරුණාකර මුරපදය ඇතුළත් කරන්න.",
     loginFailed: "පිවිසීම අසාර්ථකයි. නැවත උත්සාහ කරන්න.",
+    invalidRole: "සේවාදායකයෙන් වැරදි පරිශීලක භූමිකාවක් ලැබුණි.",
 
     footer:
       "AI බලගැන්වූ බහුභාෂා මහජන පැමිණිලි කළමනාකරණ පද්ධතිය",
   },
 
-  "தமிழ்": {
+  தமிழ்: {
     brand: "பொது புகார்கள்",
     brandSub: "AI மேலாண்மை அமைப்பு",
 
@@ -161,6 +163,7 @@ const translations = {
     emailRequired: "மின்னஞ்சல் முகவரியை உள்ளிடவும்.",
     passwordRequired: "கடவுச்சொல்லை உள்ளிடவும்.",
     loginFailed: "உள்நுழைவு தோல்வியடைந்தது. மீண்டும் முயற்சிக்கவும்.",
+    invalidRole: "சேவையகத்திலிருந்து தவறான பயனர் பங்கு பெறப்பட்டது.",
 
     footer:
       "AI ஆதரவு பன்மொழி பொது புகார் மேலாண்மை அமைப்பு",
@@ -206,20 +209,23 @@ function LoginPage() {
   };
 
   /* =========================================================
-     STORE AUTH DATA
+     CLEAR EXISTING AUTH DATA
   ========================================================= */
 
-  const storeAuthentication = (token, user, rememberMe) => {
-    /*
-      Clean both storages first so an old login cannot
-      remain in the other storage.
-    */
-
+  const clearAuthentication = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
 
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("user");
+  };
+
+  /* =========================================================
+     STORE AUTH DATA
+  ========================================================= */
+
+  const storeAuthentication = (token, user, rememberMe) => {
+    clearAuthentication();
 
     const storage = rememberMe
       ? localStorage
@@ -246,18 +252,12 @@ function LoginPage() {
         break;
 
       case "admin":
-        /*
-          Admin dashboard will be created later.
-        */
         navigate("/admin/dashboard", {
           replace: true,
         });
         break;
 
       case "officer":
-        /*
-          Officer dashboard will be created later.
-        */
         navigate("/officer/dashboard", {
           replace: true,
         });
@@ -280,7 +280,7 @@ function LoginPage() {
     setErrorMessage("");
 
     /* ---------------------------------------------------------
-       1. Frontend validation
+       1. FRONTEND VALIDATION
     --------------------------------------------------------- */
 
     if (!formData.email.trim()) {
@@ -303,7 +303,7 @@ function LoginPage() {
       setIsLoading(true);
 
       /* -------------------------------------------------------
-         2. Prepare login request
+         2. PREPARE LOGIN REQUEST
       ------------------------------------------------------- */
 
       const loginData = {
@@ -317,7 +317,7 @@ function LoginPage() {
       };
 
       /* -------------------------------------------------------
-         3. Backend request
+         3. BACKEND REQUEST
          POST /api/auth/login
       ------------------------------------------------------- */
 
@@ -330,7 +330,7 @@ function LoginPage() {
       );
 
       /* -------------------------------------------------------
-         4. Validate backend response
+         4. VALIDATE BACKEND RESPONSE
       ------------------------------------------------------- */
 
       if (
@@ -345,7 +345,29 @@ function LoginPage() {
       }
 
       /* -------------------------------------------------------
-         5. Save JWT + user
+         5. VALIDATE ROLE
+      ------------------------------------------------------- */
+
+      const validRoles = [
+        "citizen",
+        "admin",
+        "officer",
+      ];
+
+      if (
+        !validRoles.includes(
+          response.user.role
+        )
+      ) {
+        throw {
+          success: false,
+          message:
+            t.invalidRole,
+        };
+      }
+
+      /* -------------------------------------------------------
+         6. SAVE JWT + USER
       ------------------------------------------------------- */
 
       storeAuthentication(
@@ -354,11 +376,9 @@ function LoginPage() {
         formData.rememberMe
       );
 
-      /*
-        Save preferred language separately if required later.
-        Example backend values:
-        english | sinhala | tamil
-      */
+      /* -------------------------------------------------------
+         7. SAVE PREFERRED LANGUAGE
+      ------------------------------------------------------- */
 
       if (
         response.user
@@ -372,21 +392,28 @@ function LoginPage() {
       }
 
       /* -------------------------------------------------------
-         6. Redirect according to role
+         8. ROLE-BASED REDIRECT
       ------------------------------------------------------- */
 
       redirectUserByRole(
         response.user.role
       );
-
     } catch (error) {
       console.error(
         "Login failed:",
         error
       );
 
+      /*
+        Safety cleanup:
+        Failed login must not leave an old authenticated
+        session from another user.
+      */
+
+      clearAuthentication();
+
       /* -------------------------------------------------------
-         Backend may return validation errors as an array
+         BACKEND VALIDATION ERRORS
       ------------------------------------------------------- */
 
       if (
@@ -400,6 +427,7 @@ function LoginPage() {
                 item.msg ||
                 item.message
             )
+            .filter(Boolean)
             .join(" ")
         );
       } else {
@@ -408,11 +436,14 @@ function LoginPage() {
             t.loginFailed
         );
       }
-
     } finally {
       setIsLoading(false);
     }
   };
+
+  /* =========================================================
+     PAGE
+  ========================================================= */
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
@@ -425,7 +456,7 @@ function LoginPage() {
 
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
 
-          {/* Logo */}
+          {/* LOGO */}
 
           <Link
             to="/"
@@ -450,7 +481,7 @@ function LoginPage() {
 
           </Link>
 
-          {/* Language Selector */}
+          {/* LANGUAGE SELECTOR */}
 
           <div className="flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 p-1">
 
@@ -553,7 +584,7 @@ function LoginPage() {
 
               </div>
 
-              {/* Tracking */}
+              {/* TRACKING */}
 
               <div className="flex items-start gap-4 rounded-2xl border border-slate-200 bg-white/80 p-5 shadow-sm backdrop-blur">
 
@@ -596,7 +627,7 @@ function LoginPage() {
 
             <div className="rounded-[28px] border border-slate-200 bg-white p-7 shadow-xl shadow-slate-200/60 sm:p-9">
 
-              {/* HEADER */}
+              {/* LOGIN HEADER */}
 
               <div>
 
@@ -742,10 +773,11 @@ function LoginPage() {
                       disabled={isLoading}
                       onClick={() =>
                         setShowPassword(
-                          !showPassword
+                          (previous) =>
+                            !previous
                         )
                       }
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-slate-700"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-slate-700 disabled:cursor-not-allowed"
                       aria-label={
                         showPassword
                           ? "Hide password"

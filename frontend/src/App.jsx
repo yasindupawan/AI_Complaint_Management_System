@@ -25,6 +25,16 @@ import NotificationsPage from "./pages/NotificationsPage";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminComplaintsPage from "./pages/AdminComplaintsPage";
 import AdminComplaintDetailsPage from "./pages/AdminComplaintDetailsPage";
+import AdminUsersPage from "./pages/AdminUsersPage";
+import AdminDepartmentsPage from "./pages/AdminDepartmentsPage";
+
+/* =========================================================
+   OFFICER PAGES
+========================================================= */
+
+import OfficerDashboard from "./pages/OfficerDashboard";
+import OfficerComplaintsPage from "./pages/OfficerComplaintsPage";
+import OfficerComplaintDetailsPage from "./pages/OfficerComplaintDetailsPage";
 
 /* =========================================================
    APP ROUTES
@@ -97,7 +107,40 @@ function App() {
 
       <Route
         path="/admin/complaints/:id"
-        element={<AdminComplaintDetailsPage />}
+        element={
+          <AdminComplaintDetailsPage />
+        }
+      />
+
+      <Route
+        path="/admin/users"
+        element={<AdminUsersPage />}
+      />
+
+      <Route
+        path="/admin/departments"
+        element={<AdminDepartmentsPage />}
+      />
+
+      {/* =====================================================
+          OFFICER ROUTES
+      ===================================================== */}
+
+      <Route
+        path="/officer/dashboard"
+        element={<OfficerDashboard />}
+      />
+
+      <Route
+        path="/officer/complaints"
+        element={<OfficerComplaintsPage />}
+      />
+
+      <Route
+        path="/officer/complaints/:id"
+        element={
+          <OfficerComplaintDetailsPage />
+        }
       />
     </Routes>
   );

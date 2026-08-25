@@ -17,6 +17,7 @@ const {
 
   // Officer
   getAssignedComplaints,
+  getOfficerComplaintById,
   updateAssignedComplaintStatus,
 } = require("../controllers/complaintController");
 
@@ -33,9 +34,9 @@ const {
   authorize,
 } = require("../middleware/authMiddleware");
 
-// ======================================================
-// IMAGE UPLOAD MIDDLEWARE
-// ======================================================
+/* =========================================================
+   IMAGE UPLOAD MIDDLEWARE
+========================================================= */
 
 const {
   uploadComplaintImages,
@@ -43,16 +44,16 @@ const {
 
 const router = express.Router();
 
-// ======================================================
-// CITIZEN ROUTES
-// ======================================================
+/* =========================================================
+   CITIZEN ROUTES
+========================================================= */
 
-// ------------------------------------------------------
-// Submit a new complaint
-// POST /api/complaints
-// Private - Citizen
-// Supports maximum 5 complaint images
-// ------------------------------------------------------
+/* ---------------------------------------------------------
+   Submit a new complaint
+   POST /api/complaints
+   Private - Citizen
+   Supports maximum 5 complaint images
+--------------------------------------------------------- */
 
 router.post(
   "/",
@@ -70,11 +71,11 @@ router.post(
   createComplaint
 );
 
-// ------------------------------------------------------
-// Get complaints submitted by logged-in citizen
-// GET /api/complaints/my
-// Private - Citizen
-// ------------------------------------------------------
+/* ---------------------------------------------------------
+   Get complaints submitted by logged-in citizen
+   GET /api/complaints/my
+   Private - Citizen
+--------------------------------------------------------- */
 
 router.get(
   "/my",
@@ -83,15 +84,15 @@ router.get(
   getMyComplaints
 );
 
-// ======================================================
-// ADMIN ROUTES
-// ======================================================
+/* =========================================================
+   ADMIN ROUTES
+========================================================= */
 
-// ------------------------------------------------------
-// Get all complaints
-// GET /api/complaints/admin/all
-// Private - Admin
-// ------------------------------------------------------
+/* ---------------------------------------------------------
+   Get all complaints
+   GET /api/complaints/admin/all
+   Private - Admin
+--------------------------------------------------------- */
 
 router.get(
   "/admin/all",
@@ -100,11 +101,11 @@ router.get(
   getAllComplaints
 );
 
-// ------------------------------------------------------
-// Get single complaint for admin
-// GET /api/complaints/admin/:id
-// Private - Admin
-// ------------------------------------------------------
+/* ---------------------------------------------------------
+   Get single complaint for admin
+   GET /api/complaints/admin/:id
+   Private - Admin
+--------------------------------------------------------- */
 
 router.get(
   "/admin/:id",
@@ -113,11 +114,11 @@ router.get(
   getAdminComplaintById
 );
 
-// ------------------------------------------------------
-// Get complaint status history for admin
-// GET /api/complaints/admin/:id/history
-// Private - Admin
-// ------------------------------------------------------
+/* ---------------------------------------------------------
+   Get complaint status history for admin
+   GET /api/complaints/admin/:id/history
+   Private - Admin
+--------------------------------------------------------- */
 
 router.get(
   "/admin/:id/history",
@@ -126,11 +127,11 @@ router.get(
   getAdminComplaintHistory
 );
 
-// ------------------------------------------------------
-// Update complaint status
-// PATCH /api/complaints/admin/:id/status
-// Private - Admin
-// ------------------------------------------------------
+/* ---------------------------------------------------------
+   Update complaint status
+   PATCH /api/complaints/admin/:id/status
+   Private - Admin
+--------------------------------------------------------- */
 
 router.patch(
   "/admin/:id/status",
@@ -141,11 +142,11 @@ router.patch(
   updateComplaintStatus
 );
 
-// ------------------------------------------------------
-// Assign complaint to department and officer
-// PATCH /api/complaints/admin/:id/assign
-// Private - Admin
-// ------------------------------------------------------
+/* ---------------------------------------------------------
+   Assign complaint to department and officer
+   PATCH /api/complaints/admin/:id/assign
+   Private - Admin
+--------------------------------------------------------- */
 
 router.patch(
   "/admin/:id/assign",
@@ -156,15 +157,15 @@ router.patch(
   assignComplaint
 );
 
-// ======================================================
-// ADMIN - DUPLICATE REVIEW ROUTES
-// ======================================================
+/* =========================================================
+   ADMIN - DUPLICATE REVIEW ROUTES
+========================================================= */
 
-// ------------------------------------------------------
-// Confirm AI-flagged complaint as duplicate
-// PATCH /api/complaints/admin/:id/confirm-duplicate
-// Private - Admin
-// ------------------------------------------------------
+/* ---------------------------------------------------------
+   Confirm AI-flagged complaint as duplicate
+   PATCH /api/complaints/admin/:id/confirm-duplicate
+   Private - Admin
+--------------------------------------------------------- */
 
 router.patch(
   "/admin/:id/confirm-duplicate",
@@ -173,11 +174,11 @@ router.patch(
   confirmDuplicate
 );
 
-// ------------------------------------------------------
-// Reject duplicate flag and continue normal processing
-// PATCH /api/complaints/admin/:id/reject-duplicate
-// Private - Admin
-// ------------------------------------------------------
+/* ---------------------------------------------------------
+   Reject duplicate flag and continue normal processing
+   PATCH /api/complaints/admin/:id/reject-duplicate
+   Private - Admin
+--------------------------------------------------------- */
 
 router.patch(
   "/admin/:id/reject-duplicate",
@@ -186,15 +187,15 @@ router.patch(
   rejectDuplicateFlag
 );
 
-// ======================================================
-// OFFICER ROUTES
-// ======================================================
+/* =========================================================
+   OFFICER ROUTES
+========================================================= */
 
-// ------------------------------------------------------
-// Get complaints assigned to logged-in officer
-// GET /api/complaints/officer/assigned
-// Private - Officer
-// ------------------------------------------------------
+/* ---------------------------------------------------------
+   Get complaints assigned to logged-in officer
+   GET /api/complaints/officer/assigned
+   Private - Officer
+--------------------------------------------------------- */
 
 router.get(
   "/officer/assigned",
@@ -203,11 +204,24 @@ router.get(
   getAssignedComplaints
 );
 
-// ------------------------------------------------------
-// Update status of complaint assigned to logged-in officer
-// PATCH /api/complaints/officer/:id/status
-// Private - Officer
-// ------------------------------------------------------
+/* ---------------------------------------------------------
+   Get single complaint assigned to logged-in officer
+   GET /api/complaints/officer/:id
+   Private - Officer
+--------------------------------------------------------- */
+
+router.get(
+  "/officer/:id",
+  protect,
+  authorize("officer"),
+  getOfficerComplaintById
+);
+
+/* ---------------------------------------------------------
+   Update status of complaint assigned to logged-in officer
+   PATCH /api/complaints/officer/:id/status
+   Private - Officer
+--------------------------------------------------------- */
 
 router.patch(
   "/officer/:id/status",
@@ -218,15 +232,15 @@ router.patch(
   updateAssignedComplaintStatus
 );
 
-// ======================================================
-// CITIZEN COMPLAINT DETAILS / TRACKING ROUTES
-// ======================================================
+/* =========================================================
+   CITIZEN COMPLAINT DETAILS / TRACKING ROUTES
+========================================================= */
 
-// ------------------------------------------------------
-// Get complaint status history
-// GET /api/complaints/:id/history
-// Private - Citizen
-// ------------------------------------------------------
+/* ---------------------------------------------------------
+   Get complaint status history
+   GET /api/complaints/:id/history
+   Private - Citizen
+--------------------------------------------------------- */
 
 router.get(
   "/:id/history",
@@ -235,11 +249,11 @@ router.get(
   getComplaintHistory
 );
 
-// ------------------------------------------------------
-// Get single complaint
-// GET /api/complaints/:id
-// Private - Citizen
-// ------------------------------------------------------
+/* ---------------------------------------------------------
+   Get single complaint
+   GET /api/complaints/:id
+   Private - Citizen
+--------------------------------------------------------- */
 
 router.get(
   "/:id",
@@ -248,8 +262,8 @@ router.get(
   getComplaintById
 );
 
-// ======================================================
-// EXPORT ROUTER
-// ======================================================
+/* =========================================================
+   EXPORT ROUTER
+========================================================= */
 
 module.exports = router;
