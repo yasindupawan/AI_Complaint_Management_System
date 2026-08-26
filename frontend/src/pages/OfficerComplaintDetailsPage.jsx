@@ -2,6 +2,13 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import {
+  MapContainer,
+  TileLayer,
+  CircleMarker,
+  Popup,
+} from "react-leaflet";
+
+import {
   ArrowLeft,
   FileText,
   User,
@@ -33,19 +40,18 @@ function OfficerComplaintDetailsPage() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  /* =========================================================
-     STATE
-  ========================================================= */
-
   const [complaint, setComplaint] = useState(null);
 
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
 
   const [error, setError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const [successMessage, setSuccessMessage] =
+    useState("");
 
-  const [selectedStatus, setSelectedStatus] = useState("");
+  const [selectedStatus, setSelectedStatus] =
+    useState("");
+
   const [remarks, setRemarks] = useState("");
 
   /* =========================================================
@@ -76,10 +82,11 @@ function OfficerComplaintDetailsPage() {
           return;
         }
 
-        const response = await getOfficerComplaintById(
-          id,
-          token
-        );
+        const response =
+          await getOfficerComplaintById(
+            id,
+            token
+          );
 
         if (!response?.complaint) {
           throw new Error(
@@ -90,7 +97,8 @@ function OfficerComplaintDetailsPage() {
         setComplaint(response.complaint);
 
         setSelectedStatus(
-          response.complaint.status || "assigned"
+          response.complaint.status ||
+            "assigned"
         );
       } catch (err) {
         console.error(
@@ -121,8 +129,10 @@ function OfficerComplaintDetailsPage() {
 
     return String(category)
       .replace(/_/g, " ")
-      .replace(/\b\w/g, (character) =>
-        character.toUpperCase()
+      .replace(
+        /\b\w/g,
+        (character) =>
+          character.toUpperCase()
       );
   };
 
@@ -197,11 +207,14 @@ function OfficerComplaintDetailsPage() {
       return "Priority Unknown";
     }
 
-    const value = String(priority);
+    const value =
+      String(priority);
 
     return `${value
       .charAt(0)
-      .toUpperCase()}${value.slice(1)} Priority`;
+      .toUpperCase()}${value.slice(
+      1
+    )} Priority`;
   };
 
   /* =========================================================
@@ -213,9 +226,14 @@ function OfficerComplaintDetailsPage() {
       return "-";
     }
 
-    const parsedDate = new Date(date);
+    const parsedDate =
+      new Date(date);
 
-    if (Number.isNaN(parsedDate.getTime())) {
+    if (
+      Number.isNaN(
+        parsedDate.getTime()
+      )
+    ) {
       return "-";
     }
 
@@ -238,9 +256,14 @@ function OfficerComplaintDetailsPage() {
       return "-";
     }
 
-    const parsedDate = new Date(date);
+    const parsedDate =
+      new Date(date);
 
-    if (Number.isNaN(parsedDate.getTime())) {
+    if (
+      Number.isNaN(
+        parsedDate.getTime()
+      )
+    ) {
       return "-";
     }
 
@@ -261,7 +284,9 @@ function OfficerComplaintDetailsPage() {
   ========================================================= */
 
   const formatLanguage = (language) => {
-    switch (language?.toLowerCase()) {
+    switch (
+      language?.toLowerCase()
+    ) {
       case "english":
         return "English";
 
@@ -285,13 +310,21 @@ function OfficerComplaintDetailsPage() {
       return "Not provided";
     }
 
-    if (typeof location === "string") {
-      return location.trim() || "Not provided";
+    if (
+      typeof location === "string"
+    ) {
+      return (
+        location.trim() ||
+        "Not provided"
+      );
     }
 
-    if (typeof location === "object") {
+    if (
+      typeof location === "object"
+    ) {
       if (
-        typeof location.address === "string" &&
+        typeof location.address ===
+          "string" &&
         location.address.trim()
       ) {
         return location.address.trim();
@@ -308,8 +341,12 @@ function OfficerComplaintDetailsPage() {
           item.trim()
       );
 
-      if (locationParts.length > 0) {
-        return locationParts.join(", ");
+      if (
+        locationParts.length > 0
+      ) {
+        return locationParts.join(
+          ", "
+        );
       }
     }
 
@@ -317,137 +354,175 @@ function OfficerComplaintDetailsPage() {
   };
 
   /* =========================================================
+     LOCATION MAP DATA
+  ========================================================= */
+
+  const locationLatitude =
+    Number(
+      complaint?.location
+        ?.latitude
+    );
+
+  const locationLongitude =
+    Number(
+      complaint?.location
+        ?.longitude
+    );
+
+  const hasMapCoordinates =
+    Number.isFinite(
+      locationLatitude
+    ) &&
+    Number.isFinite(
+      locationLongitude
+    );
+
+  /* =========================================================
      STATUS UPDATE
   ========================================================= */
 
-  const handleStatusUpdate = async () => {
-    try {
-      setError("");
-      setSuccessMessage("");
+  const handleStatusUpdate =
+    async () => {
+      try {
+        setError("");
+        setSuccessMessage("");
 
-      if (!selectedStatus) {
-        setError(
-          "Please select a complaint status."
+        if (!selectedStatus) {
+          setError(
+            "Please select a complaint status."
+          );
+
+          return;
+        }
+
+        if (
+          selectedStatus ===
+          complaint?.status
+        ) {
+          setError(
+            "Please select a different status before updating."
+          );
+
+          return;
+        }
+
+        if (
+          selectedStatus ===
+            "resolved" &&
+          complaint?.status !==
+            "in_progress"
+        ) {
+          setError(
+            "Complaint must be in progress before it can be resolved."
+          );
+
+          return;
+        }
+
+        if (
+          selectedStatus ===
+            "in_progress" &&
+          complaint?.status !==
+            "assigned"
+        ) {
+          setError(
+            "Only an assigned complaint can be moved to in progress."
+          );
+
+          return;
+        }
+
+        const token =
+          getToken();
+
+        if (!token) {
+          navigate(
+            "/login",
+            {
+              replace: true,
+            }
+          );
+
+          return;
+        }
+
+        setUpdating(true);
+
+        const statusData = {
+          status:
+            selectedStatus,
+
+          remarks:
+            remarks.trim(),
+        };
+
+        const response =
+          await updateOfficerComplaintStatus(
+            id,
+            statusData,
+            token
+          );
+
+        if (
+          response?.complaint
+        ) {
+          setComplaint(
+            response.complaint
+          );
+
+          setSelectedStatus(
+            response.complaint
+              .status ||
+              selectedStatus
+          );
+        } else {
+          setComplaint(
+            (previous) => ({
+              ...previous,
+              status:
+                selectedStatus,
+            })
+          );
+        }
+
+        setRemarks("");
+
+        setSuccessMessage(
+          response?.message ||
+            "Complaint status updated successfully."
+        );
+      } catch (err) {
+        console.error(
+          "Complaint status update error:",
+          err
         );
 
-        return;
+        if (
+          Array.isArray(
+            err?.errors
+          ) &&
+          err.errors.length >
+            0
+        ) {
+          setError(
+            err.errors
+              .map(
+                (item) =>
+                  item.msg ||
+                  item.message
+              )
+              .join(" ")
+          );
+        } else {
+          setError(
+            err?.message ||
+              "Unable to update complaint status."
+          );
+        }
+      } finally {
+        setUpdating(false);
       }
-
-      if (
-        selectedStatus === complaint?.status
-      ) {
-        setError(
-          "Please select a different status before updating."
-        );
-
-        return;
-      }
-
-      /*
-       * Officer workflow:
-       *
-       * assigned
-       *    ↓
-       * in_progress
-       *    ↓
-       * resolved
-       */
-
-      if (
-        selectedStatus === "resolved" &&
-        complaint?.status !== "in_progress"
-      ) {
-        setError(
-          "Complaint must be in progress before it can be resolved."
-        );
-
-        return;
-      }
-
-      if (
-        selectedStatus === "in_progress" &&
-        complaint?.status !== "assigned"
-      ) {
-        setError(
-          "Only an assigned complaint can be moved to in progress."
-        );
-
-        return;
-      }
-
-      const token = getToken();
-
-      if (!token) {
-        navigate("/login", {
-          replace: true,
-        });
-
-        return;
-      }
-
-      setUpdating(true);
-
-      const statusData = {
-        status: selectedStatus,
-        remarks: remarks.trim(),
-      };
-
-      const response =
-        await updateOfficerComplaintStatus(
-          id,
-          statusData,
-          token
-        );
-
-      if (response?.complaint) {
-        setComplaint(response.complaint);
-
-        setSelectedStatus(
-          response.complaint.status ||
-            selectedStatus
-        );
-      } else {
-        setComplaint((previous) => ({
-          ...previous,
-          status: selectedStatus,
-        }));
-      }
-
-      setRemarks("");
-
-      setSuccessMessage(
-        response?.message ||
-          "Complaint status updated successfully."
-      );
-    } catch (err) {
-      console.error(
-        "Complaint status update error:",
-        err
-      );
-
-      if (
-        Array.isArray(err?.errors) &&
-        err.errors.length > 0
-      ) {
-        setError(
-          err.errors
-            .map(
-              (item) =>
-                item.msg ||
-                item.message
-            )
-            .join(" ")
-        );
-      } else {
-        setError(
-          err?.message ||
-            "Unable to update complaint status."
-        );
-      }
-    } finally {
-      setUpdating(false);
-    }
-  };
+    };
 
   /* =========================================================
      LOADING
@@ -489,7 +564,10 @@ function OfficerComplaintDetailsPage() {
             }
             className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-blue-600"
           >
-            <ArrowLeft size={17} />
+            <ArrowLeft
+              size={17}
+            />
+
             Back to Assigned Complaints
           </button>
 
@@ -511,38 +589,32 @@ function OfficerComplaintDetailsPage() {
         </main>
       </div>
     );
-  }
-
-  /* =========================================================
-     PAGE
-  ========================================================= */
-
-  return (
+  }  return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <main className="mx-auto max-w-7xl px-5 py-8 lg:px-8 lg:py-10">
 
-        {/* =====================================================
-            BACK BUTTON
-        ===================================================== */}
+        {/* BACK */}
 
         <button
           type="button"
           onClick={() =>
-            navigate("/officer/complaints")
+            navigate(
+              "/officer/complaints"
+            )
           }
           className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-blue-600"
         >
-          <ArrowLeft size={17} />
+          <ArrowLeft
+            size={17}
+          />
+
           Back to Assigned Complaints
         </button>
 
-        {/* =====================================================
-            PAGE HEADER
-        ===================================================== */}
+        {/* HEADER */}
 
         <section className="mt-6">
           <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-start">
-
             <div>
               <p className="text-sm font-semibold text-blue-600">
                 Officer Portal
@@ -554,8 +626,9 @@ function OfficerComplaintDetailsPage() {
 
               <p className="mt-2 max-w-2xl text-slate-500">
                 Review the assigned complaint,
-                update its progress and complete
-                the complaint resolution process.
+                update its progress and
+                complete the complaint
+                resolution process.
               </p>
             </div>
 
@@ -583,9 +656,7 @@ function OfficerComplaintDetailsPage() {
           </div>
         </section>
 
-        {/* =====================================================
-            MESSAGES
-        ===================================================== */}
+        {/* MESSAGES */}
 
         {error && (
           <div className="mt-6 flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
@@ -605,20 +676,13 @@ function OfficerComplaintDetailsPage() {
               className="mt-0.5 shrink-0"
             />
 
-            <p>{successMessage}</p>
+            <p>
+              {successMessage}
+            </p>
           </div>
         )}
 
-        {/* =====================================================
-            MAIN GRID
-        ===================================================== */}
-
         <div className="mt-8 grid gap-6 xl:grid-cols-[1.6fr_0.8fr]">
-
-          {/* =================================================
-              LEFT SIDE
-          ================================================= */}
-
           <div className="space-y-6">
 
             {/* COMPLAINT INFORMATION */}
@@ -626,7 +690,9 @@ function OfficerComplaintDetailsPage() {
             <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7">
               <div className="flex items-center gap-3">
                 <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-                  <FileText size={22} />
+                  <FileText
+                    size={22}
+                  />
                 </div>
 
                 <div>
@@ -664,9 +730,12 @@ function OfficerComplaintDetailsPage() {
               </div>
 
               <div className="mt-7 grid gap-5 border-t border-slate-100 pt-6 sm:grid-cols-2">
-
                 <InfoItem
-                  icon={<Tag size={18} />}
+                  icon={
+                    <Tag
+                      size={18}
+                    />
+                  }
                   label="Category"
                   value={formatCategory(
                     complaint.category
@@ -675,7 +744,9 @@ function OfficerComplaintDetailsPage() {
 
                 <InfoItem
                   icon={
-                    <ShieldCheck size={18} />
+                    <ShieldCheck
+                      size={18}
+                    />
                   }
                   label="Priority"
                   value={formatPriority(
@@ -685,7 +756,9 @@ function OfficerComplaintDetailsPage() {
 
                 <InfoItem
                   icon={
-                    <Languages size={18} />
+                    <Languages
+                      size={18}
+                    />
                   }
                   label="Submitted Language"
                   value={formatLanguage(
@@ -695,7 +768,9 @@ function OfficerComplaintDetailsPage() {
 
                 <InfoItem
                   icon={
-                    <CalendarDays size={18} />
+                    <CalendarDays
+                      size={18}
+                    />
                   }
                   label="Submitted Date"
                   value={formatDate(
@@ -710,7 +785,9 @@ function OfficerComplaintDetailsPage() {
             <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7">
               <div className="flex items-center gap-3">
                 <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
-                  <MapPin size={22} />
+                  <MapPin
+                    size={22}
+                  />
                 </div>
 
                 <div>
@@ -719,21 +796,25 @@ function OfficerComplaintDetailsPage() {
                   </h2>
 
                   <p className="text-sm text-slate-500">
-                    Location related to this
-                    complaint.
+                    Exact location related to
+                    this complaint.
                   </p>
                 </div>
               </div>
 
               <div className="mt-6 grid gap-5 sm:grid-cols-2">
-
                 <InfoItem
-                  icon={<MapPin size={18} />}
+                  icon={
+                    <MapPin
+                      size={18}
+                    />
+                  }
                   label="Location"
                   value={
                     formatLocation(
                       complaint.location
-                    ) !== "Not provided"
+                    ) !==
+                    "Not provided"
                       ? formatLocation(
                           complaint.location
                         )
@@ -744,7 +825,9 @@ function OfficerComplaintDetailsPage() {
 
                 <InfoItem
                   icon={
-                    <Building2 size={18} />
+                    <Building2
+                      size={18}
+                    />
                   }
                   label="Department"
                   value={
@@ -756,7 +839,129 @@ function OfficerComplaintDetailsPage() {
                     )
                   }
                 />
+
+                {hasMapCoordinates && (
+                  <>
+                    <InfoItem
+                      icon={
+                        <MapPin
+                          size={18}
+                        />
+                      }
+                      label="Latitude"
+                      value={
+                        locationLatitude
+                      }
+                    />
+
+                    <InfoItem
+                      icon={
+                        <MapPin
+                          size={18}
+                        />
+                      }
+                      label="Longitude"
+                      value={
+                        locationLongitude
+                      }
+                    />
+                  </>
+                )}
               </div>
+
+              {hasMapCoordinates ? (
+                <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
+                  <div className="h-[320px] w-full">
+                    <MapContainer
+                      center={[
+                        locationLatitude,
+                        locationLongitude,
+                      ]}
+                      zoom={16}
+                      scrollWheelZoom={
+                        false
+                      }
+                      className="h-full w-full"
+                      style={{
+                        height:
+                          "320px",
+                        width:
+                          "100%",
+                      }}
+                    >
+                      <TileLayer
+                        attribution="&copy; OpenStreetMap contributors"
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                      />
+
+                      <CircleMarker
+                        center={[
+                          locationLatitude,
+                          locationLongitude,
+                        ]}
+                        radius={10}
+                        pathOptions={{
+                          fillOpacity:
+                            0.9,
+                        }}
+                      >
+                        <Popup>
+                          <div>
+                            <strong>
+                              Complaint Location
+                            </strong>
+
+                            <br />
+
+                            {formatLocation(
+                              complaint.location
+                            )}
+
+                            <br />
+
+                            {locationLatitude.toFixed(
+                              6
+                            )}
+                            {", "}
+                            {locationLongitude.toFixed(
+                              6
+                            )}
+                          </div>
+                        </Popup>
+                      </CircleMarker>
+                    </MapContainer>
+                  </div>
+
+                  <div className="border-t border-slate-200 bg-white px-4 py-3">
+                    <p className="flex items-start gap-2 text-xs leading-5 text-slate-500">
+                      <MapPin
+                        size={15}
+                        className="mt-0.5 shrink-0 text-violet-600"
+                      />
+
+                      Exact complaint location
+                      based on the coordinates
+                      submitted by the citizen.
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
+                  <div className="flex gap-3">
+                    <MapPin
+                      size={18}
+                      className="mt-0.5 shrink-0 text-slate-400"
+                    />
+
+                    <p className="text-sm leading-6 text-slate-500">
+                      GPS coordinates were not
+                      provided for this complaint,
+                      so a map preview is
+                      unavailable.
+                    </p>
+                  </div>
+                </div>
+              )}
             </section>
 
             {/* CITIZEN INFORMATION */}
@@ -764,7 +969,9 @@ function OfficerComplaintDetailsPage() {
             <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7">
               <div className="flex items-center gap-3">
                 <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
-                  <User size={22} />
+                  <User
+                    size={22}
+                  />
                 </div>
 
                 <div>
@@ -773,16 +980,19 @@ function OfficerComplaintDetailsPage() {
                   </h2>
 
                   <p className="text-sm text-slate-500">
-                    Citizen who submitted this
-                    complaint.
+                    Citizen who submitted
+                    this complaint.
                   </p>
                 </div>
               </div>
 
               <div className="mt-6 grid gap-5 sm:grid-cols-2">
-
                 <InfoItem
-                  icon={<User size={18} />}
+                  icon={
+                    <User
+                      size={18}
+                    />
+                  }
                   label="Citizen Name"
                   value={
                     complaint.citizen
@@ -815,19 +1025,24 @@ function OfficerComplaintDetailsPage() {
               </h2>
 
               <div className="mt-6 grid gap-5 sm:grid-cols-2">
-
                 <InfoItem
                   icon={
-                    <FileText size={18} />
+                    <FileText
+                      size={18}
+                    />
                   }
                   label="Complaint ID"
-                  value={complaint._id}
+                  value={
+                    complaint._id
+                  }
                   breakText
                 />
 
                 <InfoItem
                   icon={
-                    <Clock3 size={18} />
+                    <Clock3
+                      size={18}
+                    />
                   }
                   label="Last Updated"
                   value={formatDateTime(
@@ -838,18 +1053,15 @@ function OfficerComplaintDetailsPage() {
             </section>
           </div>
 
-          {/* =================================================
-              RIGHT SIDE
-          ================================================= */}
+          {/* RIGHT */}
 
           <div className="space-y-6">
-
-            {/* STATUS UPDATE */}
-
             <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
               <div className="flex items-center gap-3">
                 <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
-                  <Clock3 size={22} />
+                  <Clock3
+                    size={22}
+                  />
                 </div>
 
                 <div>
@@ -873,19 +1085,25 @@ function OfficerComplaintDetailsPage() {
 
                 <select
                   id="status"
-                  value={selectedStatus}
+                  value={
+                    selectedStatus
+                  }
                   disabled={
                     updating ||
                     complaint.status ===
                       "resolved"
                   }
-                  onChange={(event) => {
+                  onChange={(
+                    event
+                  ) => {
                     setSelectedStatus(
                       event.target.value
                     );
 
                     setError("");
-                    setSuccessMessage("");
+                    setSuccessMessage(
+                      ""
+                    );
                   }}
                   className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100 disabled:cursor-not-allowed disabled:bg-slate-100"
                 >
@@ -920,13 +1138,17 @@ function OfficerComplaintDetailsPage() {
                     complaint.status ===
                       "resolved"
                   }
-                  onChange={(event) => {
+                  onChange={(
+                    event
+                  ) => {
                     setRemarks(
                       event.target.value
                     );
 
                     setError("");
-                    setSuccessMessage("");
+                    setSuccessMessage(
+                      ""
+                    );
                   }}
                   placeholder="Add progress or resolution remarks..."
                   className="w-full resize-none rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 disabled:cursor-not-allowed disabled:bg-slate-100"
@@ -943,8 +1165,8 @@ function OfficerComplaintDetailsPage() {
                     />
 
                     <p className="text-sm leading-6 text-emerald-700">
-                      This complaint has already
-                      been resolved.
+                      This complaint has
+                      already been resolved.
                     </p>
                   </div>
                 </div>
@@ -975,14 +1197,15 @@ function OfficerComplaintDetailsPage() {
                   </>
                 ) : (
                   <>
-                    <Save size={18} />
+                    <Save
+                      size={18}
+                    />
+
                     Update Status
                   </>
                 )}
               </button>
             </section>
-
-            {/* STATUS OVERVIEW */}
 
             <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
               <h2 className="font-bold">
@@ -990,10 +1213,11 @@ function OfficerComplaintDetailsPage() {
               </h2>
 
               <div className="mt-6 space-y-5">
-
                 <ProgressItem
                   icon={
-                    <CircleDot size={18} />
+                    <CircleDot
+                      size={18}
+                    />
                   }
                   title="Assigned"
                   description="Complaint assigned to officer."
@@ -1007,7 +1231,11 @@ function OfficerComplaintDetailsPage() {
                 />
 
                 <ProgressItem
-                  icon={<Clock3 size={18} />}
+                  icon={
+                    <Clock3
+                      size={18}
+                    />
+                  }
                   title="In Progress"
                   description="Officer started processing the complaint."
                   active={[
@@ -1051,10 +1279,6 @@ function InfoItem({
   value,
   breakText = false,
 }) {
-  /*
-   * Prevent React from accidentally trying
-   * to render an object directly.
-   */
   const getDisplayValue = () => {
     if (
       value === null ||
@@ -1071,27 +1295,40 @@ function InfoItem({
       return value;
     }
 
-    if (typeof value === "boolean") {
-      return value ? "Yes" : "No";
+    if (
+      typeof value === "boolean"
+    ) {
+      return value
+        ? "Yes"
+        : "No";
     }
 
-    if (Array.isArray(value)) {
-      if (value.length === 0) {
+    if (
+      Array.isArray(value)
+    ) {
+      if (
+        value.length === 0
+      ) {
         return "-";
       }
 
       return value
         .map((item) => {
           if (
-            typeof item === "string" ||
-            typeof item === "number"
+            typeof item ===
+              "string" ||
+            typeof item ===
+              "number"
           ) {
-            return String(item);
+            return String(
+              item
+            );
           }
 
           if (
             item &&
-            typeof item === "object"
+            typeof item ===
+              "object"
           ) {
             return (
               item.address ||
@@ -1108,7 +1345,8 @@ function InfoItem({
 
     if (
       value &&
-      typeof value === "object"
+      typeof value ===
+        "object"
     ) {
       return (
         value.address ||

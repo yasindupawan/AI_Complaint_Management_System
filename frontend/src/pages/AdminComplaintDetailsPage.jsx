@@ -2,6 +2,13 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import {
+  MapContainer,
+  TileLayer,
+  CircleMarker,
+  Popup,
+} from "react-leaflet";
+
+import {
   ArrowLeft,
   FileText,
   User,
@@ -937,6 +944,22 @@ function AdminComplaintDetailsPage() {
     !duplicateAlreadyConfirmed;
 
   /* =========================================================
+     LOCATION MAP DATA
+  ========================================================= */
+
+  const locationLatitude = Number(
+    complaint.location?.latitude
+  );
+
+  const locationLongitude = Number(
+    complaint.location?.longitude
+  );
+
+  const hasMapCoordinates =
+    Number.isFinite(locationLatitude) &&
+    Number.isFinite(locationLongitude);
+
+  /* =========================================================
      PAGE
   ========================================================= */
 
@@ -1726,22 +1749,128 @@ function AdminComplaintDetailsPage() {
               Object.keys(
                 complaint.location
               ).length > 0 ? (
-                <div className="space-y-3">
-                  {Object.entries(
-                    complaint.location
-                  ).map(([key, value]) => (
-                    <InfoField
-                      key={key}
-                      label={key
-                        .replace(/_/g, " ")
-                        .replace(
-                          /\b\w/g,
-                          (character) =>
-                            character.toUpperCase()
-                        )}
-                      value={value ?? "-"}
-                    />
-                  ))}
+                <div className="space-y-4">
+                  {/* LOCATION DETAILS */}
+
+                  <div className="space-y-3">
+                    {complaint.location?.address && (
+                      <InfoField
+                        label="Address"
+                        value={
+                          complaint.location.address
+                        }
+                      />
+                    )}
+
+                    {hasMapCoordinates && (
+                      <>
+                        <InfoField
+                          label="Latitude"
+                          value={
+                            locationLatitude
+                          }
+                        />
+
+                        <InfoField
+                          label="Longitude"
+                          value={
+                            locationLongitude
+                          }
+                        />
+                      </>
+                    )}
+                  </div>
+
+                  {/* MINI MAP */}
+
+                  {hasMapCoordinates ? (
+                    <div className="overflow-hidden rounded-xl border border-slate-200">
+                      <div className="h-64 w-full">
+                        <MapContainer
+                          center={[
+                            locationLatitude,
+                            locationLongitude,
+                          ]}
+                          zoom={16}
+                          scrollWheelZoom={false}
+                          dragging={true}
+                          className="h-full w-full"
+                          style={{
+                            height: "256px",
+                            width: "100%",
+                          }}
+                        >
+                          <TileLayer
+                            attribution="&copy; OpenStreetMap contributors"
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                          />
+
+                          <CircleMarker
+                            center={[
+                              locationLatitude,
+                              locationLongitude,
+                            ]}
+                            radius={10}
+                            pathOptions={{
+                              fillOpacity: 0.9,
+                            }}
+                          >
+                            <Popup>
+                              <div>
+                                <strong>
+                                  Complaint Location
+                                </strong>
+
+                                <br />
+
+                                {complaint.location
+                                  ?.address ||
+                                  "Selected complaint location"}
+
+                                <br />
+
+                                {locationLatitude.toFixed(
+                                  6
+                                )}
+                                {", "}
+                                {locationLongitude.toFixed(
+                                  6
+                                )}
+                              </div>
+                            </Popup>
+                          </CircleMarker>
+                        </MapContainer>
+                      </div>
+
+                      <div className="border-t border-slate-200 bg-slate-50 px-4 py-3">
+                        <p className="flex items-start gap-2 text-xs leading-5 text-slate-500">
+                          <MapPin
+                            size={15}
+                            className="mt-0.5 shrink-0 text-blue-600"
+                          />
+
+                          Exact complaint location based
+                          on the coordinates submitted by
+                          the citizen.
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="rounded-xl bg-slate-50 p-4">
+                      <div className="flex gap-3">
+                        <MapPin
+                          size={18}
+                          className="mt-0.5 shrink-0 text-slate-400"
+                        />
+
+                        <p className="text-sm leading-6 text-slate-500">
+                          GPS coordinates were not
+                          provided for this complaint, so
+                          a map preview is unavailable.
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <p className="text-sm text-slate-500">
