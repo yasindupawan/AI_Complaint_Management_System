@@ -5,7 +5,8 @@ import axios from "axios";
 ========================================================= */
 
 const API_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+  import.meta.env.VITE_API_URL ||
+  "http://localhost:5000/api";
 
 /* =========================================================
    REGISTER USER
@@ -54,6 +55,62 @@ export const loginUser = async (loginData) => {
 };
 
 /* =========================================================
+   FORGOT PASSWORD
+   POST /api/auth/forgot-password
+========================================================= */
+
+export const forgotPassword = async (email) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/auth/forgot-password`,
+      {
+        email:
+          typeof email === "string"
+            ? email.trim().toLowerCase()
+            : email,
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    throw (
+      error.response?.data || {
+        success: false,
+        message:
+          "Unable to process the password reset request.",
+      }
+    );
+  }
+};
+
+/* =========================================================
+   RESET PASSWORD
+   POST /api/auth/reset-password/:token
+========================================================= */
+
+export const resetPassword = async (
+  token,
+  passwordData
+) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/auth/reset-password/${token}`,
+      passwordData
+    );
+
+    return response.data;
+  } catch (error) {
+    throw (
+      error.response?.data || {
+        success: false,
+        message:
+          "Unable to reset your password.",
+      }
+    );
+  }
+};
+
+/* =========================================================
    GET CURRENT LOGGED-IN USER
    GET /api/auth/me
 ========================================================= */
@@ -74,7 +131,8 @@ export const getCurrentUser = async (token) => {
     throw (
       error.response?.data || {
         success: false,
-        message: "Unable to get user information.",
+        message:
+          "Unable to get user information.",
       }
     );
   }

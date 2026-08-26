@@ -36,10 +36,10 @@ const userSchema = new mongoose.Schema(
     },
 
     department: {
-  type: mongoose.Schema.Types.ObjectId,
-  ref: "Department",
-  default: null,
-},
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Department",
+      default: null,
+    },
 
     preferredLanguage: {
       type: String,
@@ -50,6 +50,25 @@ const userSchema = new mongoose.Schema(
     isActive: {
       type: Boolean,
       default: true,
+    },
+
+    /* =========================================================
+       PASSWORD RESET
+    ========================================================= */
+
+    // Stores only the hashed reset token.
+    // The raw reset token is never saved in MongoDB.
+    passwordResetToken: {
+      type: String,
+      select: false,
+      default: null,
+    },
+
+    // Password reset token expiry time.
+    passwordResetExpires: {
+      type: Date,
+      select: false,
+      default: null,
     },
   },
   {

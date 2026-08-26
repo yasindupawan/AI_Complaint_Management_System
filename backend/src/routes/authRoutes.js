@@ -4,6 +4,8 @@ const {
   registerUser,
   loginUser,
   getMe,
+  forgotPassword,
+  resetPassword,
 } = require("../controllers/authController");
 
 const {
@@ -12,9 +14,15 @@ const {
   validateRequest,
 } = require("../middleware/validationMiddleware");
 
-const { protect } = require("../middleware/authMiddleware");
+const {
+  protect,
+} = require("../middleware/authMiddleware");
 
 const router = express.Router();
+
+/* =========================================================
+   REGISTER
+========================================================= */
 
 router.post(
   "/register",
@@ -23,6 +31,10 @@ router.post(
   registerUser
 );
 
+/* =========================================================
+   LOGIN
+========================================================= */
+
 router.post(
   "/login",
   loginValidation,
@@ -30,8 +42,32 @@ router.post(
   loginUser
 );
 
-router.get("/me", protect, getMe);
+/* =========================================================
+   FORGOT PASSWORD
+========================================================= */
 
+router.post(
+  "/forgot-password",
+  forgotPassword
+);
 
+/* =========================================================
+   RESET PASSWORD
+========================================================= */
+
+router.post(
+  "/reset-password/:token",
+  resetPassword
+);
+
+/* =========================================================
+   CURRENT USER
+========================================================= */
+
+router.get(
+  "/me",
+  protect,
+  getMe
+);
 
 module.exports = router;
