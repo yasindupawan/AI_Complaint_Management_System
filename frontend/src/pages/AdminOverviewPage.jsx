@@ -1199,15 +1199,15 @@ function AdminOverviewPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen bg-[#F6F9FB]">
         <div className="flex min-h-screen items-center justify-center">
           <div className="text-center">
             <Loader2
               size={38}
-              className="mx-auto animate-spin text-blue-600"
+              className="mx-auto animate-spin text-[#1F5F8B]"
             />
 
-            <p className="mt-4 text-sm font-semibold text-slate-500">
+            <p className="mt-4 text-sm font-semibold text-[#60798C]">
               Loading system overview...
             </p>
           </div>
@@ -1221,7 +1221,7 @@ function AdminOverviewPage() {
   ========================================================= */
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="min-h-screen bg-[#F6F9FB] text-[#16324A]">
       <main className="mx-auto max-w-7xl px-5 py-8 lg:px-8 lg:py-10">
 
         {/* =====================================================
@@ -1235,7 +1235,7 @@ function AdminOverviewPage() {
               "/admin/dashboard"
             )
           }
-          className="print:hidden inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-blue-600"
+          className="print:hidden inline-flex items-center gap-2 text-sm font-semibold text-[#60798C] transition hover:text-[#1B8A8F]"
         >
           <ArrowLeft
             size={17}
@@ -1251,15 +1251,15 @@ function AdminOverviewPage() {
         <section className="mt-6">
           <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-start">
             <div>
-              <p className="text-sm font-semibold text-blue-600">
+              <p className="text-sm font-semibold text-[#1B8A8F]">
                 Administration
               </p>
 
-              <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">
+              <h1 className="mt-1 text-3xl font-bold tracking-tight text-[#16324A] sm:text-4xl">
                 System Overview
               </h1>
 
-              <p className="mt-2 max-w-3xl text-slate-500">
+              <p className="mt-2 max-w-3xl text-[#60798C]">
                 Monitor complaint activity, user participation,
                 department performance, geographical issue
                 patterns and overall complaint processing
@@ -1272,7 +1272,7 @@ function AdminOverviewPage() {
               onClick={
                 loadOverview
               }
-              className="print:hidden inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-600 shadow-sm transition hover:border-blue-200 hover:text-blue-600"
+              className="print:hidden inline-flex items-center justify-center gap-2 rounded-xl border border-[#D8E5EC] bg-white px-4 py-3 text-sm font-bold text-[#60798C] shadow-sm transition hover:border-[#8FC6CC] hover:bg-[#E8F6F4] hover:text-[#1B8A8F]"
             >
               <RefreshCw
                 size={17}
@@ -1304,21 +1304,22 @@ function AdminOverviewPage() {
             FILTERS
         ===================================================== */}
 
-        <section className="print:hidden mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <section className="print:hidden mt-8 rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm">
           <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
             <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100 text-slate-600">
+
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#E8F6F4] text-[#1B8A8F]">
                 <Filter
                   size={21}
                 />
               </div>
 
               <div>
-                <h2 className="text-lg font-bold">
+                <h2 className="text-lg font-bold text-[#16324A]">
                   Dashboard Filters
                 </h2>
 
-                <p className="text-sm text-slate-500">
+                <p className="text-sm text-[#60798C]">
                   Filter analytics, maps and generated reports.
                 </p>
               </div>
@@ -1329,7 +1330,7 @@ function AdminOverviewPage() {
               onClick={
                 resetFilters
               }
-              className="inline-flex items-center gap-2 text-sm font-bold text-slate-500 transition hover:text-red-600"
+              className="inline-flex items-center gap-2 text-sm font-bold text-[#60798C] transition hover:text-red-600"
             >
               <X
                 size={16}
@@ -1392,7 +1393,7 @@ function AdminOverviewPage() {
             />
 
             <div>
-              <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-slate-400">
+              <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-[#8A9EAC]">
                 Department
               </label>
 
@@ -1407,7 +1408,7 @@ function AdminOverviewPage() {
                     event.target.value
                   )
                 }
-                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                className="w-full rounded-xl border border-[#C8D8E2] bg-white px-4 py-3 text-sm text-[#16324A] outline-none transition focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4]"
               >
                 <option value="all">
                   All Departments
@@ -1435,7 +1436,7 @@ function AdminOverviewPage() {
             </div>
 
             <div>
-              <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-slate-400">
+              <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-[#8A9EAC]">
                 Start Date
               </label>
 
@@ -1451,12 +1452,12 @@ function AdminOverviewPage() {
                     event.target.value
                   )
                 }
-                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                className="w-full rounded-xl border border-[#C8D8E2] bg-white px-4 py-3 text-sm text-[#16324A] outline-none transition focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4]"
               />
             </div>
 
             <div>
-              <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-slate-400">
+              <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-[#8A9EAC]">
                 End Date
               </label>
 
@@ -1472,21 +1473,21 @@ function AdminOverviewPage() {
                     event.target.value
                   )
                 }
-                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                className="w-full rounded-xl border border-[#C8D8E2] bg-white px-4 py-3 text-sm text-[#16324A] outline-none transition focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4]"
               />
             </div>
           </div>
 
-          <div className="mt-5 rounded-xl bg-slate-50 px-4 py-3">
-            <p className="text-sm text-slate-500">
+          <div className="mt-5 rounded-xl bg-[#F6F9FB] px-4 py-3">
+            <p className="text-sm text-[#60798C]">
               Showing{" "}
-              <span className="font-bold text-slate-900">
+              <span className="font-bold text-[#16324A]">
                 {
                   filteredComplaints.length
                 }
               </span>{" "}
               of{" "}
-              <span className="font-bold text-slate-900">
+              <span className="font-bold text-[#16324A]">
                 {
                   complaints.length
                 }
@@ -1501,6 +1502,7 @@ function AdminOverviewPage() {
         ===================================================== */}
 
         <section className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+
           <StatCard
             title="Total Complaints"
             value={
@@ -1511,7 +1513,7 @@ function AdminOverviewPage() {
                 size={22}
               />
             }
-            iconStyle="bg-blue-50 text-blue-600"
+            iconStyle="bg-[#EAF3F8] text-[#1F5F8B]"
           />
 
           <StatCard
@@ -1548,8 +1550,9 @@ function AdminOverviewPage() {
                 size={22}
               />
             }
-            iconStyle="bg-violet-50 text-violet-600"
+            iconStyle="bg-[#E8F6F4] text-[#1B8A8F]"
           />
+
         </section>
 
         {/* =====================================================
@@ -1564,9 +1567,10 @@ function AdminOverviewPage() {
               size={22}
             />
           }
-          iconStyle="bg-blue-50 text-blue-600"
+          iconStyle="bg-[#EAF3F8] text-[#1F5F8B]"
         >
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7">
+
             <MiniStat
               title="Submitted"
               value={
@@ -1615,6 +1619,7 @@ function AdminOverviewPage() {
                 complaintStats.duplicate
               }
             />
+
           </div>
         </DashboardSection>
 
@@ -1623,6 +1628,7 @@ function AdminOverviewPage() {
         ===================================================== */}
 
         <div className="mt-8 grid gap-6 xl:grid-cols-2">
+
           <DashboardSection
             noMargin
             title="User Overview"
@@ -1632,9 +1638,10 @@ function AdminOverviewPage() {
                 size={22}
               />
             }
-            iconStyle="bg-indigo-50 text-indigo-600"
+            iconStyle="bg-[#EAF3F8] text-[#1F5F8B]"
           >
             <div className="grid gap-4 sm:grid-cols-2">
+
               <OverviewItem
                 icon={
                   <Users
@@ -1706,6 +1713,7 @@ function AdminOverviewPage() {
                   users.inactive
                 }
               />
+
             </div>
           </DashboardSection>
 
@@ -1718,9 +1726,10 @@ function AdminOverviewPage() {
                 size={22}
               />
             }
-            iconStyle="bg-emerald-50 text-emerald-600"
+            iconStyle="bg-[#E8F6F4] text-[#1B8A8F]"
           >
             <div className="grid gap-4 sm:grid-cols-2">
+
               <OverviewItem
                 icon={
                   <Building2
@@ -1768,8 +1777,10 @@ function AdminOverviewPage() {
                   users.officers
                 }
               />
+
             </div>
           </DashboardSection>
+
         </div>
 
         {/* =====================================================
@@ -1777,6 +1788,7 @@ function AdminOverviewPage() {
         ===================================================== */}
 
         <div className="mt-8 grid gap-6 xl:grid-cols-2">
+
           <DistributionSection
             title="Complaint Category Distribution"
             subtitle="Complaints received under each AI classification category."
@@ -1806,6 +1818,7 @@ function AdminOverviewPage() {
               formatPriority
             }
           />
+
         </div>
 
         {/* =====================================================
@@ -1820,10 +1833,12 @@ function AdminOverviewPage() {
               size={22}
             />
           }
-          iconStyle="bg-cyan-50 text-cyan-600"
+          iconStyle="bg-[#E8F6F4] text-[#1B8A8F]"
         >
           <div className="overflow-x-auto">
-            <div className="flex h-72 min-w-[600px] items-end gap-5 border-b border-l border-slate-200 px-5 pb-4 pt-8">
+
+            <div className="flex h-72 min-w-[600px] items-end gap-5 border-b border-l border-[#D8E5EC] px-5 pb-4 pt-8">
+
               {complaintTrend.map(
                 (item) => {
                   const height =
@@ -1846,20 +1861,20 @@ function AdminOverviewPage() {
                       }
                       className="flex h-full flex-1 flex-col items-center justify-end"
                     >
-                      <p className="mb-2 text-xs font-bold text-slate-600">
+                      <p className="mb-2 text-xs font-bold text-[#425D70]">
                         {
                           item.count
                         }
                       </p>
 
                       <div
-                        className="w-full max-w-16 rounded-t-lg bg-blue-600 transition-all"
+                        className="w-full max-w-16 rounded-t-lg bg-[#1F5F8B] transition-all"
                         style={{
                           height: `${height}%`,
                         }}
                       />
 
-                      <p className="mt-3 text-xs font-semibold text-slate-500">
+                      <p className="mt-3 text-xs font-semibold text-[#60798C]">
                         {
                           item.label
                         }
@@ -1868,6 +1883,7 @@ function AdminOverviewPage() {
                   );
                 }
               )}
+
             </div>
           </div>
         </DashboardSection>
@@ -1884,7 +1900,7 @@ function AdminOverviewPage() {
               size={22}
             />
           }
-          iconStyle="bg-orange-50 text-orange-600"
+          iconStyle="bg-[#FFF6E8] text-[#D88718]"
         >
           {departmentPerformance.length ===
           0 ? (
@@ -1899,9 +1915,12 @@ function AdminOverviewPage() {
             />
           ) : (
             <div className="overflow-x-auto">
+
               <table className="w-full min-w-[800px] text-left">
+
                 <thead>
-                  <tr className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+                  <tr className="border-b border-[#D8E5EC] bg-[#F6F9FB] text-xs uppercase tracking-wide text-[#60798C]">
+
                     <th className="px-4 py-4 font-semibold">
                       Department
                     </th>
@@ -1925,80 +1944,91 @@ function AdminOverviewPage() {
                     <th className="px-4 py-4 font-semibold">
                       Resolution Rate
                     </th>
+
                   </tr>
                 </thead>
 
                 <tbody>
+
                   {departmentPerformance.map(
                     (department) => (
                       <tr
                         key={
                           department.id
                         }
-                        className="border-b border-slate-100 last:border-b-0 hover:bg-slate-50"
+                        className="border-b border-[#EDF3F6] last:border-b-0 hover:bg-[#F6F9FB]"
                       >
                         <td className="px-4 py-5">
-                          <p className="font-bold text-slate-800">
+
+                          <p className="font-bold text-[#16324A]">
                             {
                               department.name
                             }
                           </p>
 
-                          <p className="mt-1 text-xs text-slate-400">
+                          <p className="mt-1 text-xs text-[#8A9EAC]">
                             {
                               department.code
                             }
                           </p>
+
                         </td>
 
-                        <td className="px-4 py-5 font-bold">
+                        <td className="px-4 py-5 font-bold text-[#16324A]">
                           {
                             department.total
                           }
                         </td>
 
-                        <td className="px-4 py-5">
+                        <td className="px-4 py-5 text-[#60798C]">
                           {
                             department.assigned
                           }
                         </td>
 
-                        <td className="px-4 py-5">
+                        <td className="px-4 py-5 text-[#60798C]">
                           {
                             department.inProgress
                           }
                         </td>
 
-                        <td className="px-4 py-5">
+                        <td className="px-4 py-5 text-[#60798C]">
                           {
                             department.resolved
                           }
                         </td>
 
                         <td className="px-4 py-5">
+
                           <div className="flex min-w-40 items-center gap-3">
-                            <div className="h-2 flex-1 overflow-hidden rounded-full bg-slate-100">
+
+                            <div className="h-2 flex-1 overflow-hidden rounded-full bg-[#EDF3F6]">
+
                               <div
                                 className="h-full rounded-full bg-emerald-500"
                                 style={{
                                   width: `${department.resolutionRate}%`,
                                 }}
                               />
+
                             </div>
 
-                            <span className="text-sm font-bold">
+                            <span className="text-sm font-bold text-[#16324A]">
                               {
                                 department.resolutionRate
                               }
                               %
                             </span>
+
                           </div>
                         </td>
                       </tr>
                     )
                   )}
+
                 </tbody>
               </table>
+
             </div>
           )}
         </DashboardSection>
@@ -2015,23 +2045,28 @@ function AdminOverviewPage() {
               size={22}
             />
           }
-          iconStyle="bg-violet-50 text-violet-600"
+          iconStyle="bg-[#E8F6F4] text-[#1B8A8F]"
         >
+
           <div className="print:hidden mb-5 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+
             <div>
-              <p className="text-sm font-semibold text-slate-700">
+
+              <p className="text-sm font-semibold text-[#425D70]">
                 {
                   mapComplaints.length
                 }{" "}
                 mapped complaint(s)
               </p>
 
-              <p className="mt-1 text-xs text-slate-500">
+              <p className="mt-1 text-xs text-[#60798C]">
                 Complaints without GPS coordinates are excluded from the map.
               </p>
+
             </div>
 
-            <div className="flex rounded-xl border border-slate-200 bg-slate-50 p-1">
+            <div className="flex rounded-xl border border-[#D8E5EC] bg-[#F6F9FB] p-1">
+
               <button
                 type="button"
                 onClick={() =>
@@ -2042,8 +2077,8 @@ function AdminOverviewPage() {
                 className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-bold transition ${
                   mapMode ===
                   "markers"
-                    ? "bg-white text-blue-600 shadow-sm"
-                    : "text-slate-500"
+                    ? "bg-white text-[#1F5F8B] shadow-sm"
+                    : "text-[#60798C]"
                 }`}
               >
                 <MapPin
@@ -2063,8 +2098,8 @@ function AdminOverviewPage() {
                 className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-bold transition ${
                   mapMode ===
                   "heatmap"
-                    ? "bg-white text-orange-600 shadow-sm"
-                    : "text-slate-500"
+                    ? "bg-white text-[#D88718] shadow-sm"
+                    : "text-[#60798C]"
                 }`}
               >
                 <Flame
@@ -2073,6 +2108,7 @@ function AdminOverviewPage() {
 
                 Heatmap
               </button>
+
             </div>
           </div>
 
@@ -2088,8 +2124,10 @@ function AdminOverviewPage() {
               description="Complaints with valid latitude and longitude coordinates will appear here."
             />
           ) : (
-            <div className="overflow-hidden rounded-2xl border border-slate-200">
+            <div className="overflow-hidden rounded-2xl border border-[#D8E5EC]">
+
               <div className="h-[520px] w-full">
+
                 <MapContainer
                   center={
                     SRI_LANKA_CENTER
@@ -2125,12 +2163,19 @@ function AdminOverviewPage() {
                           ]}
                           radius={9}
                           pathOptions={{
+                            color:
+                              "#123B5D",
+
+                            fillColor:
+                              "#1B8A8F",
+
                             fillOpacity:
                               0.9,
                           }}
                         >
                           <Popup>
                             <div className="min-w-[220px]">
+
                               <strong>
                                 {complaint.title ||
                                   "Complaint"}
@@ -2164,6 +2209,7 @@ function AdminOverviewPage() {
                                 .location
                                 ?.address ||
                                 "Selected map location"}
+
                             </div>
                           </Popup>
                         </CircleMarker>
@@ -2178,8 +2224,11 @@ function AdminOverviewPage() {
                       }
                     />
                   )}
+
                 </MapContainer>
+
               </div>
+
             </div>
           )}
         </DashboardSection>
@@ -2196,7 +2245,7 @@ function AdminOverviewPage() {
               size={22}
             />
           }
-          iconStyle="bg-blue-50 text-blue-600"
+          iconStyle="bg-[#EAF3F8] text-[#1F5F8B]"
         >
           {recentComplaints.length ===
           0 ? (
@@ -2211,9 +2260,13 @@ function AdminOverviewPage() {
             />
           ) : (
             <div className="overflow-x-auto">
+
               <table className="w-full min-w-[900px] text-left">
+
                 <thead>
-                  <tr className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+
+                  <tr className="border-b border-[#D8E5EC] bg-[#F6F9FB] text-xs uppercase tracking-wide text-[#60798C]">
+
                     <th className="px-4 py-4 font-semibold">
                       Complaint
                     </th>
@@ -2237,62 +2290,72 @@ function AdminOverviewPage() {
                     <th className="print:hidden px-4 py-4 font-semibold">
                       Action
                     </th>
+
                   </tr>
+
                 </thead>
 
                 <tbody>
+
                   {recentComplaints.map(
                     (complaint) => (
                       <tr
                         key={
                           complaint._id
                         }
-                        className="border-b border-slate-100 last:border-b-0 hover:bg-slate-50"
+                        className="border-b border-[#EDF3F6] last:border-b-0 hover:bg-[#F6F9FB]"
                       >
                         <td className="px-4 py-5">
-                          <p className="max-w-md font-semibold text-slate-800">
+
+                          <p className="max-w-md font-semibold text-[#16324A]">
                             {
                               complaint.title
                             }
                           </p>
 
-                          <p className="mt-1 text-xs text-slate-400">
+                          <p className="mt-1 text-xs text-[#8A9EAC]">
                             ID:{" "}
                             {
                               complaint._id
                             }
                           </p>
+
                         </td>
 
-                        <td className="px-4 py-5 text-sm text-slate-600">
+                        <td className="px-4 py-5 text-sm text-[#60798C]">
                           {formatCategory(
                             complaint.category
                           )}
                         </td>
 
                         <td className="px-4 py-5">
+
                           <PriorityBadge
                             priority={
                               complaint.priority
                             }
                           />
+
                         </td>
 
                         <td className="px-4 py-5">
+
                           <StatusBadge
                             status={
                               complaint.status
                             }
                           />
+
                         </td>
 
-                        <td className="px-4 py-5 text-sm text-slate-500">
+                        <td className="px-4 py-5 text-sm text-[#60798C]">
                           {formatDate(
                             complaint.createdAt
                           )}
                         </td>
 
                         <td className="print:hidden px-4 py-5">
+
                           <button
                             type="button"
                             onClick={() =>
@@ -2300,7 +2363,7 @@ function AdminOverviewPage() {
                                 `/admin/complaints/${complaint._id}`
                               )
                             }
-                            className="inline-flex items-center gap-2 rounded-lg bg-blue-50 px-3 py-2 text-xs font-bold text-blue-600 transition hover:bg-blue-100"
+                            className="inline-flex items-center gap-2 rounded-lg bg-[#E8F6F4] px-3 py-2 text-xs font-bold text-[#1B8A8F] transition hover:bg-[#D6EFEC]"
                           >
                             <Eye
                               size={14}
@@ -2308,12 +2371,15 @@ function AdminOverviewPage() {
 
                             View
                           </button>
+
                         </td>
                       </tr>
                     )
                   )}
+
                 </tbody>
               </table>
+
             </div>
           )}
         </DashboardSection>
@@ -2332,7 +2398,9 @@ function AdminOverviewPage() {
           }
           iconStyle="bg-emerald-50 text-emerald-600"
         >
+
           <div className="grid gap-4 md:grid-cols-3">
+
             <ReportStat
               title="Report Records"
               value={
@@ -2354,15 +2422,17 @@ function AdminOverviewPage() {
               value={`${complaintStats.resolutionRate}%`}
               description="Resolved complaint percentage for the report."
             />
+
           </div>
 
           <div className="print:hidden mt-6 grid gap-3 sm:grid-cols-2">
+
             <button
               type="button"
               onClick={
                 exportCSV
               }
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-emerald-700"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#1B8A8F] px-5 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-[#157277]"
             >
               <Download
                 size={18}
@@ -2376,7 +2446,7 @@ function AdminOverviewPage() {
               onClick={
                 printReport
               }
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-slate-800"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#16324A] px-5 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-[#10283B]"
             >
               <Printer
                 size={18}
@@ -2384,16 +2454,19 @@ function AdminOverviewPage() {
 
               Print / Save as PDF
             </button>
+
           </div>
 
-          <div className="mt-5 rounded-xl border border-blue-100 bg-blue-50 p-4">
+          <div className="mt-5 rounded-xl border border-[#BFD9E6] bg-[#EAF3F8] p-4">
+
             <div className="flex gap-3">
+
               <CalendarDays
                 size={19}
-                className="mt-0.5 shrink-0 text-blue-600"
+                className="mt-0.5 shrink-0 text-[#1F5F8B]"
               />
 
-              <p className="text-sm leading-6 text-blue-700">
+              <p className="text-sm leading-6 text-[#425D70]">
                 The report automatically follows the selected
                 category, status, priority, department and
                 date-range filters. To generate a PDF, select
@@ -2401,25 +2474,32 @@ function AdminOverviewPage() {
                 choose <strong>Save as PDF</strong> from the
                 browser print dialog.
               </p>
+
             </div>
+
           </div>
+
         </DashboardSection>
 
         {/* =====================================================
             DEPARTMENT ACTIVITY
         ===================================================== */}
 
-        <section className="mt-8 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-          <div className="flex flex-col justify-between gap-4 border-b border-slate-200 px-6 py-5 sm:flex-row sm:items-center">
+        <section className="mt-8 overflow-hidden rounded-2xl border border-[#D8E5EC] bg-white shadow-sm">
+
+          <div className="flex flex-col justify-between gap-4 border-b border-[#D8E5EC] px-6 py-5 sm:flex-row sm:items-center">
+
             <div>
-              <h2 className="text-lg font-bold">
+
+              <h2 className="text-lg font-bold text-[#16324A]">
                 Department Activity
               </h2>
 
-              <p className="mt-1 text-sm text-slate-500">
+              <p className="mt-1 text-sm text-[#60798C]">
                 Current system departments and assigned
                 complaint categories.
               </p>
+
             </div>
 
             <button
@@ -2429,10 +2509,11 @@ function AdminOverviewPage() {
                   "/admin/departments"
                 )
               }
-              className="print:hidden text-left text-sm font-bold text-blue-600 transition hover:text-blue-700"
+              className="print:hidden text-left text-sm font-bold text-[#1B8A8F] transition hover:text-[#176D72]"
             >
               Manage Departments
             </button>
+
           </div>
 
           {departments.length ===
@@ -2448,9 +2529,13 @@ function AdminOverviewPage() {
             />
           ) : (
             <div className="overflow-x-auto">
+
               <table className="w-full min-w-[750px] text-left">
+
                 <thead>
-                  <tr className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+
+                  <tr className="border-b border-[#D8E5EC] bg-[#F6F9FB] text-xs uppercase tracking-wide text-[#60798C]">
+
                     <th className="px-6 py-4 font-semibold">
                       Department
                     </th>
@@ -2466,10 +2551,13 @@ function AdminOverviewPage() {
                     <th className="px-6 py-4 font-semibold">
                       Status
                     </th>
+
                   </tr>
+
                 </thead>
 
                 <tbody>
+
                   {departments.map(
                     (department) => (
                       <tr
@@ -2477,30 +2565,34 @@ function AdminOverviewPage() {
                           department._id ||
                           department.id
                         }
-                        className="border-b border-slate-100 last:border-b-0 hover:bg-slate-50"
+                        className="border-b border-[#EDF3F6] last:border-b-0 hover:bg-[#F6F9FB]"
                       >
                         <td className="px-6 py-5">
-                          <p className="font-semibold text-slate-800">
+
+                          <p className="font-semibold text-[#16324A]">
                             {department.name ||
                               "Unnamed Department"}
                           </p>
 
                           {department.description && (
-                            <p className="mt-1 max-w-sm text-xs leading-5 text-slate-400">
+                            <p className="mt-1 max-w-sm text-xs leading-5 text-[#8A9EAC]">
                               {
                                 department.description
                               }
                             </p>
                           )}
+
                         </td>
 
-                        <td className="px-6 py-5 text-sm font-semibold text-slate-600">
+                        <td className="px-6 py-5 text-sm font-semibold text-[#60798C]">
                           {department.code ||
                             "-"}
                         </td>
 
                         <td className="px-6 py-5">
+
                           <div className="flex max-w-md flex-wrap gap-2">
+
                             {Array.isArray(
                               department.categories
                             ) &&
@@ -2514,7 +2606,7 @@ function AdminOverviewPage() {
                                     key={
                                       category
                                     }
-                                    className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600"
+                                    className="rounded-full bg-[#EAF3F8] px-2.5 py-1 text-xs font-semibold text-[#425D70]"
                                   >
                                     {formatCategory(
                                       category
@@ -2523,14 +2615,17 @@ function AdminOverviewPage() {
                                 )
                               )
                             ) : (
-                              <span className="text-sm text-slate-400">
+                              <span className="text-sm text-[#8A9EAC]">
                                 -
                               </span>
                             )}
+
                           </div>
+
                         </td>
 
                         <td className="px-6 py-5">
+
                           <span
                             className={`inline-flex rounded-full px-3 py-1 text-xs font-bold ${
                               department.isActive !==
@@ -2544,15 +2639,20 @@ function AdminOverviewPage() {
                               ? "Active"
                               : "Inactive"}
                           </span>
+
                         </td>
                       </tr>
                     )
                   )}
+
                 </tbody>
               </table>
+
             </div>
           )}
+
         </section>
+
       </main>
     </div>
   );
@@ -2572,13 +2672,14 @@ function DashboardSection({
 }) {
   return (
     <section
-      className={`rounded-2xl border border-slate-200 bg-white p-6 shadow-sm ${
+      className={`rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm transition duration-200 hover:border-[#BFD9E6] ${
         noMargin
           ? ""
           : "mt-8"
       }`}
     >
       <div className="flex items-center gap-3">
+
         <div
           className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${iconStyle}`}
         >
@@ -2586,19 +2687,23 @@ function DashboardSection({
         </div>
 
         <div>
-          <h2 className="text-lg font-bold">
+
+          <h2 className="text-lg font-bold text-[#16324A]">
             {title}
           </h2>
 
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-[#60798C]">
             {subtitle}
           </p>
+
         </div>
+
       </div>
 
       <div className="mt-6">
         {children}
       </div>
+
     </section>
   );
 }
@@ -2614,22 +2719,26 @@ function StatCard({
   iconStyle,
 }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm transition duration-200 hover:border-[#BFD9E6] hover:shadow-md">
+
       <div className="flex items-center justify-between">
+
         <div
           className={`flex h-11 w-11 items-center justify-center rounded-xl ${iconStyle}`}
         >
           {icon}
         </div>
 
-        <p className="text-3xl font-extrabold text-slate-900">
+        <p className="text-3xl font-extrabold text-[#16324A]">
           {value}
         </p>
+
       </div>
 
-      <p className="mt-4 text-sm font-semibold text-slate-600">
+      <p className="mt-4 text-sm font-semibold text-[#60798C]">
         {title}
       </p>
+
     </div>
   );
 }
@@ -2643,14 +2752,16 @@ function MiniStat({
   value,
 }) {
   return (
-    <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-      <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+    <div className="rounded-xl border border-[#D8E5EC] bg-[#F6F9FB] p-4 transition hover:border-[#BFD9E6]">
+
+      <p className="text-xs font-semibold uppercase tracking-wide text-[#8A9EAC]">
         {title}
       </p>
 
-      <p className="mt-2 text-2xl font-extrabold text-slate-900">
+      <p className="mt-2 text-2xl font-extrabold text-[#16324A]">
         {value}
       </p>
+
     </div>
   );
 }
@@ -2665,20 +2776,24 @@ function OverviewItem({
   value,
 }) {
   return (
-    <div className="flex items-center gap-4 rounded-xl border border-slate-200 p-4">
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-50 text-slate-500">
+    <div className="flex items-center gap-4 rounded-xl border border-[#D8E5EC] p-4 transition hover:border-[#BFD9E6] hover:bg-[#F6F9FB]">
+
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#E8F6F4] text-[#1B8A8F]">
         {icon}
       </div>
 
       <div>
-        <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+
+        <p className="text-xs font-semibold uppercase tracking-wide text-[#8A9EAC]">
           {label}
         </p>
 
-        <p className="mt-1 text-xl font-extrabold text-slate-900">
+        <p className="mt-1 text-xl font-extrabold text-[#16324A]">
           {value}
         </p>
+
       </div>
+
     </div>
   );
 }
@@ -2697,7 +2812,8 @@ function FilterSelect({
 }) {
   return (
     <div>
-      <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-slate-400">
+
+      <label className="mb-2 block text-xs font-bold uppercase tracking-wide text-[#8A9EAC]">
         {label}
       </label>
 
@@ -2712,7 +2828,7 @@ function FilterSelect({
             event.target.value
           )
         }
-        className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+        className="w-full rounded-xl border border-[#C8D8E2] bg-white px-4 py-3 text-sm text-[#16324A] outline-none transition focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4]"
       >
         <option value="all">
           {allLabel}
@@ -2735,6 +2851,7 @@ function FilterSelect({
           )
         )}
       </select>
+
     </div>
   );
 }
@@ -2752,26 +2869,32 @@ function DistributionSection({
   formatLabel,
 }) {
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <section className="rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm transition duration-200 hover:border-[#BFD9E6]">
+
       <div className="flex items-center gap-3">
-        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+
+        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#E8F6F4] text-[#1B8A8F]">
           <BarChart3
             size={22}
           />
         </div>
 
         <div>
-          <h2 className="text-lg font-bold">
+
+          <h2 className="text-lg font-bold text-[#16324A]">
             {title}
           </h2>
 
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-[#60798C]">
             {subtitle}
           </p>
+
         </div>
+
       </div>
 
       <div className="mt-6 space-y-5">
+
         {items.map(
           (item) => {
             const percentage =
@@ -2793,8 +2916,10 @@ function DistributionSection({
                   ]
                 }
               >
+
                 <div className="mb-2 flex items-center justify-between gap-4">
-                  <p className="text-sm font-semibold text-slate-700">
+
+                  <p className="text-sm font-semibold text-[#425D70]">
                     {formatLabel(
                       item[
                         itemKey
@@ -2802,12 +2927,12 @@ function DistributionSection({
                     )}
                   </p>
 
-                  <p className="text-sm font-bold text-slate-900">
+                  <p className="text-sm font-bold text-[#16324A]">
                     {
                       item.count
                     }
 
-                    <span className="ml-2 font-medium text-slate-400">
+                    <span className="ml-2 font-medium text-[#8A9EAC]">
                       (
                       {
                         percentage
@@ -2815,21 +2940,27 @@ function DistributionSection({
                       %)
                     </span>
                   </p>
+
                 </div>
 
-                <div className="h-2.5 overflow-hidden rounded-full bg-slate-100">
+                <div className="h-2.5 overflow-hidden rounded-full bg-[#EDF3F6]">
+
                   <div
-                    className="h-full rounded-full bg-blue-600 transition-all"
+                    className="h-full rounded-full bg-[#1B8A8F] transition-all"
                     style={{
                       width: `${percentage}%`,
                     }}
                   />
+
                 </div>
+
               </div>
             );
           }
         )}
+
       </div>
+
     </section>
   );
 }
@@ -2884,13 +3015,13 @@ function StatusBadge({
 }) {
   const styles = {
     submitted:
-      "bg-blue-50 text-blue-700",
+      "bg-[#EAF3F8] text-[#1F5F8B]",
 
     under_review:
-      "bg-cyan-50 text-cyan-700",
+      "bg-[#E8F6F4] text-[#1B8A8F]",
 
     assigned:
-      "bg-indigo-50 text-indigo-700",
+      "bg-[#E8F6F4] text-[#176D72]",
 
     in_progress:
       "bg-amber-50 text-amber-700",
@@ -2902,7 +3033,7 @@ function StatusBadge({
       "bg-red-50 text-red-700",
 
     duplicate:
-      "bg-purple-50 text-purple-700",
+      "bg-[#EDF5F5] text-[#176D72]",
   };
 
   const label =
@@ -2945,18 +3076,20 @@ function ReportStat({
   description,
 }) {
   return (
-    <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
-      <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
+    <div className="rounded-xl border border-[#D8E5EC] bg-[#F6F9FB] p-5">
+
+      <p className="text-xs font-bold uppercase tracking-wide text-[#8A9EAC]">
         {title}
       </p>
 
-      <p className="mt-2 text-3xl font-extrabold text-slate-900">
+      <p className="mt-2 text-3xl font-extrabold text-[#16324A]">
         {value}
       </p>
 
-      <p className="mt-2 text-xs leading-5 text-slate-500">
+      <p className="mt-2 text-xs leading-5 text-[#60798C]">
         {description}
       </p>
+
     </div>
   );
 }
@@ -2972,17 +3105,19 @@ function EmptyState({
 }) {
   return (
     <div className="px-6 py-12 text-center">
-      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-slate-300">
+
+      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#EAF3F8] text-[#8A9EAC]">
         {icon}
       </div>
 
-      <p className="mt-4 font-bold text-slate-700">
+      <p className="mt-4 font-bold text-[#16324A]">
         {title}
       </p>
 
-      <p className="mx-auto mt-1 max-w-md text-sm leading-6 text-slate-500">
+      <p className="mx-auto mt-1 max-w-md text-sm leading-6 text-[#60798C]">
         {description}
       </p>
+
     </div>
   );
 }

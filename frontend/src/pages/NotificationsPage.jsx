@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
 import {
   ArrowLeft,
   Bell,
@@ -83,7 +84,6 @@ function NotificationsPage() {
         return;
       }
 
-      // Mark notification as read only if currently unread
       if (!notification.isRead) {
         await markNotificationAsRead(
           notification._id,
@@ -103,7 +103,6 @@ function NotificationsPage() {
         );
       }
 
-      // Open related complaint
       if (notification.complaint?._id) {
         navigate(
           `/complaints/${notification.complaint._id}`
@@ -200,14 +199,14 @@ function NotificationsPage() {
   // =========================================================
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="min-h-screen bg-[#F6F9FB] text-[#16324A]">
       <main className="mx-auto max-w-6xl px-5 py-10 lg:px-8">
 
         {/* BACK */}
 
         <Link
           to="/dashboard"
-          className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-blue-600"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-[#60798C] transition hover:text-[#1B8A8F]"
         >
           <ArrowLeft size={17} />
           Back to Dashboard
@@ -218,15 +217,15 @@ function NotificationsPage() {
         <section className="mt-8 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
 
           <div>
-            <p className="text-sm font-semibold text-blue-600">
+            <p className="text-sm font-semibold text-[#1B8A8F]">
               Citizen Portal
             </p>
 
-            <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">
+            <h1 className="mt-1 text-3xl font-bold tracking-tight text-[#16324A] sm:text-4xl">
               Notifications
             </h1>
 
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500 sm:text-base">
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-[#60798C] sm:text-base">
               Stay informed about complaint assignments,
               status updates, duplicate reviews and final
               resolutions.
@@ -240,7 +239,7 @@ function NotificationsPage() {
               unreadNotifications === 0 ||
               markingAll
             }
-            className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700 transition hover:border-blue-200 hover:text-blue-600 disabled:cursor-not-allowed disabled:text-slate-400"
+            className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#D8E5EC] bg-white px-4 py-3 text-sm font-bold text-[#425D70] shadow-sm transition hover:border-[#8FC6CC] hover:bg-[#E8F6F4] hover:text-[#1B8A8F] disabled:cursor-not-allowed disabled:bg-[#F6F9FB] disabled:text-[#AABBC5]"
           >
             {markingAll ? (
               <Loader2
@@ -273,14 +272,14 @@ function NotificationsPage() {
             icon={<Bell size={20} />}
             title="Total Notifications"
             value={totalNotifications}
-            iconStyle="bg-blue-50 text-blue-600"
+            iconStyle="bg-[#EAF3F8] text-[#1F5F8B]"
           />
 
           <SummaryCard
             icon={<AlertCircle size={20} />}
             title="Unread"
             value={unreadNotifications}
-            iconStyle="bg-red-50 text-red-600"
+            iconStyle="bg-amber-50 text-amber-600"
           />
 
           <SummaryCard
@@ -294,15 +293,15 @@ function NotificationsPage() {
 
         {/* NOTIFICATION LIST */}
 
-        <section className="mt-7 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <section className="mt-7 overflow-hidden rounded-2xl border border-[#D8E5EC] bg-white shadow-sm">
 
-          <div className="border-b border-slate-200 px-6 py-5">
+          <div className="border-b border-[#D8E5EC] px-6 py-5">
 
-            <h2 className="text-lg font-bold">
+            <h2 className="text-lg font-bold text-[#16324A]">
               Recent Notifications
             </h2>
 
-            <p className="mt-1 text-sm text-slate-500">
+            <p className="mt-1 text-sm text-[#60798C]">
               Updates related to your submitted complaints.
             </p>
 
@@ -311,10 +310,10 @@ function NotificationsPage() {
           {/* LOADING */}
 
           {loading ? (
-            <div className="flex items-center justify-center gap-3 px-6 py-20 text-slate-500">
+            <div className="flex items-center justify-center gap-3 px-6 py-20 text-[#60798C]">
               <Loader2
                 size={24}
-                className="animate-spin text-blue-600"
+                className="animate-spin text-[#1F5F8B]"
               />
 
               <span className="text-sm font-semibold">
@@ -327,22 +326,22 @@ function NotificationsPage() {
 
             <div className="flex flex-col items-center justify-center px-6 py-20 text-center">
 
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#EAF3F8] text-[#1F5F8B]">
                 <Bell size={28} />
               </div>
 
-              <h3 className="mt-5 text-lg font-bold">
+              <h3 className="mt-5 text-lg font-bold text-[#16324A]">
                 No notifications yet
               </h3>
 
-              <p className="mt-2 max-w-md text-sm leading-6 text-slate-500">
+              <p className="mt-2 max-w-md text-sm leading-6 text-[#60798C]">
                 Notifications will appear here when there are
                 updates about your complaints.
               </p>
 
               <Link
                 to="/complaints"
-                className="mt-6 inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700"
+                className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#1F5F8B] px-5 py-3 text-sm font-bold text-white shadow-lg shadow-[#1F5F8B]/20 transition hover:-translate-y-0.5 hover:bg-[#174D72]"
               >
                 <FileText size={18} />
                 View My Complaints
@@ -353,7 +352,7 @@ function NotificationsPage() {
 
             /* LIST */
 
-            <div className="divide-y divide-slate-100">
+            <div className="divide-y divide-[#EDF3F6]">
 
               {notifications.map((notification) => (
 
@@ -361,8 +360,8 @@ function NotificationsPage() {
                   key={notification._id}
                   className={`p-6 transition ${
                     notification.isRead
-                      ? "bg-white"
-                      : "bg-blue-50/50"
+                      ? "bg-white hover:bg-[#F8FBFC]"
+                      : "bg-[#EAF3F8]/55 hover:bg-[#E8F6F4]/70"
                   }`}
                 >
 
@@ -373,8 +372,8 @@ function NotificationsPage() {
                     <div
                       className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${
                         notification.isRead
-                          ? "bg-slate-100 text-slate-500"
-                          : "bg-blue-100 text-blue-600"
+                          ? "bg-[#F1F5F7] text-[#60798C]"
+                          : "bg-[#DCECF4] text-[#1F5F8B]"
                       }`}
                     >
                       <Bell size={20} />
@@ -388,29 +387,29 @@ function NotificationsPage() {
 
                         <div>
 
-                          <div className="flex items-center gap-2">
+                          <div className="flex flex-wrap items-center gap-2">
 
-                            <p className="font-bold">
+                            <p className="font-bold text-[#16324A]">
                               {notification.title ||
                                 "Notification"}
                             </p>
 
                             {!notification.isRead && (
-                              <span className="rounded-full bg-blue-600 px-2 py-0.5 text-[10px] font-bold uppercase text-white">
+                              <span className="rounded-full bg-[#1B8A8F] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
                                 New
                               </span>
                             )}
 
                           </div>
 
-                          <p className="mt-1 text-sm leading-6 text-slate-500">
+                          <p className="mt-1 text-sm leading-6 text-[#60798C]">
                             {notification.message}
                           </p>
 
                         </div>
 
                         {!notification.isRead && (
-                          <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-blue-600" />
+                          <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#1B8A8F]" />
                         )}
 
                       </div>
@@ -425,7 +424,7 @@ function NotificationsPage() {
                               notification
                             )
                           }
-                          className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-blue-600 transition hover:text-blue-700"
+                          className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-[#1B8A8F] transition hover:text-[#176D72]"
                         >
                           <FileText size={15} />
 
@@ -436,7 +435,7 @@ function NotificationsPage() {
 
                       {/* DATE */}
 
-                      <div className="mt-3 flex items-center gap-2 text-xs text-slate-400">
+                      <div className="mt-3 flex items-center gap-2 text-xs text-[#8A9EAC]">
 
                         <Clock3 size={14} />
 
@@ -475,7 +474,7 @@ function SummaryCard({
   iconStyle,
 }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div className="rounded-2xl border border-[#D8E5EC] bg-white p-5 shadow-sm transition duration-200 hover:border-[#BFD9E6] hover:shadow-md">
 
       <div className="flex items-center justify-between">
 
@@ -485,13 +484,13 @@ function SummaryCard({
           {icon}
         </div>
 
-        <p className="text-2xl font-extrabold">
+        <p className="text-2xl font-extrabold text-[#16324A]">
           {value}
         </p>
 
       </div>
 
-      <p className="mt-4 text-sm font-semibold text-slate-600">
+      <p className="mt-4 text-sm font-semibold text-[#60798C]">
         {title}
       </p>
 

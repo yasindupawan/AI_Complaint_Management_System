@@ -172,17 +172,9 @@ function AdminComplaintDetailsPage() {
 
       setComplaint(loadedComplaint);
 
-      /* -----------------------------------------
-         Current status
-      ----------------------------------------- */
-
       setSelectedStatus(
         loadedComplaint?.status || ""
       );
-
-      /* -----------------------------------------
-         Current department
-      ----------------------------------------- */
 
       if (loadedComplaint?.department?._id) {
         setSelectedDepartment(
@@ -191,10 +183,6 @@ function AdminComplaintDetailsPage() {
       } else {
         setSelectedDepartment("");
       }
-
-      /* -----------------------------------------
-         Current assigned officer
-      ----------------------------------------- */
 
       if (loadedComplaint?.assignedOfficer?._id) {
         setSelectedOfficer(
@@ -701,13 +689,19 @@ function AdminComplaintDetailsPage() {
     }
   };
 
+  /*
+   * Important:
+   * Semantic status colours remain different.
+   * This makes status identification clear while the
+   * overall application uses the new Smart City palette.
+   */
   const getStatusStyle = (status) => {
     switch (status) {
       case "submitted":
-        return "bg-blue-50 text-blue-700";
+        return "bg-[#EAF3F8] text-[#1F5F8B]";
 
       case "assigned":
-        return "bg-indigo-50 text-indigo-700";
+        return "bg-[#E8F6F4] text-[#1B8A8F]";
 
       case "in_progress":
         return "bg-amber-50 text-amber-700";
@@ -719,7 +713,7 @@ function AdminComplaintDetailsPage() {
         return "bg-red-50 text-red-700";
 
       case "duplicate":
-        return "bg-purple-50 text-purple-700";
+        return "bg-[#EDF5F5] text-[#176D72]";
 
       default:
         return "bg-slate-100 text-slate-600";
@@ -729,10 +723,10 @@ function AdminComplaintDetailsPage() {
   const getHistoryDotStyle = (status) => {
     switch (status) {
       case "submitted":
-        return "bg-blue-600";
+        return "bg-[#1F5F8B]";
 
       case "assigned":
-        return "bg-indigo-600";
+        return "bg-[#1B8A8F]";
 
       case "in_progress":
         return "bg-amber-500";
@@ -744,7 +738,7 @@ function AdminComplaintDetailsPage() {
         return "bg-red-600";
 
       case "duplicate":
-        return "bg-purple-600";
+        return "bg-[#176D72]";
 
       default:
         return "bg-slate-400";
@@ -840,15 +834,15 @@ function AdminComplaintDetailsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen bg-[#F6F9FB]">
         <div className="flex min-h-screen items-center justify-center">
           <div className="text-center">
             <Loader2
               size={36}
-              className="mx-auto animate-spin text-blue-600"
+              className="mx-auto animate-spin text-[#1F5F8B]"
             />
 
-            <p className="mt-4 text-sm font-semibold text-slate-500">
+            <p className="mt-4 text-sm font-semibold text-[#60798C]">
               Loading complaint details...
             </p>
           </div>
@@ -863,14 +857,14 @@ function AdminComplaintDetailsPage() {
 
   if (error || !complaint) {
     return (
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen bg-[#F6F9FB]">
         <main className="mx-auto max-w-5xl px-5 py-10 lg:px-8">
           <button
             type="button"
             onClick={() =>
               navigate("/admin/complaints")
             }
-            className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-blue-600"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-[#60798C] transition hover:text-[#1B8A8F]"
           >
             <ArrowLeft size={17} />
 
@@ -964,7 +958,7 @@ function AdminComplaintDetailsPage() {
   ========================================================= */
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="min-h-screen bg-[#F6F9FB] text-[#16324A]">
       <main className="mx-auto max-w-7xl px-5 py-8 lg:px-8 lg:py-10">
 
         {/* =====================================================
@@ -976,7 +970,7 @@ function AdminComplaintDetailsPage() {
           onClick={() =>
             navigate("/admin/complaints")
           }
-          className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-blue-600"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-[#60798C] transition hover:text-[#1B8A8F]"
         >
           <ArrowLeft size={17} />
           Back to Complaints
@@ -986,7 +980,7 @@ function AdminComplaintDetailsPage() {
             HEADER
         ===================================================== */}
 
-        <section className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7">
+        <section className="mt-6 rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm sm:p-7">
           <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-start">
             <div className="min-w-0">
               <div className="flex flex-wrap gap-2">
@@ -1023,23 +1017,23 @@ function AdminComplaintDetailsPage() {
                 )}
 
                 {isPotentialDuplicate && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-purple-50 px-3 py-1 text-xs font-bold text-purple-700">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-[#E8F6F4] px-3 py-1 text-xs font-bold text-[#176D72]">
                     <Copy size={13} />
                     Potential Duplicate
                   </span>
                 )}
               </div>
 
-              <h1 className="mt-4 text-2xl font-bold tracking-tight sm:text-3xl">
+              <h1 className="mt-4 text-2xl font-bold tracking-tight text-[#16324A] sm:text-3xl">
                 {complaint.title}
               </h1>
 
-              <p className="mt-2 break-all text-xs text-slate-400">
+              <p className="mt-2 break-all text-xs text-[#8A9EAC]">
                 Complaint ID: {complaint._id}
               </p>
             </div>
 
-            <div className="flex items-center gap-2 text-sm text-slate-500">
+            <div className="flex items-center gap-2 text-sm text-[#60798C]">
               <CalendarDays size={17} />
 
               {formatDate(
@@ -1070,11 +1064,11 @@ function AdminComplaintDetailsPage() {
               icon={<FileText size={20} />}
             >
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                <p className="text-xs font-semibold uppercase tracking-wide text-[#8A9EAC]">
                   Description
                 </p>
 
-                <p className="mt-2 whitespace-pre-wrap text-sm leading-7 text-slate-700">
+                <p className="mt-2 whitespace-pre-wrap text-sm leading-7 text-[#425D70]">
                   {complaint.description}
                 </p>
               </div>
@@ -1173,12 +1167,12 @@ function AdminComplaintDetailsPage() {
 
               {complaint.aiPrediction
                 ?.translatedText && (
-                <div className="mt-6 rounded-xl bg-slate-50 p-4">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                <div className="mt-6 rounded-xl bg-[#F1F7FA] p-4">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-[#8A9EAC]">
                     AI Translation / Processing Text
                   </p>
 
-                  <p className="mt-2 text-sm leading-6 text-slate-700">
+                  <p className="mt-2 text-sm leading-6 text-[#425D70]">
                     {
                       complaint.aiPrediction
                         .translatedText
@@ -1224,21 +1218,19 @@ function AdminComplaintDetailsPage() {
                 />
               </div>
 
-              {/* MATCHED COMPLAINT */}
-
               {matchedComplaint && (
-                <div className="mt-6 rounded-xl border border-purple-200 bg-purple-50/50 p-5">
-                  <p className="text-xs font-bold uppercase tracking-wide text-purple-700">
+                <div className="mt-6 rounded-xl border border-[#B9DDDA] bg-[#E8F6F4]/70 p-5">
+                  <p className="text-xs font-bold uppercase tracking-wide text-[#176D72]">
                     Matched Complaint
                   </p>
 
-                  <p className="mt-2 font-bold text-slate-900">
+                  <p className="mt-2 font-bold text-[#16324A]">
                     {matchedComplaint.title ||
                       "Matched Complaint"}
                   </p>
 
                   {matchedComplaint.description && (
-                    <p className="mt-2 text-sm leading-6 text-slate-600">
+                    <p className="mt-2 text-sm leading-6 text-[#60798C]">
                       {
                         matchedComplaint.description
                       }
@@ -1247,7 +1239,7 @@ function AdminComplaintDetailsPage() {
 
                   <div className="mt-4 flex flex-wrap gap-2">
                     {matchedComplaint.category && (
-                      <span className="rounded-full bg-white px-3 py-1 text-xs font-bold text-purple-700">
+                      <span className="rounded-full bg-white px-3 py-1 text-xs font-bold text-[#176D72]">
                         {formatCategory(
                           matchedComplaint.category
                         )}
@@ -1255,7 +1247,7 @@ function AdminComplaintDetailsPage() {
                     )}
 
                     {matchedComplaint.status && (
-                      <span className="rounded-full bg-white px-3 py-1 text-xs font-bold text-slate-600">
+                      <span className="rounded-full bg-white px-3 py-1 text-xs font-bold text-[#60798C]">
                         {formatStatus(
                           matchedComplaint.status
                         )}
@@ -1265,11 +1257,9 @@ function AdminComplaintDetailsPage() {
                 </div>
               )}
 
-              {/* DUPLICATE REVIEW */}
-
               {isPotentialDuplicate &&
                 !duplicateAlreadyConfirmed && (
-                  <div className="mt-6 border-t border-slate-200 pt-6">
+                  <div className="mt-6 border-t border-[#D8E5EC] pt-6">
                     <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
                       <div className="flex gap-3">
                         <AlertCircle
@@ -1326,7 +1316,7 @@ function AdminComplaintDetailsPage() {
                     <div className="mt-5">
                       <label
                         htmlFor="duplicateRemarks"
-                        className="mb-2 block text-sm font-semibold text-slate-700"
+                        className="mb-2 block text-sm font-semibold text-[#425D70]"
                       >
                         Review Remarks
                       </label>
@@ -1344,7 +1334,7 @@ function AdminComplaintDetailsPage() {
                           duplicateReviewLoading
                         }
                         placeholder="Optional remarks about this duplicate review..."
-                        className="w-full resize-none rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-purple-500 focus:ring-4 focus:ring-purple-100 disabled:bg-slate-100"
+                        className="w-full resize-none rounded-xl border border-[#C8D8E2] bg-white px-4 py-3 text-sm outline-none transition placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:bg-[#F1F5F7]"
                       />
                     </div>
 
@@ -1357,7 +1347,7 @@ function AdminComplaintDetailsPage() {
                         disabled={
                           duplicateReviewLoading
                         }
-                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-bold text-slate-700 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#C8D8E2] bg-white px-4 py-3 text-sm font-bold text-[#425D70] transition hover:border-[#1B8A8F] hover:bg-[#E8F6F4] hover:text-[#176D72] disabled:cursor-not-allowed disabled:opacity-50"
                       >
                         {duplicateReviewLoading ? (
                           <Loader2
@@ -1379,7 +1369,7 @@ function AdminComplaintDetailsPage() {
                         disabled={
                           duplicateReviewLoading
                         }
-                        className="inline-flex items-center justify-center gap-2 rounded-xl bg-purple-600 px-4 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-purple-700 disabled:cursor-not-allowed disabled:bg-purple-300"
+                        className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#1B8A8F] px-4 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-[#176D72] disabled:cursor-not-allowed disabled:bg-[#9BC9C9]"
                       >
                         {duplicateReviewLoading ? (
                           <Loader2
@@ -1397,19 +1387,19 @@ function AdminComplaintDetailsPage() {
                 )}
 
               {duplicateAlreadyConfirmed && (
-                <div className="mt-6 rounded-xl border border-purple-200 bg-purple-50 p-4">
+                <div className="mt-6 rounded-xl border border-[#B9DDDA] bg-[#E8F6F4] p-4">
                   <div className="flex gap-3">
                     <CheckCircle2
                       size={20}
-                      className="mt-0.5 shrink-0 text-purple-600"
+                      className="mt-0.5 shrink-0 text-[#1B8A8F]"
                     />
 
                     <div>
-                      <p className="text-sm font-bold text-purple-800">
+                      <p className="text-sm font-bold text-[#155E63]">
                         Duplicate Confirmed
                       </p>
 
-                      <p className="mt-1 text-sm leading-6 text-purple-700">
+                      <p className="mt-1 text-sm leading-6 text-[#176D72]">
                         This complaint has been reviewed and
                         confirmed as a duplicate. It will
                         not be forwarded for normal officer
@@ -1431,7 +1421,7 @@ function AdminComplaintDetailsPage() {
             >
               <div className="mb-5 flex items-center justify-between gap-4">
                 <div>
-                  <p className="text-sm text-slate-500">
+                  <p className="text-sm text-[#60798C]">
                     Complete processing timeline for this
                     complaint.
                   </p>
@@ -1441,7 +1431,7 @@ function AdminComplaintDetailsPage() {
                   type="button"
                   onClick={loadComplaintHistory}
                   disabled={loadingHistory}
-                  className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-600 transition hover:border-blue-200 hover:text-blue-600 disabled:opacity-50"
+                  className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-[#D8E5EC] bg-white px-3 py-2 text-xs font-bold text-[#60798C] transition hover:border-[#8FC6CC] hover:text-[#1B8A8F] disabled:opacity-50"
                 >
                   <RefreshCw
                     size={14}
@@ -1460,7 +1450,7 @@ function AdminComplaintDetailsPage() {
                 <div className="flex items-center justify-center py-10">
                   <Loader2
                     size={26}
-                    className="animate-spin text-blue-600"
+                    className="animate-spin text-[#1F5F8B]"
                   />
                 </div>
               )}
@@ -1490,17 +1480,17 @@ function AdminComplaintDetailsPage() {
               {!loadingHistory &&
                 !historyError &&
                 history.length === 0 && (
-                  <div className="rounded-xl bg-slate-50 px-5 py-8 text-center">
+                  <div className="rounded-xl bg-[#F6F9FB] px-5 py-8 text-center">
                     <History
                       size={28}
-                      className="mx-auto text-slate-300"
+                      className="mx-auto text-[#B7C8D3]"
                     />
 
-                    <p className="mt-3 text-sm font-bold text-slate-700">
+                    <p className="mt-3 text-sm font-bold text-[#425D70]">
                       No history available
                     </p>
 
-                    <p className="mt-1 text-xs text-slate-500">
+                    <p className="mt-1 text-xs text-[#60798C]">
                       Complaint status changes will appear
                       here.
                     </p>
@@ -1528,13 +1518,9 @@ function AdminComplaintDetailsPage() {
                             }
                             className="relative flex gap-4 pb-7 last:pb-0"
                           >
-                            {/* LINE */}
-
                             {!isLast && (
-                              <div className="absolute left-[11px] top-6 h-full w-px bg-slate-200" />
+                              <div className="absolute left-[11px] top-6 h-full w-px bg-[#D8E5EC]" />
                             )}
-
-                            {/* DOT */}
 
                             <div
                               className={`relative z-10 mt-1 h-6 w-6 shrink-0 rounded-full border-4 border-white shadow-sm ${getHistoryDotStyle(
@@ -1542,9 +1528,7 @@ function AdminComplaintDetailsPage() {
                               )}`}
                             />
 
-                            {/* CONTENT */}
-
-                            <div className="min-w-0 flex-1 rounded-xl border border-slate-200 bg-slate-50/50 p-4">
+                            <div className="min-w-0 flex-1 rounded-xl border border-[#D8E5EC] bg-[#F8FBFC] p-4">
                               <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-start">
                                 <div>
                                   <div className="flex flex-wrap items-center gap-2">
@@ -1562,7 +1546,7 @@ function AdminComplaintDetailsPage() {
 
                                         <ArrowRight
                                           size={14}
-                                          className="text-slate-400"
+                                          className="text-[#8A9EAC]"
                                         />
                                       </>
                                     ) : null}
@@ -1579,7 +1563,7 @@ function AdminComplaintDetailsPage() {
                                   </div>
 
                                   {historyItem.remarks && (
-                                    <p className="mt-3 whitespace-pre-wrap text-sm leading-6 text-slate-600">
+                                    <p className="mt-3 whitespace-pre-wrap text-sm leading-6 text-[#60798C]">
                                       {
                                         historyItem.remarks
                                       }
@@ -1587,7 +1571,7 @@ function AdminComplaintDetailsPage() {
                                   )}
                                 </div>
 
-                                <div className="flex shrink-0 items-center gap-1.5 text-xs text-slate-400">
+                                <div className="flex shrink-0 items-center gap-1.5 text-xs text-[#8A9EAC]">
                                   <Clock3 size={14} />
 
                                   {formatDate(
@@ -1596,22 +1580,22 @@ function AdminComplaintDetailsPage() {
                                 </div>
                               </div>
 
-                              <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-slate-200 pt-3">
+                              <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-[#D8E5EC] pt-3">
                                 <User
                                   size={14}
-                                  className="text-slate-400"
+                                  className="text-[#8A9EAC]"
                                 />
 
-                                <span className="text-xs font-semibold text-slate-600">
+                                <span className="text-xs font-semibold text-[#425D70]">
                                   {changedBy?.fullName ||
                                     "System User"}
                                 </span>
 
-                                <span className="text-xs text-slate-300">
+                                <span className="text-xs text-[#B7C8D3]">
                                   •
                                 </span>
 
-                                <span className="text-xs font-medium text-slate-500">
+                                <span className="text-xs font-medium text-[#60798C]">
                                   {formatRole(
                                     changedBy?.role
                                   )}
@@ -1619,11 +1603,11 @@ function AdminComplaintDetailsPage() {
 
                                 {changedBy?.email && (
                                   <>
-                                    <span className="text-xs text-slate-300">
+                                    <span className="text-xs text-[#B7C8D3]">
                                       •
                                     </span>
 
-                                    <span className="break-all text-xs text-slate-400">
+                                    <span className="break-all text-xs text-[#8A9EAC]">
                                       {
                                         changedBy.email
                                       }
@@ -1651,7 +1635,7 @@ function AdminComplaintDetailsPage() {
               }
             >
               {images.length === 0 ? (
-                <p className="text-sm text-slate-500">
+                <p className="text-sm text-[#60798C]">
                   No supporting images were submitted.
                 </p>
               ) : (
@@ -1674,7 +1658,7 @@ function AdminComplaintDetailsPage() {
                           href={imageUrl}
                           target="_blank"
                           rel="noreferrer"
-                          className="overflow-hidden rounded-xl border border-slate-200 bg-slate-50"
+                          className="overflow-hidden rounded-xl border border-[#D8E5EC] bg-[#F6F9FB] transition hover:border-[#8FC6CC]"
                         >
                           <img
                             src={imageUrl}
@@ -1697,10 +1681,6 @@ function AdminComplaintDetailsPage() {
           ================================================= */}
 
           <div className="space-y-6">
-
-            {/* =================================================
-                CITIZEN
-            ================================================= */}
 
             <SectionCard
               title="Citizen Information"
@@ -1750,7 +1730,6 @@ function AdminComplaintDetailsPage() {
                 complaint.location
               ).length > 0 ? (
                 <div className="space-y-4">
-                  {/* LOCATION DETAILS */}
 
                   <div className="space-y-3">
                     {complaint.location?.address && (
@@ -1781,10 +1760,8 @@ function AdminComplaintDetailsPage() {
                     )}
                   </div>
 
-                  {/* MINI MAP */}
-
                   {hasMapCoordinates ? (
-                    <div className="overflow-hidden rounded-xl border border-slate-200">
+                    <div className="overflow-hidden rounded-xl border border-[#D8E5EC]">
                       <div className="h-64 w-full">
                         <MapContainer
                           center={[
@@ -1812,6 +1789,8 @@ function AdminComplaintDetailsPage() {
                             ]}
                             radius={10}
                             pathOptions={{
+                              color: "#123B5D",
+                              fillColor: "#1B8A8F",
                               fillOpacity: 0.9,
                             }}
                           >
@@ -1842,11 +1821,11 @@ function AdminComplaintDetailsPage() {
                         </MapContainer>
                       </div>
 
-                      <div className="border-t border-slate-200 bg-slate-50 px-4 py-3">
-                        <p className="flex items-start gap-2 text-xs leading-5 text-slate-500">
+                      <div className="border-t border-[#D8E5EC] bg-[#F6F9FB] px-4 py-3">
+                        <p className="flex items-start gap-2 text-xs leading-5 text-[#60798C]">
                           <MapPin
                             size={15}
-                            className="mt-0.5 shrink-0 text-blue-600"
+                            className="mt-0.5 shrink-0 text-[#1B8A8F]"
                           />
 
                           Exact complaint location based
@@ -1856,14 +1835,14 @@ function AdminComplaintDetailsPage() {
                       </div>
                     </div>
                   ) : (
-                    <div className="rounded-xl bg-slate-50 p-4">
+                    <div className="rounded-xl bg-[#F6F9FB] p-4">
                       <div className="flex gap-3">
                         <MapPin
                           size={18}
-                          className="mt-0.5 shrink-0 text-slate-400"
+                          className="mt-0.5 shrink-0 text-[#8A9EAC]"
                         />
 
-                        <p className="text-sm leading-6 text-slate-500">
+                        <p className="text-sm leading-6 text-[#60798C]">
                           GPS coordinates were not
                           provided for this complaint, so
                           a map preview is unavailable.
@@ -1873,7 +1852,7 @@ function AdminComplaintDetailsPage() {
                   )}
                 </div>
               ) : (
-                <p className="text-sm text-slate-500">
+                <p className="text-sm text-[#60798C]">
                   No location details available.
                 </p>
               )}
@@ -1912,10 +1891,6 @@ function AdminComplaintDetailsPage() {
                 }
               />
             </SectionCard>
-
-            {/* =================================================
-                DUPLICATE PROCESSING BLOCK
-            ================================================= */}
 
             {isPotentialDuplicate &&
               !duplicateAlreadyConfirmed && (
@@ -1976,7 +1951,7 @@ function AdminComplaintDetailsPage() {
                   )}
 
                   <div>
-                    <label className="mb-2 block text-sm font-semibold text-slate-700">
+                    <label className="mb-2 block text-sm font-semibold text-[#425D70]">
                       Department
                     </label>
 
@@ -1997,7 +1972,7 @@ function AdminComplaintDetailsPage() {
                         loadingDepartments ||
                         assigning
                       }
-                      className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100 disabled:bg-slate-100"
+                      className="w-full rounded-xl border border-[#C8D8E2] bg-white px-4 py-3 text-sm outline-none transition focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:bg-[#F1F5F7]"
                     >
                       <option value="">
                         {loadingDepartments
@@ -2026,7 +2001,7 @@ function AdminComplaintDetailsPage() {
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-sm font-semibold text-slate-700">
+                    <label className="mb-2 block text-sm font-semibold text-[#425D70]">
                       Officer
                     </label>
 
@@ -2042,7 +2017,7 @@ function AdminComplaintDetailsPage() {
                         loadingOfficers ||
                         assigning
                       }
-                      className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100 disabled:bg-slate-100"
+                      className="w-full rounded-xl border border-[#C8D8E2] bg-white px-4 py-3 text-sm outline-none transition focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:bg-[#F1F5F7]"
                     >
                       <option value="">
                         {!selectedDepartment
@@ -2072,7 +2047,7 @@ function AdminComplaintDetailsPage() {
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-sm font-semibold text-slate-700">
+                    <label className="mb-2 block text-sm font-semibold text-[#425D70]">
                       Assignment Remarks
                     </label>
 
@@ -2088,7 +2063,7 @@ function AdminComplaintDetailsPage() {
                       }
                       disabled={assigning}
                       placeholder="Optional remarks about this assignment..."
-                      className="w-full resize-none rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 disabled:bg-slate-100"
+                      className="w-full resize-none rounded-xl border border-[#C8D8E2] bg-white px-4 py-3 text-sm outline-none transition placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:bg-[#F1F5F7]"
                     />
                   </div>
 
@@ -2099,7 +2074,7 @@ function AdminComplaintDetailsPage() {
                       !selectedDepartment ||
                       !selectedOfficer
                     }
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-300"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#1F5F8B] px-4 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-[#174D72] disabled:cursor-not-allowed disabled:bg-[#AABBC5]"
                   >
                     {assigning ? (
                       <>
@@ -2141,8 +2116,8 @@ function AdminComplaintDetailsPage() {
                   }
                   className="space-y-4"
                 >
-                  <div className="rounded-xl bg-slate-50 px-4 py-3">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                  <div className="rounded-xl bg-[#F6F9FB] px-4 py-3">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-[#8A9EAC]">
                       Current Status
                     </p>
 
@@ -2190,7 +2165,7 @@ function AdminComplaintDetailsPage() {
                   )}
 
                   <div>
-                    <label className="mb-2 block text-sm font-semibold text-slate-700">
+                    <label className="mb-2 block text-sm font-semibold text-[#425D70]">
                       New Status
                     </label>
 
@@ -2207,7 +2182,7 @@ function AdminComplaintDetailsPage() {
                       disabled={
                         updatingStatus
                       }
-                      className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100 disabled:bg-slate-100"
+                      className="w-full rounded-xl border border-[#C8D8E2] bg-white px-4 py-3 text-sm outline-none transition focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:bg-[#F1F5F7]"
                     >
                       <option value="submitted">
                         Submitted
@@ -2232,7 +2207,7 @@ function AdminComplaintDetailsPage() {
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-sm font-semibold text-slate-700">
+                    <label className="mb-2 block text-sm font-semibold text-[#425D70]">
                       Status Remarks
                     </label>
 
@@ -2248,7 +2223,7 @@ function AdminComplaintDetailsPage() {
                         updatingStatus
                       }
                       placeholder="Add remarks about this status update..."
-                      className="w-full resize-none rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 disabled:bg-slate-100"
+                      className="w-full resize-none rounded-xl border border-[#C8D8E2] bg-white px-4 py-3 text-sm outline-none transition placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:bg-[#F1F5F7]"
                     />
                   </div>
 
@@ -2260,7 +2235,7 @@ function AdminComplaintDetailsPage() {
                       selectedStatus ===
                         complaint.status
                     }
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-300"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#123B5D] px-4 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-[#0E2C43] disabled:cursor-not-allowed disabled:bg-[#AABBC5]"
                   >
                     {updatingStatus ? (
                       <>
@@ -2288,19 +2263,19 @@ function AdminComplaintDetailsPage() {
 
             {terminalStatus &&
               !duplicateAlreadyConfirmed && (
-                <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                <section className="rounded-2xl border border-[#D8E5EC] bg-white p-5 shadow-sm">
                   <div className="flex gap-3">
                     <CheckCircle2
                       size={21}
-                      className="mt-0.5 shrink-0 text-slate-500"
+                      className="mt-0.5 shrink-0 text-[#1B8A8F]"
                     />
 
                     <div>
-                      <p className="font-bold text-slate-800">
+                      <p className="font-bold text-[#16324A]">
                         Complaint Processing Completed
                       </p>
 
-                      <p className="mt-1 text-sm leading-6 text-slate-500">
+                      <p className="mt-1 text-sm leading-6 text-[#60798C]">
                         This complaint currently has a{" "}
                         <span className="font-semibold">
                           {formatStatus(
@@ -2324,11 +2299,11 @@ function AdminComplaintDetailsPage() {
                 <CheckCircle2 size={20} />
               }
             >
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+              <p className="text-xs font-semibold uppercase tracking-wide text-[#8A9EAC]">
                 Latest Admin Remarks
               </p>
 
-              <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-600">
+              <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-[#60798C]">
                 {complaint.adminRemarks ||
                   "No administrative remarks have been added yet."}
               </p>
@@ -2350,13 +2325,13 @@ function SectionCard({
   children,
 }) {
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <section className="rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm">
       <div className="mb-5 flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#E8F6F4] text-[#1B8A8F]">
           {icon}
         </div>
 
-        <h2 className="text-lg font-bold">
+        <h2 className="text-lg font-bold text-[#16324A]">
           {title}
         </h2>
       </div>
@@ -2376,11 +2351,11 @@ function InfoField({
 }) {
   return (
     <div>
-      <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+      <p className="text-xs font-semibold uppercase tracking-wide text-[#8A9EAC]">
         {label}
       </p>
 
-      <p className="mt-1 break-words text-sm font-semibold capitalize text-slate-700">
+      <p className="mt-1 break-words text-sm font-semibold capitalize text-[#425D70]">
         {String(value ?? "-")}
       </p>
     </div>
@@ -2397,17 +2372,17 @@ function InfoRow({
   value,
 }) {
   return (
-    <div className="flex gap-3 border-b border-slate-100 py-3 first:pt-0 last:border-b-0 last:pb-0">
-      <div className="mt-0.5 text-slate-400">
+    <div className="flex gap-3 border-b border-[#EDF3F6] py-3 first:pt-0 last:border-b-0 last:pb-0">
+      <div className="mt-0.5 text-[#1B8A8F]">
         {icon}
       </div>
 
       <div className="min-w-0">
-        <p className="text-xs font-semibold text-slate-400">
+        <p className="text-xs font-semibold text-[#8A9EAC]">
           {label}
         </p>
 
-        <p className="mt-1 break-words text-sm font-semibold text-slate-700">
+        <p className="mt-1 break-words text-sm font-semibold text-[#425D70]">
           {value}
         </p>
       </div>

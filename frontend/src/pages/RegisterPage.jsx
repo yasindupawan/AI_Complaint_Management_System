@@ -240,16 +240,24 @@ function RegisterPage() {
 
   const [language, setLanguage] = useState("EN");
 
-  const [showPassword, setShowPassword] = useState(false);
-
-  const [showConfirmPassword, setShowConfirmPassword] =
+  const [showPassword, setShowPassword] =
     useState(false);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [
+    showConfirmPassword,
+    setShowConfirmPassword,
+  ] = useState(false);
 
-  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] =
+    useState(false);
 
-  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] =
+    useState("");
+
+  const [
+    successMessage,
+    setSuccessMessage,
+  ] = useState("");
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -283,7 +291,6 @@ function RegisterPage() {
           : value,
     }));
 
-    // Clear old messages when user edits form
     if (errorMessage) {
       setErrorMessage("");
     }
@@ -299,10 +306,6 @@ function RegisterPage() {
     setErrorMessage("");
     setSuccessMessage("");
 
-    /* ---------------------------------------------------------
-       1. Password validation
-    --------------------------------------------------------- */
-
     if (
       formData.password !==
       formData.confirmPassword
@@ -314,10 +317,6 @@ function RegisterPage() {
       return;
     }
 
-    /* ---------------------------------------------------------
-       2. Terms validation
-    --------------------------------------------------------- */
-
     if (!formData.acceptedTerms) {
       setErrorMessage(
         t.termsRequired
@@ -328,14 +327,6 @@ function RegisterPage() {
 
     try {
       setIsLoading(true);
-
-      /* -------------------------------------------------------
-         3. Prepare backend data
-
-         IMPORTANT:
-         confirmPassword and acceptedTerms are frontend-only.
-         Do not send them to backend.
-      ------------------------------------------------------- */
 
       const registrationData = {
         fullName:
@@ -353,10 +344,6 @@ function RegisterPage() {
           formData.preferredLanguage,
       };
 
-      /* -------------------------------------------------------
-         4. Call backend API
-      ------------------------------------------------------- */
-
       const response =
         await registerUser(
           registrationData
@@ -367,18 +354,10 @@ function RegisterPage() {
         response
       );
 
-      /* -------------------------------------------------------
-         5. Success
-      ------------------------------------------------------- */
-
       setSuccessMessage(
         response?.message ||
           t.registrationSuccess
       );
-
-      /* -------------------------------------------------------
-         6. Clear form
-      ------------------------------------------------------- */
 
       setFormData({
         fullName: "",
@@ -390,26 +369,19 @@ function RegisterPage() {
         acceptedTerms: false,
       });
 
-      /* -------------------------------------------------------
-         7. Redirect to Login
-      ------------------------------------------------------- */
-
       setTimeout(() => {
         navigate("/login");
       }, 1500);
-
     } catch (error) {
       console.error(
         "Registration failed:",
         error
       );
 
-      /* -------------------------------------------------------
-         Handle backend validation errors
-      ------------------------------------------------------- */
-
       if (
-        Array.isArray(error?.errors) &&
+        Array.isArray(
+          error?.errors
+        ) &&
         error.errors.length > 0
       ) {
         setErrorMessage(
@@ -427,20 +399,19 @@ function RegisterPage() {
             "Registration failed. Please try again."
         );
       }
-
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="min-h-screen bg-[#F6F9FB] text-[#16324A]">
 
       {/* =====================================================
           HEADER
       ===================================================== */}
 
-      <header className="border-b border-slate-200 bg-white">
+      <header className="border-b border-[#D8E5EC] bg-white/95 backdrop-blur">
 
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
 
@@ -449,17 +420,17 @@ function RegisterPage() {
             className="flex items-center gap-3"
           >
 
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-600 text-white shadow-md shadow-blue-200">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#123B5D] text-white shadow-md shadow-[#123B5D]/15">
               <BrainCircuit size={25} />
             </div>
 
             <div className="leading-tight">
 
-              <p className="text-[17px] font-bold text-slate-900">
+              <p className="text-[17px] font-bold text-[#16324A]">
                 {t.brand}
               </p>
 
-              <p className="text-xs font-medium text-blue-600">
+              <p className="text-xs font-medium text-[#1B8A8F]">
                 {t.brandSub}
               </p>
 
@@ -467,13 +438,13 @@ function RegisterPage() {
 
           </Link>
 
-          {/* Language Selector */}
+          {/* LANGUAGE SELECTOR */}
 
-          <div className="flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 p-1">
+          <div className="flex items-center gap-1 rounded-lg border border-[#D8E5EC] bg-[#F6F9FB] p-1">
 
             <Globe2
               size={16}
-              className="ml-2 hidden text-slate-500 sm:block"
+              className="ml-2 hidden text-[#60798C] sm:block"
             />
 
             {[
@@ -485,13 +456,14 @@ function RegisterPage() {
               <button
                 key={item}
                 type="button"
+                disabled={isLoading}
                 onClick={() =>
                   setLanguage(item)
                 }
                 className={`rounded-md px-2.5 py-1.5 text-xs font-semibold transition ${
                   language === item
-                    ? "bg-white text-blue-600 shadow-sm"
-                    : "text-slate-500 hover:text-slate-900"
+                    ? "bg-white text-[#1F5F8B] shadow-sm"
+                    : "text-[#60798C] hover:text-[#16324A]"
                 }`}
               >
                 {item}
@@ -511,9 +483,9 @@ function RegisterPage() {
 
       <main className="relative overflow-hidden">
 
-        <div className="absolute -left-32 top-20 h-96 w-96 rounded-full bg-blue-100/60 blur-3xl" />
+        <div className="absolute -left-32 top-20 h-96 w-96 rounded-full bg-[#DCECF4]/80 blur-3xl" />
 
-        <div className="absolute -right-32 bottom-0 h-96 w-96 rounded-full bg-indigo-100/50 blur-3xl" />
+        <div className="absolute -right-32 bottom-0 h-96 w-96 rounded-full bg-[#DDF3EE]/70 blur-3xl" />
 
         <div className="relative mx-auto grid min-h-[calc(100vh-78px)] max-w-7xl items-center gap-16 px-5 py-12 lg:grid-cols-2 lg:px-8">
 
@@ -523,7 +495,7 @@ function RegisterPage() {
 
           <div className="hidden lg:block">
 
-            <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-600">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#B9DDDA] bg-[#E8F6F4] px-4 py-2 text-sm font-semibold text-[#1B8A8F]">
 
               <UserPlus size={17} />
 
@@ -531,39 +503,39 @@ function RegisterPage() {
 
             </div>
 
-            <h1 className="mt-7 max-w-xl text-5xl font-extrabold leading-[1.15] tracking-tight text-slate-900">
+            <h1 className="mt-7 max-w-xl text-5xl font-extrabold leading-[1.15] tracking-tight text-[#16324A]">
 
               {t.heroTitle1}
 
-              <span className="mt-1 block text-blue-600">
+              <span className="mt-1 block text-[#1B8A8F]">
                 {t.heroTitle2}
               </span>
 
             </h1>
 
-            <p className="mt-6 max-w-lg text-lg leading-8 text-slate-600">
+            <p className="mt-6 max-w-lg text-lg leading-8 text-[#60798C]">
               {t.heroDescription}
             </p>
 
-            {/* Feature Cards */}
+            {/* FEATURE CARDS */}
 
             <div className="mt-9 grid max-w-lg gap-4">
 
-              {/* Easy Complaint Reporting */}
+              {/* EASY COMPLAINT REPORTING */}
 
-              <div className="flex items-start gap-4 rounded-2xl border border-slate-200 bg-white/80 p-5 shadow-sm backdrop-blur">
+              <div className="flex items-start gap-4 rounded-2xl border border-[#D8E5EC] bg-white/90 p-5 shadow-sm backdrop-blur">
 
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#EAF3F8] text-[#1F5F8B]">
                   <UserPlus size={22} />
                 </div>
 
                 <div>
 
-                  <h3 className="font-bold text-slate-900">
+                  <h3 className="font-bold text-[#16324A]">
                     {t.easyTitle}
                   </h3>
 
-                  <p className="mt-1 text-sm leading-6 text-slate-500">
+                  <p className="mt-1 text-sm leading-6 text-[#60798C]">
                     {t.easyDescription}
                   </p>
 
@@ -573,9 +545,9 @@ function RegisterPage() {
 
               {/* AI */}
 
-              <div className="flex items-start gap-4 rounded-2xl border border-slate-200 bg-white/80 p-5 shadow-sm backdrop-blur">
+              <div className="flex items-start gap-4 rounded-2xl border border-[#D8E5EC] bg-white/90 p-5 shadow-sm backdrop-blur">
 
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#E8F6F4] text-[#1B8A8F]">
                   <BrainCircuit
                     size={22}
                   />
@@ -583,11 +555,11 @@ function RegisterPage() {
 
                 <div>
 
-                  <h3 className="font-bold text-slate-900">
+                  <h3 className="font-bold text-[#16324A]">
                     {t.smartTitle}
                   </h3>
 
-                  <p className="mt-1 text-sm leading-6 text-slate-500">
+                  <p className="mt-1 text-sm leading-6 text-[#60798C]">
                     {t.smartDescription}
                   </p>
 
@@ -595,9 +567,9 @@ function RegisterPage() {
 
               </div>
 
-              {/* Tracking */}
+              {/* TRACKING */}
 
-              <div className="flex items-start gap-4 rounded-2xl border border-slate-200 bg-white/80 p-5 shadow-sm backdrop-blur">
+              <div className="flex items-start gap-4 rounded-2xl border border-[#D8E5EC] bg-white/90 p-5 shadow-sm backdrop-blur">
 
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
                   <CheckCircle2
@@ -607,11 +579,11 @@ function RegisterPage() {
 
                 <div>
 
-                  <h3 className="font-bold text-slate-900">
+                  <h3 className="font-bold text-[#16324A]">
                     {t.trackTitle}
                   </h3>
 
-                  <p className="mt-1 text-sm leading-6 text-slate-500">
+                  <p className="mt-1 text-sm leading-6 text-[#60798C]">
                     {t.trackDescription}
                   </p>
 
@@ -631,7 +603,7 @@ function RegisterPage() {
 
             <Link
               to="/"
-              className="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-blue-600 lg:hidden"
+              className="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-[#60798C] transition hover:text-[#1B8A8F] lg:hidden"
             >
 
               <ArrowLeft size={17} />
@@ -640,21 +612,21 @@ function RegisterPage() {
 
             </Link>
 
-            <div className="rounded-[28px] border border-slate-200 bg-white p-7 shadow-xl shadow-slate-200/60 sm:p-9">
+            <div className="rounded-[28px] border border-[#D8E5EC] bg-white p-7 shadow-xl shadow-[#123B5D]/10 sm:p-9">
 
-              {/* Form Header */}
+              {/* FORM HEADER */}
 
               <div>
 
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#E8F6F4] text-[#1B8A8F]">
                   <UserPlus size={24} />
                 </div>
 
-                <h2 className="mt-5 text-3xl font-bold tracking-tight">
+                <h2 className="mt-5 text-3xl font-bold tracking-tight text-[#16324A]">
                   {t.register}
                 </h2>
 
-                <p className="mt-2 text-sm leading-6 text-slate-500">
+                <p className="mt-2 text-sm leading-6 text-[#60798C]">
                   {t.registerDescription}
                 </p>
 
@@ -713,7 +685,7 @@ function RegisterPage() {
 
                   <label
                     htmlFor="fullName"
-                    className="mb-2 block text-sm font-semibold text-slate-700"
+                    className="mb-2 block text-sm font-semibold text-[#425D70]"
                   >
                     {t.fullName}
                   </label>
@@ -722,7 +694,7 @@ function RegisterPage() {
 
                     <User
                       size={19}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9EAC]"
                     />
 
                     <input
@@ -741,7 +713,7 @@ function RegisterPage() {
                       autoComplete="name"
                       required
                       disabled={isLoading}
-                      className="w-full rounded-xl border border-slate-300 bg-white py-3.5 pl-11 pr-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 disabled:cursor-not-allowed disabled:bg-slate-50"
+                      className="w-full rounded-xl border border-[#C8D8E2] bg-white py-3.5 pl-11 pr-4 text-sm text-[#16324A] outline-none transition placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:cursor-not-allowed disabled:bg-[#F1F5F7]"
                     />
 
                   </div>
@@ -754,7 +726,7 @@ function RegisterPage() {
 
                   <label
                     htmlFor="email"
-                    className="mb-2 block text-sm font-semibold text-slate-700"
+                    className="mb-2 block text-sm font-semibold text-[#425D70]"
                   >
                     {t.email}
                   </label>
@@ -763,7 +735,7 @@ function RegisterPage() {
 
                     <Mail
                       size={19}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9EAC]"
                     />
 
                     <input
@@ -782,7 +754,7 @@ function RegisterPage() {
                       autoComplete="email"
                       required
                       disabled={isLoading}
-                      className="w-full rounded-xl border border-slate-300 bg-white py-3.5 pl-11 pr-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 disabled:cursor-not-allowed disabled:bg-slate-50"
+                      className="w-full rounded-xl border border-[#C8D8E2] bg-white py-3.5 pl-11 pr-4 text-sm text-[#16324A] outline-none transition placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:cursor-not-allowed disabled:bg-[#F1F5F7]"
                     />
 
                   </div>
@@ -793,13 +765,13 @@ function RegisterPage() {
 
                 <div className="grid gap-5 sm:grid-cols-2">
 
-                  {/* Password */}
+                  {/* PASSWORD */}
 
                   <div>
 
                     <label
                       htmlFor="password"
-                      className="mb-2 block text-sm font-semibold text-slate-700"
+                      className="mb-2 block text-sm font-semibold text-[#425D70]"
                     >
                       {t.password}
                     </label>
@@ -808,7 +780,7 @@ function RegisterPage() {
 
                       <LockKeyhole
                         size={18}
-                        className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                        className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9EAC]"
                       />
 
                       <input
@@ -831,20 +803,18 @@ function RegisterPage() {
                         autoComplete="new-password"
                         required
                         disabled={isLoading}
-                        className="w-full rounded-xl border border-slate-300 bg-white py-3.5 pl-11 pr-11 text-sm outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 disabled:cursor-not-allowed disabled:bg-slate-50"
+                        className="w-full rounded-xl border border-[#C8D8E2] bg-white py-3.5 pl-11 pr-11 text-sm text-[#16324A] outline-none transition placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:cursor-not-allowed disabled:bg-[#F1F5F7]"
                       />
 
                       <button
                         type="button"
-                        disabled={
-                          isLoading
-                        }
+                        disabled={isLoading}
                         onClick={() =>
                           setShowPassword(
                             !showPassword
                           )
                         }
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8A9EAC] transition hover:text-[#425D70]"
                       >
 
                         {showPassword ? (
@@ -863,24 +833,22 @@ function RegisterPage() {
 
                   </div>
 
-                  {/* Confirm Password */}
+                  {/* CONFIRM PASSWORD */}
 
                   <div>
 
                     <label
                       htmlFor="confirmPassword"
-                      className="mb-2 block text-sm font-semibold text-slate-700"
+                      className="mb-2 block text-sm font-semibold text-[#425D70]"
                     >
-                      {
-                        t.confirmPassword
-                      }
+                      {t.confirmPassword}
                     </label>
 
                     <div className="relative">
 
                       <LockKeyhole
                         size={18}
-                        className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                        className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9EAC]"
                       />
 
                       <input
@@ -903,20 +871,18 @@ function RegisterPage() {
                         autoComplete="new-password"
                         required
                         disabled={isLoading}
-                        className="w-full rounded-xl border border-slate-300 bg-white py-3.5 pl-11 pr-11 text-sm outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 disabled:cursor-not-allowed disabled:bg-slate-50"
+                        className="w-full rounded-xl border border-[#C8D8E2] bg-white py-3.5 pl-11 pr-11 text-sm text-[#16324A] outline-none transition placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:cursor-not-allowed disabled:bg-[#F1F5F7]"
                       />
 
                       <button
                         type="button"
-                        disabled={
-                          isLoading
-                        }
+                        disabled={isLoading}
                         onClick={() =>
                           setShowConfirmPassword(
                             !showConfirmPassword
                           )
                         }
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8A9EAC] transition hover:text-[#425D70]"
                       >
 
                         {showConfirmPassword ? (
@@ -943,18 +909,16 @@ function RegisterPage() {
 
                   <label
                     htmlFor="preferredLanguage"
-                    className="mb-2 block text-sm font-semibold text-slate-700"
+                    className="mb-2 block text-sm font-semibold text-[#425D70]"
                   >
-                    {
-                      t.preferredLanguage
-                    }
+                    {t.preferredLanguage}
                   </label>
 
                   <div className="relative">
 
                     <Languages
                       size={19}
-                      className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                      className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9EAC]"
                     />
 
                     <select
@@ -967,7 +931,7 @@ function RegisterPage() {
                         handleChange
                       }
                       disabled={isLoading}
-                      className="w-full appearance-none rounded-xl border border-slate-300 bg-white py-3.5 pl-11 pr-4 text-sm text-slate-700 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100 disabled:cursor-not-allowed disabled:bg-slate-50"
+                      className="w-full appearance-none rounded-xl border border-[#C8D8E2] bg-white py-3.5 pl-11 pr-4 text-sm text-[#16324A] outline-none transition focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:cursor-not-allowed disabled:bg-[#F1F5F7]"
                     >
 
                       <option value="english">
@@ -1002,16 +966,16 @@ function RegisterPage() {
                       handleChange
                     }
                     disabled={isLoading}
-                    className="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-blue-600"
+                    className="mt-1 h-4 w-4 shrink-0 cursor-pointer rounded border-[#C8D8E2] accent-[#1B8A8F]"
                   />
 
-                  <span className="text-sm leading-6 text-slate-500">
+                  <span className="text-sm leading-6 text-[#60798C]">
 
                     {t.termsStart}{" "}
 
                     <button
                       type="button"
-                      className="font-semibold text-blue-600 hover:text-blue-700"
+                      className="font-semibold text-[#1B8A8F] transition hover:text-[#176D72]"
                     >
                       {t.terms}
                     </button>{" "}
@@ -1020,7 +984,7 @@ function RegisterPage() {
 
                     <button
                       type="button"
-                      className="font-semibold text-blue-600 hover:text-blue-700"
+                      className="font-semibold text-[#1B8A8F] transition hover:text-[#176D72]"
                     >
                       {t.privacy}
                     </button>
@@ -1034,7 +998,7 @@ function RegisterPage() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-200 transition hover:-translate-y-0.5 hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#1F5F8B] px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#1F5F8B]/20 transition hover:-translate-y-0.5 hover:bg-[#174D72] disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0"
                 >
 
                   {isLoading && (
@@ -1054,15 +1018,15 @@ function RegisterPage() {
 
               {/* LOGIN LINK */}
 
-              <div className="mt-7 border-t border-slate-200 pt-6 text-center">
+              <div className="mt-7 border-t border-[#D8E5EC] pt-6 text-center">
 
-                <p className="text-sm text-slate-500">
+                <p className="text-sm text-[#60798C]">
 
                   {t.alreadyAccount}{" "}
 
                   <Link
                     to="/login"
-                    className="font-bold text-blue-600 transition hover:text-blue-700"
+                    className="font-bold text-[#1B8A8F] transition hover:text-[#176D72]"
                   >
                     {t.signIn}
                   </Link>
@@ -1073,7 +1037,7 @@ function RegisterPage() {
 
             </div>
 
-            <p className="mt-5 px-4 text-center text-xs leading-5 text-slate-400">
+            <p className="mt-5 px-4 text-center text-xs leading-5 text-[#8A9EAC]">
               {t.footer}
             </p>
 

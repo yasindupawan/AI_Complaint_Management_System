@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+
 import {
   ArrowLeft,
   CalendarDays,
@@ -83,16 +84,16 @@ const getStatusStyle = (status) => {
       return "bg-amber-50 text-amber-700";
 
     case "assigned":
-      return "bg-indigo-50 text-indigo-700";
+      return "bg-[#E8F6F4] text-[#176D72]";
 
     case "rejected":
       return "bg-red-50 text-red-700";
 
     case "duplicate":
-      return "bg-purple-50 text-purple-700";
+      return "bg-[#EDF5F5] text-[#176D72]";
 
     default:
-      return "bg-blue-50 text-blue-700";
+      return "bg-[#EAF3F8] text-[#1F5F8B]";
   }
 };
 
@@ -236,7 +237,7 @@ function MyComplaintsPage() {
   ========================================================= */
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="min-h-screen bg-[#F6F9FB] text-[#16324A]">
       <main className="mx-auto max-w-7xl px-5 py-8 lg:px-8 lg:py-10">
 
         {/* =====================================================
@@ -245,7 +246,7 @@ function MyComplaintsPage() {
 
         <Link
           to="/dashboard"
-          className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-blue-600"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-[#60798C] transition hover:text-[#1B8A8F]"
         >
           <ArrowLeft size={17} />
           Back to Dashboard
@@ -258,15 +259,15 @@ function MyComplaintsPage() {
         <section className="mt-6 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
 
           <div>
-            <p className="text-sm font-semibold text-blue-600">
+            <p className="text-sm font-semibold text-[#1B8A8F]">
               Citizen Portal
             </p>
 
-            <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">
+            <h1 className="mt-1 text-3xl font-bold tracking-tight text-[#16324A] sm:text-4xl">
               My Complaints
             </h1>
 
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500 sm:text-base">
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-[#60798C] sm:text-base">
               View your submitted complaints and track
               their current processing status.
             </p>
@@ -274,7 +275,7 @@ function MyComplaintsPage() {
 
           <Link
             to="/complaints/new"
-            className="inline-flex w-fit items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 font-bold text-white shadow-lg shadow-blue-200 transition hover:-translate-y-0.5 hover:bg-blue-700"
+            className="inline-flex w-fit items-center gap-2 rounded-xl bg-[#1F5F8B] px-5 py-3 font-bold text-white shadow-lg shadow-[#1F5F8B]/20 transition hover:-translate-y-0.5 hover:bg-[#174D72]"
           >
             <Plus size={19} />
             New Complaint
@@ -286,29 +287,33 @@ function MyComplaintsPage() {
         ===================================================== */}
 
         {!loading && !error && (
-          <section className="mt-8 rounded-2xl border border-slate-200 bg-white px-6 py-5 shadow-sm">
+          <section className="mt-8 rounded-2xl border border-[#D8E5EC] bg-white px-6 py-5 shadow-sm">
 
             <div className="flex flex-wrap items-center justify-between gap-4">
 
               <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#EAF3F8] text-[#1F5F8B]">
                   <FileText size={21} />
                 </div>
 
                 <div>
-                  <p className="text-sm text-slate-500">
+
+                  <p className="text-sm text-[#60798C]">
                     Total Complaints
                   </p>
 
-                  <p className="text-2xl font-extrabold">
+                  <p className="text-2xl font-extrabold text-[#16324A]">
                     {complaints.length}
                   </p>
+
                 </div>
+
               </div>
 
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-[#60798C]">
                 Showing{" "}
-                <span className="font-bold text-slate-800">
+                <span className="font-bold text-[#16324A]">
                   {filteredComplaints.length}
                 </span>{" "}
                 complaint
@@ -316,7 +321,9 @@ function MyComplaintsPage() {
                   ? "s"
                   : ""}
               </p>
+
             </div>
+
           </section>
         )}
 
@@ -324,16 +331,17 @@ function MyComplaintsPage() {
             FILTERS
         ===================================================== */}
 
-        <section className="mt-6 rounded-2xl border border-slate-200 bg-white p-5">
+        <section className="mt-6 rounded-2xl border border-[#D8E5EC] bg-white p-5 shadow-sm">
 
           <div className="grid gap-4 lg:grid-cols-[1fr_220px_220px]">
 
             {/* SEARCH */}
 
             <div className="relative">
+
               <Search
                 size={18}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9EAC]"
               />
 
               <input
@@ -343,16 +351,18 @@ function MyComplaintsPage() {
                   setSearch(event.target.value)
                 }
                 placeholder="Search complaints..."
-                className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-11 pr-4 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-50"
+                className="w-full rounded-xl border border-[#C8D8E2] bg-white py-3 pl-11 pr-4 text-sm text-[#16324A] outline-none transition placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4]"
               />
+
             </div>
 
             {/* STATUS FILTER */}
 
             <div className="relative">
+
               <Filter
                 size={17}
-                className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9EAC]"
               />
 
               <select
@@ -360,7 +370,7 @@ function MyComplaintsPage() {
                 onChange={(event) =>
                   setStatusFilter(event.target.value)
                 }
-                className="w-full appearance-none rounded-xl border border-slate-200 bg-white py-3 pl-11 pr-4 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-50"
+                className="w-full appearance-none rounded-xl border border-[#C8D8E2] bg-white py-3 pl-11 pr-4 text-sm text-[#425D70] outline-none transition focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4]"
               >
                 <option value="all">
                   All Statuses
@@ -390,6 +400,7 @@ function MyComplaintsPage() {
                   Duplicate
                 </option>
               </select>
+
             </div>
 
             {/* CATEGORY FILTER */}
@@ -399,7 +410,7 @@ function MyComplaintsPage() {
               onChange={(event) =>
                 setCategoryFilter(event.target.value)
               }
-              className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-50"
+              className="w-full rounded-xl border border-[#C8D8E2] bg-white px-4 py-3 text-sm text-[#425D70] outline-none transition focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4]"
             >
               <option value="all">
                 All Categories
@@ -414,7 +425,9 @@ function MyComplaintsPage() {
                 </option>
               ))}
             </select>
+
           </div>
+
         </section>
 
         {/* =====================================================
@@ -422,18 +435,21 @@ function MyComplaintsPage() {
         ===================================================== */}
 
         {loading && (
-          <div className="mt-8 flex min-h-[300px] items-center justify-center rounded-2xl border border-slate-200 bg-white">
+          <div className="mt-8 flex min-h-[300px] items-center justify-center rounded-2xl border border-[#D8E5EC] bg-white shadow-sm">
 
             <div className="text-center">
+
               <Loader2
                 size={34}
-                className="mx-auto animate-spin text-blue-600"
+                className="mx-auto animate-spin text-[#1F5F8B]"
               />
 
-              <p className="mt-3 text-sm font-semibold text-slate-600">
+              <p className="mt-3 text-sm font-semibold text-[#60798C]">
                 Loading your complaints...
               </p>
+
             </div>
+
           </div>
         )}
 
@@ -445,12 +461,14 @@ function MyComplaintsPage() {
           <div className="mt-8 rounded-2xl border border-red-200 bg-red-50 p-6">
 
             <div className="flex items-start gap-3">
+
               <AlertCircle
                 size={22}
                 className="mt-0.5 shrink-0 text-red-600"
               />
 
               <div>
+
                 <p className="font-bold text-red-700">
                   Unable to load complaints
                 </p>
@@ -458,8 +476,11 @@ function MyComplaintsPage() {
                 <p className="mt-1 text-sm text-red-600">
                   {error}
                 </p>
+
               </div>
+
             </div>
+
           </div>
         )}
 
@@ -470,20 +491,21 @@ function MyComplaintsPage() {
         {!loading &&
           !error &&
           filteredComplaints.length === 0 && (
-            <div className="mt-8 rounded-2xl border border-slate-200 bg-white px-6 py-16 text-center">
+            <div className="mt-8 rounded-2xl border border-[#D8E5EC] bg-white px-6 py-16 text-center shadow-sm">
 
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#EAF3F8] text-[#1F5F8B]">
                 <FileText size={27} />
               </div>
 
-              <h2 className="mt-4 text-lg font-bold">
+              <h2 className="mt-4 text-lg font-bold text-[#16324A]">
                 No complaints found
               </h2>
 
-              <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
+              <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[#60798C]">
                 No complaints match your current
                 search or filter options.
               </p>
+
             </div>
           )}
 
@@ -501,8 +523,9 @@ function MyComplaintsPage() {
                   <Link
                     key={complaint._id}
                     to={`/complaints/${complaint._id}`}
-                    className="group block rounded-2xl border border-slate-200 bg-white p-5 transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-lg sm:p-6"
+                    className="group block rounded-2xl border border-[#D8E5EC] bg-white p-5 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-[#8FC6CC] hover:shadow-lg hover:shadow-[#123B5D]/5 sm:p-6"
                   >
+
                     <div className="flex items-start justify-between gap-5">
 
                       {/* LEFT */}
@@ -531,13 +554,14 @@ function MyComplaintsPage() {
                             )}{" "}
                             Priority
                           </span>
+
                         </div>
 
-                        <h2 className="mt-4 text-lg font-bold text-slate-900 transition group-hover:text-blue-600">
+                        <h2 className="mt-4 text-lg font-bold text-[#16324A] transition group-hover:text-[#1B8A8F]">
                           {complaint.title}
                         </h2>
 
-                        <p className="mt-2 line-clamp-2 max-w-3xl text-sm leading-6 text-slate-500">
+                        <p className="mt-2 line-clamp-2 max-w-3xl text-sm leading-6 text-[#60798C]">
                           {complaint.description}
                         </p>
 
@@ -546,44 +570,60 @@ function MyComplaintsPage() {
                         <div className="mt-5 flex flex-wrap gap-x-6 gap-y-3 text-sm">
 
                           <div>
-                            <span className="text-slate-400">
+
+                            <span className="text-[#8A9EAC]">
                               Category:
                             </span>{" "}
-                            <span className="font-semibold text-slate-700">
+
+                            <span className="font-semibold text-[#425D70]">
                               {formatCategory(
                                 complaint.category
                               )}
                             </span>
+
                           </div>
 
-                          <div className="flex items-center gap-1.5 text-slate-500">
-                            <CalendarDays size={15} />
+                          <div className="flex items-center gap-1.5 text-[#60798C]">
+
+                            <CalendarDays
+                              size={15}
+                              className="text-[#1B8A8F]"
+                            />
 
                             {formatDate(
                               complaint.createdAt
                             )}
+
                           </div>
+
                         </div>
 
                         {/* ID */}
 
-                        <p className="mt-4 text-xs text-slate-400">
+                        <p className="mt-4 break-all text-xs text-[#8A9EAC]">
                           Complaint ID:{" "}
                           {complaint._id}
                         </p>
+
                       </div>
 
                       {/* ARROW */}
 
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-50 text-slate-400 transition group-hover:bg-blue-50 group-hover:text-blue-600">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F6F9FB] text-[#8A9EAC] transition group-hover:bg-[#E8F6F4] group-hover:text-[#1B8A8F]">
+
                         <ChevronRight size={20} />
+
                       </div>
+
                     </div>
+
                   </Link>
                 )
               )}
+
             </section>
           )}
+
       </main>
     </div>
   );

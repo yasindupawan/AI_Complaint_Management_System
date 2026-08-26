@@ -21,7 +21,6 @@ import {
   X,
   Save,
   UserCog,
-  RefreshCw,
 } from "lucide-react";
 
 import {
@@ -768,10 +767,12 @@ function AdminUsersPage() {
       return "-";
     }
 
-    return language
-      .charAt(0)
-      .toUpperCase() +
-      language.slice(1);
+    return (
+      language
+        .charAt(0)
+        .toUpperCase() +
+      language.slice(1)
+    );
   };
 
   /* =========================================================
@@ -780,15 +781,15 @@ function AdminUsersPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen bg-[#F6F9FB]">
         <div className="flex min-h-screen items-center justify-center">
           <div className="text-center">
             <Loader2
               size={38}
-              className="mx-auto animate-spin text-blue-600"
+              className="mx-auto animate-spin text-[#1F5F8B]"
             />
 
-            <p className="mt-4 text-sm font-semibold text-slate-500">
+            <p className="mt-4 text-sm font-semibold text-[#60798C]">
               Loading user management...
             </p>
           </div>
@@ -802,7 +803,7 @@ function AdminUsersPage() {
   ========================================================= */
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="min-h-screen bg-[#F6F9FB] text-[#16324A]">
       <main className="mx-auto max-w-7xl px-5 py-8 lg:px-8 lg:py-10">
 
         {/* =====================================================
@@ -816,9 +817,10 @@ function AdminUsersPage() {
               "/admin/dashboard"
             )
           }
-          className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-blue-600"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-[#60798C] transition hover:text-[#1B8A8F]"
         >
           <ArrowLeft size={17} />
+
           Back to Admin Dashboard
         </button>
 
@@ -827,16 +829,17 @@ function AdminUsersPage() {
         ===================================================== */}
 
         <section className="mt-6 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
+
           <div>
-            <p className="text-sm font-semibold text-blue-600">
+            <p className="text-sm font-semibold text-[#1B8A8F]">
               Administration
             </p>
 
-            <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">
+            <h1 className="mt-1 text-3xl font-bold tracking-tight text-[#16324A] sm:text-4xl">
               User Management
             </h1>
 
-            <p className="mt-2 max-w-2xl text-slate-500">
+            <p className="mt-2 max-w-2xl text-[#60798C]">
               Manage registered citizens and system officers,
               control account access and maintain officer
               department assignments.
@@ -856,12 +859,14 @@ function AdminUsersPage() {
                   true
                 );
               }}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#1F5F8B] px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-[#174D72]"
             >
               <UserPlus size={18} />
+
               Add Officer
             </button>
           )}
+
         </section>
 
         {/* =====================================================
@@ -895,6 +900,7 @@ function AdminUsersPage() {
         ===================================================== */}
 
         <section className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+
           <StatCard
             title="Total Citizens"
             value={
@@ -907,7 +913,7 @@ function AdminUsersPage() {
                 size={22}
               />
             }
-            iconStyle="bg-blue-50 text-blue-600"
+            iconStyle="bg-[#EAF3F8] text-[#1F5F8B]"
           />
 
           <StatCard
@@ -937,7 +943,7 @@ function AdminUsersPage() {
                 size={22}
               />
             }
-            iconStyle="bg-indigo-50 text-indigo-600"
+            iconStyle="bg-[#E8F6F4] text-[#1B8A8F]"
           />
 
           <StatCard
@@ -952,16 +958,19 @@ function AdminUsersPage() {
                 size={22}
               />
             }
-            iconStyle="bg-violet-50 text-violet-600"
+            iconStyle="bg-[#EAF3F8] text-[#1F5F8B]"
           />
+
         </section>
 
         {/* =====================================================
             CITIZEN / OFFICER TABS
         ===================================================== */}
 
-        <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-2 shadow-sm">
+        <section className="mt-8 rounded-2xl border border-[#D8E5EC] bg-white p-2 shadow-sm">
+
           <div className="grid grid-cols-2 gap-2">
+
             <button
               type="button"
               onClick={() =>
@@ -972,8 +981,8 @@ function AdminUsersPage() {
               className={`flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold transition ${
                 activeTab ===
                 "citizens"
-                  ? "bg-blue-600 text-white shadow-sm"
-                  : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+                  ? "bg-[#1F5F8B] text-white shadow-sm"
+                  : "text-[#60798C] hover:bg-[#EAF3F8] hover:text-[#1F5F8B]"
               }`}
             >
               <UserRound size={18} />
@@ -991,8 +1000,8 @@ function AdminUsersPage() {
               className={`flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold transition ${
                 activeTab ===
                 "officers"
-                  ? "bg-blue-600 text-white shadow-sm"
-                  : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+                  ? "bg-[#1B8A8F] text-white shadow-sm"
+                  : "text-[#60798C] hover:bg-[#E8F6F4] hover:text-[#1B8A8F]"
               }`}
             >
               <ShieldCheck
@@ -1001,14 +1010,17 @@ function AdminUsersPage() {
 
               Officers
             </button>
+
           </div>
+
         </section>
 
         {/* =====================================================
             FILTERS
         ===================================================== */}
 
-        <section className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <section className="mt-6 rounded-2xl border border-[#D8E5EC] bg-white p-5 shadow-sm">
+
           <div
             className={`grid gap-4 ${
               activeTab ===
@@ -1017,12 +1029,14 @@ function AdminUsersPage() {
                 : "lg:grid-cols-[1.5fr_1fr]"
             }`}
           >
+
             {/* SEARCH */}
 
             <div className="relative">
+
               <Search
                 size={18}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9EAC]"
               />
 
               <input
@@ -1042,16 +1056,18 @@ function AdminUsersPage() {
                     ? "Search citizen name, email or ID..."
                     : "Search officer name, email or ID..."
                 }
-                className="w-full rounded-xl border border-slate-300 bg-white py-3 pl-11 pr-4 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                className="w-full rounded-xl border border-[#C8D8E2] bg-white py-3 pl-11 pr-4 text-sm text-[#16324A] outline-none transition placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4]"
               />
+
             </div>
 
             {/* STATUS */}
 
             <div className="relative">
+
               <Filter
                 size={17}
-                className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9EAC]"
               />
 
               <select
@@ -1066,7 +1082,7 @@ function AdminUsersPage() {
                       .value
                   )
                 }
-                className="w-full appearance-none rounded-xl border border-slate-300 bg-white py-3 pl-11 pr-4 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                className="w-full appearance-none rounded-xl border border-[#C8D8E2] bg-white py-3 pl-11 pr-4 text-sm text-[#425D70] outline-none transition focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4]"
               >
                 <option value="all">
                   All Statuses
@@ -1080,6 +1096,7 @@ function AdminUsersPage() {
                   Inactive
                 </option>
               </select>
+
             </div>
 
             {/* DEPARTMENT FILTER */}
@@ -1098,7 +1115,7 @@ function AdminUsersPage() {
                       .value
                   )
                 }
-                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                className="w-full rounded-xl border border-[#C8D8E2] bg-white px-4 py-3 text-sm text-[#425D70] outline-none transition focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4]"
               >
                 <option value="all">
                   All Departments
@@ -1126,20 +1143,26 @@ function AdminUsersPage() {
                 )}
               </select>
             )}
+
           </div>
 
-          <p className="mt-4 text-sm text-slate-500">
-            Showing{" "}
-            <span className="font-bold text-slate-900">
-              {
-                filteredUsers.length
-              }
-            </span>{" "}
-            {activeTab ===
-            "citizens"
-              ? "citizens"
-              : "officers"}
-          </p>
+          <div className="mt-4 rounded-xl bg-[#F6F9FB] px-4 py-3">
+
+            <p className="text-sm text-[#60798C]">
+              Showing{" "}
+              <span className="font-bold text-[#16324A]">
+                {
+                  filteredUsers.length
+                }
+              </span>{" "}
+              {activeTab ===
+              "citizens"
+                ? "citizens"
+                : "officers"}
+            </p>
+
+          </div>
+
         </section>
 
         {/* =====================================================
@@ -1147,15 +1170,18 @@ function AdminUsersPage() {
         ===================================================== */}
 
         <section className="mt-6">
+
           {filteredUsers.length ===
           0 ? (
-            <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center shadow-sm">
-              <Users
-                size={42}
-                className="mx-auto text-slate-300"
-              />
+            <div className="rounded-2xl border border-[#D8E5EC] bg-white p-12 text-center shadow-sm">
 
-              <p className="mt-4 font-bold text-slate-800">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#EAF3F8] text-[#8A9EAC]">
+                <Users
+                  size={34}
+                />
+              </div>
+
+              <p className="mt-4 font-bold text-[#16324A]">
                 No{" "}
                 {activeTab ===
                 "citizens"
@@ -1164,19 +1190,23 @@ function AdminUsersPage() {
                 found
               </p>
 
-              <p className="mt-1 text-sm text-slate-500">
+              <p className="mt-1 text-sm text-[#60798C]">
                 No users match the
                 current search or
                 filters.
               </p>
+
             </div>
           ) : (
-            <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-slate-200">
+            <div className="overflow-hidden rounded-2xl border border-[#D8E5EC] bg-white shadow-sm">
 
-                  <thead className="bg-slate-50">
+              <div className="overflow-x-auto">
+
+                <table className="min-w-full divide-y divide-[#D8E5EC]">
+
+                  <thead className="bg-[#F6F9FB]">
                     <tr>
+
                       <TableHeader>
                         User
                       </TableHeader>
@@ -1203,23 +1233,28 @@ function AdminUsersPage() {
                       <TableHeader align="right">
                         Actions
                       </TableHeader>
+
                     </tr>
                   </thead>
 
-                  <tbody className="divide-y divide-slate-100">
+                  <tbody className="divide-y divide-[#EDF3F6]">
+
                     {filteredUsers.map(
                       (user) => (
                         <tr
                           key={
                             user._id
                           }
-                          className="transition hover:bg-slate-50/70"
+                          className="transition hover:bg-[#F8FBFC]"
                         >
+
                           {/* USER */}
 
                           <td className="px-5 py-5">
+
                             <div className="flex items-center gap-3">
-                              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-50 font-bold text-blue-600">
+
+                              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#EAF3F8] font-bold text-[#1F5F8B]">
                                 {user.fullName
                                   ?.charAt(
                                     0
@@ -1229,17 +1264,19 @@ function AdminUsersPage() {
                               </div>
 
                               <div className="min-w-0">
-                                <p className="font-bold text-slate-900">
+
+                                <p className="font-bold text-[#16324A]">
                                   {
                                     user.fullName
                                   }
                                 </p>
 
-                                <p className="mt-1 flex items-center gap-1 text-xs text-slate-500">
+                                <p className="mt-1 flex items-center gap-1 text-xs text-[#60798C]">
                                   <Mail
                                     size={
                                       13
                                     }
+                                    className="text-[#1B8A8F]"
                                   />
 
                                   {
@@ -1247,14 +1284,17 @@ function AdminUsersPage() {
                                   }
                                 </p>
 
-                                <p className="mt-1 max-w-[260px] truncate text-[11px] text-slate-400">
+                                <p className="mt-1 max-w-[260px] truncate text-[11px] text-[#8A9EAC]">
                                   ID:{" "}
                                   {
                                     user._id
                                   }
                                 </p>
+
                               </div>
+
                             </div>
+
                           </td>
 
                           {/* DEPARTMENT */}
@@ -1262,24 +1302,27 @@ function AdminUsersPage() {
                           {activeTab ===
                             "officers" && (
                             <td className="px-5 py-5">
-                              <div className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+
+                              <div className="flex items-center gap-2 text-sm font-semibold text-[#425D70]">
+
                                 <Building2
                                   size={
                                     16
                                   }
-                                  className="text-slate-400"
+                                  className="text-[#1B8A8F]"
                                 />
 
                                 {user
                                   .department
                                   ?.name ||
                                   "Not Assigned"}
+
                               </div>
 
                               {user
                                 .department
                                 ?.code && (
-                                <p className="mt-1 text-xs text-slate-400">
+                                <p className="mt-1 text-xs text-[#8A9EAC]">
                                   {
                                     user
                                       .department
@@ -1287,46 +1330,56 @@ function AdminUsersPage() {
                                   }
                                 </p>
                               )}
+
                             </td>
                           )}
 
                           {/* LANGUAGE */}
 
                           <td className="px-5 py-5">
-                            <div className="flex items-center gap-2 text-sm font-medium text-slate-600">
+
+                            <div className="flex items-center gap-2 text-sm font-medium text-[#60798C]">
+
                               <Languages
                                 size={
                                   16
                                 }
-                                className="text-slate-400"
+                                className="text-[#1B8A8F]"
                               />
 
                               {formatLanguage(
                                 user.preferredLanguage
                               )}
+
                             </div>
+
                           </td>
 
                           {/* CREATED */}
 
                           <td className="px-5 py-5">
-                            <div className="flex items-center gap-2 text-sm text-slate-600">
+
+                            <div className="flex items-center gap-2 text-sm text-[#60798C]">
+
                               <CalendarDays
                                 size={
                                   16
                                 }
-                                className="text-slate-400"
+                                className="text-[#1F5F8B]"
                               />
 
                               {formatDate(
                                 user.createdAt
                               )}
+
                             </div>
+
                           </td>
 
                           {/* STATUS */}
 
                           <td className="px-5 py-5">
+
                             <span
                               className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-bold ${
                                 user.isActive
@@ -1334,6 +1387,7 @@ function AdminUsersPage() {
                                   : "bg-red-50 text-red-700"
                               }`}
                             >
+
                               {user.isActive ? (
                                 <CheckCircle2
                                   size={
@@ -1351,12 +1405,15 @@ function AdminUsersPage() {
                               {user.isActive
                                 ? "Active"
                                 : "Inactive"}
+
                             </span>
+
                           </td>
 
                           {/* ACTIONS */}
 
                           <td className="px-5 py-5">
+
                             <div className="flex justify-end gap-2">
 
                               {/* DEPARTMENT CHANGE */}
@@ -1371,7 +1428,7 @@ function AdminUsersPage() {
                                     )
                                   }
                                   title="Change Department"
-                                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600"
+                                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#D8E5EC] text-[#60798C] transition hover:border-[#8FC6CC] hover:bg-[#E8F6F4] hover:text-[#1B8A8F]"
                                 >
                                   <Building2
                                     size={
@@ -1450,17 +1507,26 @@ function AdminUsersPage() {
                                   }
                                 />
                               </button>
+
                             </div>
+
                           </td>
+
                         </tr>
                       )
                     )}
+
                   </tbody>
+
                 </table>
+
               </div>
+
             </div>
           )}
+
         </section>
+
       </main>
 
       {/* =====================================================
@@ -1469,7 +1535,8 @@ function AdminUsersPage() {
 
       {showCreateOfficer && (
         <ModalOverlay>
-          <div className="w-full max-w-lg rounded-2xl bg-white shadow-2xl">
+
+          <div className="w-full max-w-lg rounded-2xl border border-[#D8E5EC] bg-white shadow-2xl">
 
             <ModalHeader
               title="Add New Officer"
@@ -1488,6 +1555,7 @@ function AdminUsersPage() {
               }
               className="space-y-5 p-6"
             >
+
               {createOfficerError && (
                 <ErrorBox
                   message={
@@ -1544,7 +1612,8 @@ function AdminUsersPage() {
               />
 
               <div>
-                <label className="mb-2 block text-sm font-semibold text-slate-700">
+
+                <label className="mb-2 block text-sm font-semibold text-[#425D70]">
                   Department
                 </label>
 
@@ -1559,7 +1628,7 @@ function AdminUsersPage() {
                   disabled={
                     creatingOfficer
                   }
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100 disabled:bg-slate-100"
+                  className="w-full rounded-xl border border-[#C8D8E2] bg-white px-4 py-3 text-sm text-[#16324A] outline-none transition focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:bg-[#F1F5F7]"
                 >
                   <option value="">
                     Select department
@@ -1586,10 +1655,12 @@ function AdminUsersPage() {
                     )
                   )}
                 </select>
+
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-semibold text-slate-700">
+
+                <label className="mb-2 block text-sm font-semibold text-[#425D70]">
                   Preferred Language
                 </label>
 
@@ -1604,7 +1675,7 @@ function AdminUsersPage() {
                   disabled={
                     creatingOfficer
                   }
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100 disabled:bg-slate-100"
+                  className="w-full rounded-xl border border-[#C8D8E2] bg-white px-4 py-3 text-sm text-[#16324A] outline-none transition focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:bg-[#F1F5F7]"
                 >
                   <option value="english">
                     English
@@ -1618,9 +1689,11 @@ function AdminUsersPage() {
                     Tamil
                   </option>
                 </select>
+
               </div>
 
-              <div className="flex justify-end gap-3 border-t border-slate-100 pt-5">
+              <div className="flex justify-end gap-3 border-t border-[#EDF3F6] pt-5">
+
                 <button
                   type="button"
                   disabled={
@@ -1631,7 +1704,7 @@ function AdminUsersPage() {
                       false
                     )
                   }
-                  className="rounded-xl border border-slate-300 px-5 py-3 text-sm font-bold text-slate-600 transition hover:bg-slate-50 disabled:opacity-50"
+                  className="rounded-xl border border-[#C8D8E2] px-5 py-3 text-sm font-bold text-[#60798C] transition hover:bg-[#F6F9FB] disabled:opacity-50"
                 >
                   Cancel
                 </button>
@@ -1641,7 +1714,7 @@ function AdminUsersPage() {
                   disabled={
                     creatingOfficer
                   }
-                  className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-blue-700 disabled:opacity-50"
+                  className="inline-flex items-center gap-2 rounded-xl bg-[#1F5F8B] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#174D72] disabled:opacity-50"
                 >
                   {creatingOfficer ? (
                     <Loader2
@@ -1658,9 +1731,13 @@ function AdminUsersPage() {
                     ? "Creating..."
                     : "Create Officer"}
                 </button>
+
               </div>
+
             </form>
+
           </div>
+
         </ModalOverlay>
       )}
 
@@ -1670,7 +1747,8 @@ function AdminUsersPage() {
 
       {departmentChangeUser && (
         <ModalOverlay>
-          <div className="w-full max-w-md rounded-2xl bg-white shadow-2xl">
+
+          <div className="w-full max-w-md rounded-2xl border border-[#D8E5EC] bg-white shadow-2xl">
 
             <ModalHeader
               title="Change Department"
@@ -1686,7 +1764,8 @@ function AdminUsersPage() {
             />
 
             <div className="p-6">
-              <label className="mb-2 block text-sm font-semibold text-slate-700">
+
+              <label className="mb-2 block text-sm font-semibold text-[#425D70]">
                 New Department
               </label>
 
@@ -1706,7 +1785,7 @@ function AdminUsersPage() {
                 disabled={
                   changingDepartment
                 }
-                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                className="w-full rounded-xl border border-[#C8D8E2] bg-white px-4 py-3 text-sm text-[#16324A] outline-none transition focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4]"
               >
                 <option value="">
                   Select department
@@ -1731,6 +1810,7 @@ function AdminUsersPage() {
               </select>
 
               <div className="mt-6 flex justify-end gap-3">
+
                 <button
                   type="button"
                   disabled={
@@ -1741,7 +1821,7 @@ function AdminUsersPage() {
                       null
                     )
                   }
-                  className="rounded-xl border border-slate-300 px-5 py-3 text-sm font-bold text-slate-600"
+                  className="rounded-xl border border-[#C8D8E2] px-5 py-3 text-sm font-bold text-[#60798C] transition hover:bg-[#F6F9FB]"
                 >
                   Cancel
                 </button>
@@ -1754,7 +1834,7 @@ function AdminUsersPage() {
                   disabled={
                     changingDepartment
                   }
-                  className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold text-white hover:bg-blue-700 disabled:opacity-50"
+                  className="inline-flex items-center gap-2 rounded-xl bg-[#1B8A8F] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#157277] disabled:opacity-50"
                 >
                   {changingDepartment ? (
                     <Loader2
@@ -1767,9 +1847,13 @@ function AdminUsersPage() {
 
                   Save Department
                 </button>
+
               </div>
+
             </div>
+
           </div>
+
         </ModalOverlay>
       )}
 
@@ -1779,14 +1863,16 @@ function AdminUsersPage() {
 
       {deleteTarget && (
         <ModalOverlay>
-          <div className="w-full max-w-md rounded-2xl bg-white shadow-2xl">
+
+          <div className="w-full max-w-md rounded-2xl border border-[#D8E5EC] bg-white shadow-2xl">
 
             <div className="p-6">
+
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-red-50 text-red-600">
                 <Trash2 size={22} />
               </div>
 
-              <h2 className="mt-5 text-xl font-bold">
+              <h2 className="mt-5 text-xl font-bold text-[#16324A]">
                 Remove{" "}
                 {deleteTarget.role ===
                 "officer"
@@ -1795,9 +1881,9 @@ function AdminUsersPage() {
                 ?
               </h2>
 
-              <p className="mt-2 text-sm leading-6 text-slate-500">
+              <p className="mt-2 text-sm leading-6 text-[#60798C]">
                 You are about to permanently remove{" "}
-                <span className="font-bold text-slate-800">
+                <span className="font-bold text-[#16324A]">
                   {
                     deleteTarget.fullName
                   }
@@ -1825,6 +1911,7 @@ function AdminUsersPage() {
               )}
 
               <div className="mt-6 flex justify-end gap-3">
+
                 <button
                   type="button"
                   disabled={
@@ -1835,7 +1922,7 @@ function AdminUsersPage() {
                       null
                     )
                   }
-                  className="rounded-xl border border-slate-300 px-5 py-3 text-sm font-bold text-slate-600 hover:bg-slate-50"
+                  className="rounded-xl border border-[#C8D8E2] px-5 py-3 text-sm font-bold text-[#60798C] transition hover:bg-[#F6F9FB]"
                 >
                   Cancel
                 </button>
@@ -1848,7 +1935,7 @@ function AdminUsersPage() {
                   onClick={
                     handleDeleteUser
                   }
-                  className="inline-flex items-center gap-2 rounded-xl bg-red-600 px-5 py-3 text-sm font-bold text-white hover:bg-red-700 disabled:opacity-50"
+                  className="inline-flex items-center gap-2 rounded-xl bg-red-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-red-700 disabled:opacity-50"
                 >
                   {deletingUser ? (
                     <Loader2
@@ -1865,11 +1952,16 @@ function AdminUsersPage() {
                     ? "Removing..."
                     : "Remove User"}
                 </button>
+
               </div>
+
             </div>
+
           </div>
+
         </ModalOverlay>
       )}
+
     </div>
   );
 }
@@ -1886,26 +1978,30 @@ function StatCard({
   iconStyle,
 }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm transition duration-200 hover:border-[#BFD9E6] hover:shadow-md">
+
       <div className="flex items-center justify-between">
+
         <div
           className={`flex h-11 w-11 items-center justify-center rounded-xl ${iconStyle}`}
         >
           {icon}
         </div>
 
-        <p className="text-3xl font-extrabold text-slate-900">
+        <p className="text-3xl font-extrabold text-[#16324A]">
           {value}
         </p>
+
       </div>
 
-      <p className="mt-4 text-sm font-bold text-slate-700">
+      <p className="mt-4 text-sm font-bold text-[#425D70]">
         {title}
       </p>
 
-      <p className="mt-1 text-xs text-slate-400">
+      <p className="mt-1 text-xs text-[#8A9EAC]">
         {subText}
       </p>
+
     </div>
   );
 }
@@ -1920,7 +2016,7 @@ function TableHeader({
 }) {
   return (
     <th
-      className={`px-5 py-4 text-xs font-bold uppercase tracking-wider text-slate-400 ${
+      className={`px-5 py-4 text-xs font-bold uppercase tracking-wider text-[#8A9EAC] ${
         align === "right"
           ? "text-right"
           : "text-left"
@@ -1939,7 +2035,7 @@ function ModalOverlay({
   children,
 }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-slate-950/50 p-5 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-[#0E2C43]/55 p-5 backdrop-blur-sm">
       {children}
     </div>
   );
@@ -1955,26 +2051,30 @@ function ModalHeader({
   onClose,
 }) {
   return (
-    <div className="flex items-start justify-between border-b border-slate-100 p-6">
+    <div className="flex items-start justify-between border-b border-[#EDF3F6] p-6">
+
       <div>
-        <h2 className="text-xl font-bold text-slate-900">
+
+        <h2 className="text-xl font-bold text-[#16324A]">
           {title}
         </h2>
 
         {description && (
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm text-[#60798C]">
             {description}
           </p>
         )}
+
       </div>
 
       <button
         type="button"
         onClick={onClose}
-        className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
+        className="flex h-9 w-9 items-center justify-center rounded-lg text-[#8A9EAC] transition hover:bg-[#E8F6F4] hover:text-[#1B8A8F]"
       >
         <X size={19} />
       </button>
+
     </div>
   );
 }
@@ -1994,7 +2094,8 @@ function FormField({
 }) {
   return (
     <div>
-      <label className="mb-2 block text-sm font-semibold text-slate-700">
+
+      <label className="mb-2 block text-sm font-semibold text-[#425D70]">
         {label}
       </label>
 
@@ -2005,8 +2106,9 @@ function FormField({
         onChange={onChange}
         disabled={disabled}
         placeholder={placeholder}
-        className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 disabled:bg-slate-100"
+        className="w-full rounded-xl border border-[#C8D8E2] bg-white px-4 py-3 text-sm text-[#16324A] outline-none transition placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:bg-[#F1F5F7]"
       />
+
     </div>
   );
 }
@@ -2020,12 +2122,16 @@ function ErrorBox({
 }) {
   return (
     <div className="flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-700">
+
       <AlertCircle
         size={18}
         className="mt-0.5 shrink-0"
       />
 
-      <p>{message}</p>
+      <p>
+        {message}
+      </p>
+
     </div>
   );
 }

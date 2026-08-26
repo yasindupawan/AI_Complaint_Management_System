@@ -59,6 +59,7 @@ function OfficerComplaintsPage() {
           navigate("/login", {
             replace: true,
           });
+
           return;
         }
 
@@ -217,7 +218,7 @@ function OfficerComplaintsPage() {
   ) => {
     switch (status) {
       case "assigned":
-        return "bg-indigo-50 text-indigo-700";
+        return "bg-[#E8F6F4] text-[#176D72]";
 
       case "in_progress":
         return "bg-amber-50 text-amber-700";
@@ -226,7 +227,7 @@ function OfficerComplaintsPage() {
         return "bg-emerald-50 text-emerald-700";
 
       default:
-        return "bg-slate-100 text-slate-600";
+        return "bg-[#F1F5F7] text-[#60798C]";
     }
   };
 
@@ -246,7 +247,7 @@ function OfficerComplaintsPage() {
         return "bg-emerald-50 text-emerald-700";
 
       default:
-        return "bg-slate-100 text-slate-600";
+        return "bg-[#F1F5F7] text-[#60798C]";
     }
   };
 
@@ -300,21 +301,25 @@ function OfficerComplaintsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen bg-[#F6F9FB]">
+
         <div className="flex min-h-screen items-center justify-center">
+
           <div className="text-center">
 
             <Loader2
               size={36}
-              className="mx-auto animate-spin text-blue-600"
+              className="mx-auto animate-spin text-[#1F5F8B]"
             />
 
-            <p className="mt-4 text-sm font-semibold text-slate-500">
+            <p className="mt-4 text-sm font-semibold text-[#60798C]">
               Loading assigned complaints...
             </p>
 
           </div>
+
         </div>
+
       </div>
     );
   }
@@ -324,7 +329,7 @@ function OfficerComplaintsPage() {
   ========================================================= */
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="min-h-screen bg-[#F6F9FB] text-[#16324A]">
 
       <main className="mx-auto max-w-7xl px-5 py-8 lg:px-8 lg:py-10">
 
@@ -339,7 +344,7 @@ function OfficerComplaintsPage() {
               "/officer/dashboard"
             )
           }
-          className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-blue-600"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-[#60798C] transition hover:text-[#1B8A8F]"
         >
           <ArrowLeft size={17} />
 
@@ -352,15 +357,15 @@ function OfficerComplaintsPage() {
 
         <section className="mt-6">
 
-          <p className="text-sm font-semibold text-blue-600">
+          <p className="text-sm font-semibold text-[#1B8A8F]">
             Officer Portal
           </p>
 
-          <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">
+          <h1 className="mt-1 text-3xl font-bold tracking-tight text-[#16324A] sm:text-4xl">
             My Assigned Complaints
           </h1>
 
-          <p className="mt-2 max-w-2xl text-slate-500">
+          <p className="mt-2 max-w-2xl text-[#60798C]">
             Review complaints assigned to your account,
             monitor their progress and continue complaint
             resolution.
@@ -382,7 +387,7 @@ function OfficerComplaintsPage() {
             }
             title="Assigned Complaints"
             value={totalAssigned}
-            iconStyle="bg-blue-50 text-blue-600"
+            iconStyle="bg-[#EAF3F8] text-[#1F5F8B]"
           />
 
           <StatCard
@@ -393,7 +398,7 @@ function OfficerComplaintsPage() {
             }
             title="Waiting to Start"
             value={waitingToStart}
-            iconStyle="bg-indigo-50 text-indigo-600"
+            iconStyle="bg-[#E8F6F4] text-[#1B8A8F]"
           />
 
           <StatCard
@@ -424,7 +429,7 @@ function OfficerComplaintsPage() {
             FILTERS
         ===================================================== */}
 
-        <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <section className="mt-8 rounded-2xl border border-[#D8E5EC] bg-white p-5 shadow-sm">
 
           <div className="grid gap-4 lg:grid-cols-[1.5fr_1fr_1fr]">
 
@@ -434,7 +439,7 @@ function OfficerComplaintsPage() {
 
               <Search
                 size={18}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9EAC]"
               />
 
               <input
@@ -448,7 +453,7 @@ function OfficerComplaintsPage() {
                   )
                 }
                 placeholder="Search complaint, citizen or ID..."
-                className="w-full rounded-xl border border-slate-300 bg-white py-3 pl-11 pr-4 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                className="w-full rounded-xl border border-[#C8D8E2] bg-white py-3 pl-11 pr-4 text-sm text-[#16324A] outline-none transition placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4]"
               />
 
             </div>
@@ -459,7 +464,7 @@ function OfficerComplaintsPage() {
 
               <Filter
                 size={17}
-                className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9EAC]"
               />
 
               <select
@@ -471,7 +476,7 @@ function OfficerComplaintsPage() {
                     event.target.value
                   )
                 }
-                className="w-full appearance-none rounded-xl border border-slate-300 bg-white py-3 pl-11 pr-4 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                className="w-full appearance-none rounded-xl border border-[#C8D8E2] bg-white py-3 pl-11 pr-4 text-sm text-[#425D70] outline-none transition focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4]"
               >
                 <option value="all">
                   All Statuses
@@ -504,7 +509,7 @@ function OfficerComplaintsPage() {
                   event.target.value
                 )
               }
-              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+              className="w-full rounded-xl border border-[#C8D8E2] bg-white px-4 py-3 text-sm text-[#425D70] outline-none transition focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4]"
             >
               <option value="all">
                 All Priorities
@@ -526,27 +531,31 @@ function OfficerComplaintsPage() {
 
           </div>
 
-          <p className="mt-4 text-sm text-slate-500">
+          <div className="mt-4 rounded-xl bg-[#F6F9FB] px-4 py-3">
 
-            Showing{" "}
+            <p className="text-sm text-[#60798C]">
 
-            <span className="font-bold text-slate-900">
-              {
-                filteredComplaints.length
-              }
-            </span>{" "}
+              Showing{" "}
 
-            of{" "}
+              <span className="font-bold text-[#16324A]">
+                {
+                  filteredComplaints.length
+                }
+              </span>{" "}
 
-            <span className="font-bold text-slate-900">
-              {
-                complaints.length
-              }
-            </span>{" "}
+              of{" "}
 
-            complaints
+              <span className="font-bold text-[#16324A]">
+                {
+                  complaints.length
+                }
+              </span>{" "}
 
-          </p>
+              complaints
+
+            </p>
+
+          </div>
 
         </section>
 
@@ -584,18 +593,21 @@ function OfficerComplaintsPage() {
           {filteredComplaints.length ===
           0 ? (
 
-            <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center shadow-sm">
+            <div className="rounded-2xl border border-[#D8E5EC] bg-white p-12 text-center shadow-sm">
 
-              <FileText
-                size={38}
-                className="mx-auto text-slate-300"
-              />
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#EAF3F8] text-[#1F5F8B]">
 
-              <p className="mt-4 font-bold text-slate-800">
+                <FileText
+                  size={30}
+                />
+
+              </div>
+
+              <p className="mt-4 font-bold text-[#16324A]">
                 No complaints found
               </p>
 
-              <p className="mt-1 text-sm text-slate-500">
+              <p className="mt-1 text-sm text-[#60798C]">
                 No assigned complaints match the current filters.
               </p>
 
@@ -616,7 +628,7 @@ function OfficerComplaintsPage() {
                       `/officer/complaints/${complaint._id}`
                     )
                   }
-                  className="group w-full rounded-2xl border border-slate-200 bg-white p-6 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md"
+                  className="group w-full rounded-2xl border border-[#D8E5EC] bg-white p-6 text-left shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-[#8FC6CC] hover:shadow-lg hover:shadow-[#123B5D]/5"
                 >
 
                   <div className="flex items-start justify-between gap-5">
@@ -655,7 +667,7 @@ function OfficerComplaintsPage() {
 
                       {/* TITLE */}
 
-                      <h2 className="mt-4 text-lg font-bold text-slate-900">
+                      <h2 className="mt-4 text-lg font-bold text-[#16324A] transition group-hover:text-[#1B8A8F]">
                         {
                           complaint.title
                         }
@@ -663,7 +675,7 @@ function OfficerComplaintsPage() {
 
                       {/* DESCRIPTION */}
 
-                      <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-500">
+                      <p className="mt-2 line-clamp-2 text-sm leading-6 text-[#60798C]">
                         {
                           complaint.description
                         }
@@ -671,12 +683,13 @@ function OfficerComplaintsPage() {
 
                       {/* INFORMATION */}
 
-                      <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-500">
+                      <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-[#60798C]">
 
                         <span className="inline-flex items-center gap-2">
 
                           <User
                             size={15}
+                            className="text-[#1B8A8F]"
                           />
 
                           {complaint
@@ -686,7 +699,7 @@ function OfficerComplaintsPage() {
 
                         </span>
 
-                        <span className="font-medium text-slate-700">
+                        <span className="font-semibold text-[#425D70]">
 
                           {formatCategory(
                             complaint.category
@@ -698,6 +711,7 @@ function OfficerComplaintsPage() {
 
                           <CalendarDays
                             size={15}
+                            className="text-[#1F5F8B]"
                           />
 
                           {formatDate(
@@ -710,7 +724,7 @@ function OfficerComplaintsPage() {
 
                       {/* ID */}
 
-                      <p className="mt-4 break-all text-xs text-slate-400">
+                      <p className="mt-4 break-all text-xs text-[#8A9EAC]">
                         Complaint ID:{" "}
                         {
                           complaint._id
@@ -721,7 +735,7 @@ function OfficerComplaintsPage() {
 
                     {/* ARROW */}
 
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-50 text-slate-400 transition group-hover:bg-blue-50 group-hover:text-blue-600">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F6F9FB] text-[#8A9EAC] transition group-hover:bg-[#E8F6F4] group-hover:text-[#1B8A8F]">
 
                       <ChevronRight
                         size={19}
@@ -757,7 +771,7 @@ function StatCard({
   iconStyle,
 }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm transition duration-200 hover:border-[#BFD9E6] hover:shadow-md">
 
       <div className="flex items-center justify-between">
 
@@ -767,13 +781,13 @@ function StatCard({
           {icon}
         </div>
 
-        <p className="text-3xl font-extrabold">
+        <p className="text-3xl font-extrabold text-[#16324A]">
           {value}
         </p>
 
       </div>
 
-      <p className="mt-4 text-sm font-semibold text-slate-600">
+      <p className="mt-4 text-sm font-semibold text-[#60798C]">
         {title}
       </p>
 

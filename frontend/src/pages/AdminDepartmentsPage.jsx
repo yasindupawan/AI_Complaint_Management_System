@@ -570,15 +570,15 @@ function AdminDepartmentsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen bg-[#F6F9FB]">
         <div className="flex min-h-screen items-center justify-center">
           <div className="text-center">
             <Loader2
               size={38}
-              className="mx-auto animate-spin text-blue-600"
+              className="mx-auto animate-spin text-[#1F5F8B]"
             />
 
-            <p className="mt-4 text-sm font-semibold text-slate-500">
+            <p className="mt-4 text-sm font-semibold text-[#60798C]">
               Loading departments...
             </p>
           </div>
@@ -592,7 +592,7 @@ function AdminDepartmentsPage() {
   ========================================================= */
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="min-h-screen bg-[#F6F9FB] text-[#16324A]">
       <main className="mx-auto max-w-7xl px-5 py-8 lg:px-8 lg:py-10">
 
         {/* =====================================================
@@ -606,7 +606,7 @@ function AdminDepartmentsPage() {
               "/admin/dashboard"
             )
           }
-          className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-blue-600"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-[#60798C] transition hover:text-[#1B8A8F]"
         >
           <ArrowLeft size={17} />
 
@@ -619,15 +619,15 @@ function AdminDepartmentsPage() {
 
         <section className="mt-6 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
           <div>
-            <p className="text-sm font-semibold text-blue-600">
+            <p className="text-sm font-semibold text-[#1B8A8F]">
               Administration
             </p>
 
-            <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">
+            <h1 className="mt-1 text-3xl font-bold tracking-tight text-[#16324A] sm:text-4xl">
               Department Management
             </h1>
 
-            <p className="mt-2 max-w-2xl text-slate-500">
+            <p className="mt-2 max-w-2xl text-[#60798C]">
               Manage complaint routing departments,
               assigned categories and department availability.
             </p>
@@ -638,7 +638,7 @@ function AdminDepartmentsPage() {
             onClick={
               openCreateModal
             }
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#1F5F8B] px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-[#174D72]"
           >
             <Plus size={18} />
 
@@ -687,7 +687,7 @@ function AdminDepartmentsPage() {
                 size={22}
               />
             }
-            iconStyle="bg-blue-50 text-blue-600"
+            iconStyle="bg-[#EAF3F8] text-[#1F5F8B]"
           />
 
           <StatCard
@@ -724,7 +724,7 @@ function AdminDepartmentsPage() {
             icon={
               <Tag size={22} />
             }
-            iconStyle="bg-violet-50 text-violet-600"
+            iconStyle="bg-[#E8F6F4] text-[#1B8A8F]"
           />
         </section>
 
@@ -732,13 +732,13 @@ function AdminDepartmentsPage() {
             FILTERS
         ===================================================== */}
 
-        <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <section className="mt-8 rounded-2xl border border-[#D8E5EC] bg-white p-5 shadow-sm">
           <div className="grid gap-4 lg:grid-cols-[1.5fr_1fr]">
 
             <div className="relative">
               <Search
                 size={18}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9EAC]"
               />
 
               <input
@@ -755,14 +755,14 @@ function AdminDepartmentsPage() {
                   )
                 }
                 placeholder="Search department, code or category..."
-                className="w-full rounded-xl border border-slate-300 bg-white py-3 pl-11 pr-4 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                className="w-full rounded-xl border border-[#C8D8E2] bg-white py-3 pl-11 pr-4 text-sm text-[#16324A] outline-none transition placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4]"
               />
             </div>
 
             <div className="relative">
               <Filter
                 size={17}
-                className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9EAC]"
               />
 
               <select
@@ -777,7 +777,7 @@ function AdminDepartmentsPage() {
                       .value
                   )
                 }
-                className="w-full appearance-none rounded-xl border border-slate-300 bg-white py-3 pl-11 pr-4 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                className="w-full appearance-none rounded-xl border border-[#C8D8E2] bg-white py-3 pl-11 pr-4 text-sm text-[#425D70] outline-none transition focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4]"
               >
                 <option value="all">
                   All Statuses
@@ -794,15 +794,17 @@ function AdminDepartmentsPage() {
             </div>
           </div>
 
-          <p className="mt-4 text-sm text-slate-500">
-            Showing{" "}
-            <span className="font-bold text-slate-900">
-              {
-                filteredDepartments.length
-              }
-            </span>{" "}
-            departments
-          </p>
+          <div className="mt-4 rounded-xl bg-[#F6F9FB] px-4 py-3">
+            <p className="text-sm text-[#60798C]">
+              Showing{" "}
+              <span className="font-bold text-[#16324A]">
+                {
+                  filteredDepartments.length
+                }
+              </span>{" "}
+              departments
+            </p>
+          </div>
         </section>
 
         {/* =====================================================
@@ -812,17 +814,18 @@ function AdminDepartmentsPage() {
         <section className="mt-6 space-y-4">
           {filteredDepartments.length ===
           0 ? (
-            <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center shadow-sm">
-              <Building2
-                size={42}
-                className="mx-auto text-slate-300"
-              />
+            <div className="rounded-2xl border border-[#D8E5EC] bg-white p-12 text-center shadow-sm">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#EAF3F8] text-[#8A9EAC]">
+                <Building2
+                  size={34}
+                />
+              </div>
 
-              <p className="mt-4 font-bold text-slate-800">
+              <p className="mt-4 font-bold text-[#16324A]">
                 No departments found
               </p>
 
-              <p className="mt-1 text-sm text-slate-500">
+              <p className="mt-1 text-sm text-[#60798C]">
                 No departments match the current search or filters.
               </p>
             </div>
@@ -833,27 +836,27 @@ function AdminDepartmentsPage() {
                   key={
                     department._id
                   }
-                  className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+                  className="rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm transition hover:border-[#BFD9E6] hover:shadow-md"
                 >
                   <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-start">
 
                     <div className="min-w-0 flex-1">
 
                       <div className="flex flex-wrap items-center gap-3">
-                        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#E8F6F4] text-[#1B8A8F]">
                           <Building2
                             size={22}
                           />
                         </div>
 
                         <div>
-                          <h2 className="text-lg font-bold text-slate-900">
+                          <h2 className="text-lg font-bold text-[#16324A]">
                             {
                               department.name
                             }
                           </h2>
 
-                          <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-slate-400">
+                          <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-[#8A9EAC]">
                             {
                               department.code ||
                               "No Code"
@@ -875,7 +878,7 @@ function AdminDepartmentsPage() {
                       </div>
 
                       <div className="mt-6">
-                        <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                        <p className="text-xs font-bold uppercase tracking-wider text-[#8A9EAC]">
                           Complaint Categories
                         </p>
 
@@ -893,7 +896,7 @@ function AdminDepartmentsPage() {
                                   key={
                                     category
                                   }
-                                  className="rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600"
+                                  className="rounded-full bg-[#EAF3F8] px-3 py-1.5 text-xs font-semibold text-[#425D70]"
                                 >
                                   {formatCategory(
                                     category
@@ -902,17 +905,18 @@ function AdminDepartmentsPage() {
                               )
                             )
                           ) : (
-                            <span className="text-sm text-slate-400">
+                            <span className="text-sm text-[#8A9EAC]">
                               No categories assigned
                             </span>
                           )}
                         </div>
                       </div>
 
-                      <div className="mt-6 flex flex-wrap gap-5 text-sm text-slate-500">
+                      <div className="mt-6 flex flex-wrap gap-5 text-sm text-[#60798C]">
                         <span className="inline-flex items-center gap-2">
                           <Users
                             size={16}
+                            className="text-[#1B8A8F]"
                           />
 
                           {typeof department.officerCount ===
@@ -921,7 +925,7 @@ function AdminDepartmentsPage() {
                             : "Officer count unavailable"}
                         </span>
 
-                        <span className="break-all text-xs text-slate-400">
+                        <span className="break-all text-xs text-[#8A9EAC]">
                           Department ID:{" "}
                           {
                             department._id
@@ -940,7 +944,7 @@ function AdminDepartmentsPage() {
                           )
                         }
                         title="Edit Department"
-                        className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-500 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600"
+                        className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#D8E5EC] text-[#60798C] transition hover:border-[#8FC6CC] hover:bg-[#E8F6F4] hover:text-[#1B8A8F]"
                       >
                         <Pencil
                           size={17}
@@ -1019,7 +1023,7 @@ function AdminDepartmentsPage() {
 
       {showDepartmentModal && (
         <ModalOverlay>
-          <div className="w-full max-w-lg rounded-2xl bg-white shadow-2xl">
+          <div className="w-full max-w-lg rounded-2xl border border-[#D8E5EC] bg-white shadow-2xl">
 
             <ModalHeader
               title={
@@ -1085,7 +1089,7 @@ function AdminDepartmentsPage() {
               />
 
               <div>
-                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                <label className="mb-2 block text-sm font-semibold text-[#425D70]">
                   Complaint Categories
                 </label>
 
@@ -1102,16 +1106,16 @@ function AdminDepartmentsPage() {
                     savingDepartment
                   }
                   placeholder="water_supply, drainage"
-                  className="w-full resize-none rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 disabled:bg-slate-100"
+                  className="w-full resize-none rounded-xl border border-[#C8D8E2] bg-white px-4 py-3 text-sm text-[#16324A] outline-none transition placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:bg-[#F1F5F7]"
                 />
 
-                <p className="mt-2 text-xs leading-5 text-slate-400">
+                <p className="mt-2 text-xs leading-5 text-[#8A9EAC]">
                   Separate multiple categories using commas.
                   Example: water_supply, drainage
                 </p>
               </div>
 
-              <div className="flex justify-end gap-3 border-t border-slate-100 pt-5">
+              <div className="flex justify-end gap-3 border-t border-[#EDF3F6] pt-5">
                 <button
                   type="button"
                   disabled={
@@ -1122,7 +1126,7 @@ function AdminDepartmentsPage() {
                       false
                     )
                   }
-                  className="rounded-xl border border-slate-300 px-5 py-3 text-sm font-bold text-slate-600 transition hover:bg-slate-50"
+                  className="rounded-xl border border-[#C8D8E2] px-5 py-3 text-sm font-bold text-[#60798C] transition hover:bg-[#F6F9FB] hover:text-[#16324A]"
                 >
                   Cancel
                 </button>
@@ -1132,7 +1136,7 @@ function AdminDepartmentsPage() {
                   disabled={
                     savingDepartment
                   }
-                  className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-blue-700 disabled:opacity-50"
+                  className="inline-flex items-center gap-2 rounded-xl bg-[#1F5F8B] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#174D72] disabled:opacity-50"
                 >
                   {savingDepartment ? (
                     <Loader2
@@ -1163,19 +1167,19 @@ function AdminDepartmentsPage() {
 
       {deleteTarget && (
         <ModalOverlay>
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+          <div className="w-full max-w-md rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-2xl">
 
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-red-50 text-red-600">
               <Trash2 size={22} />
             </div>
 
-            <h2 className="mt-5 text-xl font-bold">
+            <h2 className="mt-5 text-xl font-bold text-[#16324A]">
               Remove Department?
             </h2>
 
-            <p className="mt-2 text-sm leading-6 text-slate-500">
+            <p className="mt-2 text-sm leading-6 text-[#60798C]">
               You are about to remove{" "}
-              <span className="font-bold text-slate-800">
+              <span className="font-bold text-[#16324A]">
                 {
                   deleteTarget.name
                 }
@@ -1212,7 +1216,7 @@ function AdminDepartmentsPage() {
                     null
                   )
                 }
-                className="rounded-xl border border-slate-300 px-5 py-3 text-sm font-bold text-slate-600 hover:bg-slate-50"
+                className="rounded-xl border border-[#C8D8E2] px-5 py-3 text-sm font-bold text-[#60798C] transition hover:bg-[#F6F9FB]"
               >
                 Cancel
               </button>
@@ -1261,7 +1265,7 @@ function StatCard({
   iconStyle,
 }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm transition duration-200 hover:border-[#BFD9E6] hover:shadow-md">
       <div className="flex items-center justify-between">
         <div
           className={`flex h-11 w-11 items-center justify-center rounded-xl ${iconStyle}`}
@@ -1269,12 +1273,12 @@ function StatCard({
           {icon}
         </div>
 
-        <p className="text-3xl font-extrabold">
+        <p className="text-3xl font-extrabold text-[#16324A]">
           {value}
         </p>
       </div>
 
-      <p className="mt-4 text-sm font-bold text-slate-700">
+      <p className="mt-4 text-sm font-bold text-[#60798C]">
         {title}
       </p>
     </div>
@@ -1289,7 +1293,7 @@ function ModalOverlay({
   children,
 }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-slate-950/50 p-5 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-[#0E2C43]/55 p-5 backdrop-blur-sm">
       {children}
     </div>
   );
@@ -1305,14 +1309,14 @@ function ModalHeader({
   onClose,
 }) {
   return (
-    <div className="flex items-start justify-between border-b border-slate-100 p-6">
+    <div className="flex items-start justify-between border-b border-[#EDF3F6] p-6">
       <div>
-        <h2 className="text-xl font-bold text-slate-900">
+        <h2 className="text-xl font-bold text-[#16324A]">
           {title}
         </h2>
 
         {description && (
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm text-[#60798C]">
             {description}
           </p>
         )}
@@ -1321,7 +1325,7 @@ function ModalHeader({
       <button
         type="button"
         onClick={onClose}
-        className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
+        className="flex h-9 w-9 items-center justify-center rounded-lg text-[#8A9EAC] transition hover:bg-[#E8F6F4] hover:text-[#1B8A8F]"
       >
         <X size={19} />
       </button>
@@ -1343,7 +1347,7 @@ function FormField({
 }) {
   return (
     <div>
-      <label className="mb-2 block text-sm font-semibold text-slate-700">
+      <label className="mb-2 block text-sm font-semibold text-[#425D70]">
         {label}
       </label>
 
@@ -1354,7 +1358,7 @@ function FormField({
         onChange={onChange}
         disabled={disabled}
         placeholder={placeholder}
-        className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 disabled:bg-slate-100"
+        className="w-full rounded-xl border border-[#C8D8E2] bg-white px-4 py-3 text-sm text-[#16324A] outline-none transition placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:bg-[#F1F5F7]"
       />
     </div>
   );

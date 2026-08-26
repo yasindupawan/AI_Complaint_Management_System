@@ -235,7 +235,6 @@ function CitizenDashboard() {
 
   const [complaints, setComplaints] = useState([]);
 
-  // Real unread notification count
   const [unreadNotificationCount, setUnreadNotificationCount] =
     useState(0);
 
@@ -273,21 +272,15 @@ function CitizenDashboard() {
           getUnreadNotificationCount(token),
         ]);
 
-        /* USER */
-
         if (userResponse?.user) {
           setUser(userResponse.user);
         }
-
-        /* COMPLAINTS */
 
         setComplaints(
           Array.isArray(complaintsResponse?.complaints)
             ? complaintsResponse.complaints
             : []
         );
-
-        /* UNREAD NOTIFICATIONS */
 
         setUnreadNotificationCount(
           Number(notificationCountResponse?.unreadCount) || 0
@@ -344,8 +337,6 @@ function CitizenDashboard() {
     ).length,
   };
 
-  /* Backend already returns newest complaints first */
-
   const recentComplaints = complaints.slice(0, 5);
 
   /* =========================================================
@@ -400,16 +391,16 @@ function CitizenDashboard() {
         return "bg-amber-50 text-amber-700";
 
       case "assigned":
-        return "bg-indigo-50 text-indigo-700";
+        return "bg-[#E8F6F4] text-[#176D72]";
 
       case "rejected":
         return "bg-red-50 text-red-700";
 
       case "duplicate":
-        return "bg-purple-50 text-purple-700";
+        return "bg-[#EDF5F5] text-[#176D72]";
 
       default:
-        return "bg-blue-50 text-blue-700";
+        return "bg-[#EAF3F8] text-[#1F5F8B]";
     }
   };
 
@@ -446,6 +437,9 @@ function CitizenDashboard() {
 
       case "medium":
         return "bg-amber-50 text-amber-700";
+
+      case "low":
+        return "bg-emerald-50 text-emerald-700";
 
       default:
         return "bg-slate-100 text-slate-600";
@@ -549,13 +543,14 @@ function CitizenDashboard() {
   ========================================================= */
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="min-h-screen bg-[#F6F9FB] text-[#16324A]">
 
       {/* =====================================================
           HEADER
       ===================================================== */}
 
-      <header className="sticky top-0 z-50 border-b border-slate-200 bg-white">
+      <header className="sticky top-0 z-50 border-b border-[#D8E5EC] bg-white/95 backdrop-blur">
+
         <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 lg:px-8">
 
           {/* BRAND */}
@@ -564,16 +559,16 @@ function CitizenDashboard() {
             to="/dashboard"
             className="flex items-center gap-3"
           >
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white shadow-sm">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#123B5D] text-white shadow-sm shadow-[#123B5D]/15">
               <BrainCircuit size={23} />
             </div>
 
             <div className="leading-tight">
-              <p className="font-bold text-slate-900">
+              <p className="font-bold text-[#16324A]">
                 {t.brand}
               </p>
 
-              <p className="text-xs font-medium text-blue-600">
+              <p className="text-xs font-medium text-[#1B8A8F]">
                 {t.brandSub}
               </p>
             </div>
@@ -585,10 +580,10 @@ function CitizenDashboard() {
 
             {/* LANGUAGE */}
 
-            <div className="flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 p-1">
+            <div className="flex items-center gap-1 rounded-lg border border-[#D8E5EC] bg-[#F6F9FB] p-1">
               <Globe2
                 size={16}
-                className="ml-2 text-slate-500"
+                className="ml-2 text-[#60798C]"
               />
 
               {["EN", "සිං", "தமிழ்"].map(
@@ -601,8 +596,8 @@ function CitizenDashboard() {
                     }
                     className={`rounded-md px-2.5 py-1.5 text-xs font-semibold transition ${
                       language === item
-                        ? "bg-white text-blue-600 shadow-sm"
-                        : "text-slate-500 hover:text-slate-900"
+                        ? "bg-white text-[#1F5F8B] shadow-sm"
+                        : "text-[#60798C] hover:text-[#16324A]"
                     }`}
                   >
                     {item}
@@ -616,7 +611,7 @@ function CitizenDashboard() {
             <Link
               to="/notifications"
               title={t.notifications}
-              className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 transition hover:border-blue-200 hover:text-blue-600"
+              className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-[#D8E5EC] bg-white text-[#60798C] transition hover:border-[#8FC6CC] hover:bg-[#E8F6F4] hover:text-[#1B8A8F]"
             >
               <Bell size={20} />
 
@@ -631,20 +626,24 @@ function CitizenDashboard() {
 
             {/* USER */}
 
-            <div className="flex items-center gap-3 border-l border-slate-200 pl-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+            <div className="flex items-center gap-3 border-l border-[#D8E5EC] pl-4">
+
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#E8F6F4] text-[#1B8A8F]">
                 <User size={20} />
               </div>
 
               <div className="hidden lg:block">
-                <p className="max-w-40 truncate text-sm font-bold">
+
+                <p className="max-w-40 truncate text-sm font-bold text-[#16324A]">
                   {user.fullName || "..."}
                 </p>
 
-                <p className="max-w-40 truncate text-xs text-slate-500">
+                <p className="max-w-40 truncate text-xs text-[#60798C]">
                   {user.email || "..."}
                 </p>
+
               </div>
+
             </div>
 
             {/* LOGOUT */}
@@ -653,10 +652,11 @@ function CitizenDashboard() {
               type="button"
               onClick={logout}
               title={t.logout}
-              className="flex h-10 w-10 items-center justify-center rounded-xl text-slate-500 transition hover:bg-red-50 hover:text-red-600"
+              className="flex h-10 w-10 items-center justify-center rounded-xl text-[#60798C] transition hover:bg-red-50 hover:text-red-600"
             >
               <LogOut size={19} />
             </button>
+
           </div>
 
           {/* MOBILE MENU BUTTON */}
@@ -666,7 +666,7 @@ function CitizenDashboard() {
             onClick={() =>
               setMenuOpen(!menuOpen)
             }
-            className="rounded-lg border border-slate-200 p-2 text-slate-600 md:hidden"
+            className="rounded-lg border border-[#D8E5EC] p-2 text-[#60798C] md:hidden"
           >
             {menuOpen ? (
               <X size={22} />
@@ -674,34 +674,38 @@ function CitizenDashboard() {
               <Menu size={22} />
             )}
           </button>
+
         </div>
 
         {/* MOBILE MENU */}
 
         {menuOpen && (
-          <div className="border-t border-slate-200 bg-white p-5 md:hidden">
+          <div className="border-t border-[#D8E5EC] bg-white p-5 md:hidden">
+
             <div className="flex flex-col gap-3">
 
-              <div className="rounded-lg bg-slate-50 px-4 py-3">
-                <p className="text-sm font-bold">
+              <div className="rounded-lg bg-[#F6F9FB] px-4 py-3">
+
+                <p className="text-sm font-bold text-[#16324A]">
                   {user.fullName}
                 </p>
 
-                <p className="mt-1 text-xs text-slate-500">
+                <p className="mt-1 text-xs text-[#60798C]">
                   {user.email}
                 </p>
-              </div>
 
-              {/* MOBILE NOTIFICATIONS */}
+              </div>
 
               <Link
                 to="/notifications"
                 onClick={() =>
                   setMenuOpen(false)
                 }
-                className="flex items-center justify-between rounded-lg bg-slate-50 px-4 py-3 text-sm font-semibold"
+                className="flex items-center justify-between rounded-lg bg-[#F6F9FB] px-4 py-3 text-sm font-semibold text-[#425D70]"
               >
-                <span>{t.notifications}</span>
+                <span>
+                  {t.notifications}
+                </span>
 
                 {unreadNotificationCount > 0 && (
                   <span className="flex min-h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 text-[10px] font-bold text-white">
@@ -713,6 +717,7 @@ function CitizenDashboard() {
               </Link>
 
               <div className="flex gap-2">
+
                 {["EN", "සිං", "தமிழ்"].map(
                   (item) => (
                     <button
@@ -723,14 +728,15 @@ function CitizenDashboard() {
                       }
                       className={`rounded-lg px-3 py-2 text-xs font-bold ${
                         language === item
-                          ? "bg-blue-50 text-blue-600"
-                          : "bg-slate-50 text-slate-500"
+                          ? "bg-[#E8F6F4] text-[#1B8A8F]"
+                          : "bg-[#F6F9FB] text-[#60798C]"
                       }`}
                     >
                       {item}
                     </button>
                   )
                 )}
+
               </div>
 
               <button
@@ -740,9 +746,12 @@ function CitizenDashboard() {
               >
                 {t.logout}
               </button>
+
             </div>
+
           </div>
         )}
+
       </header>
 
       {/* =====================================================
@@ -762,31 +771,35 @@ function CitizenDashboard() {
         {/* WELCOME */}
 
         <section className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+
           <div>
-            <p className="text-sm font-semibold text-blue-600">
+
+            <p className="text-sm font-semibold text-[#1B8A8F]">
               {t.dashboard}
             </p>
 
-            <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">
+            <h1 className="mt-1 text-3xl font-bold tracking-tight text-[#16324A] sm:text-4xl">
               {t.welcome}
               {user.fullName
                 ? `, ${user.fullName}`
                 : ""}
             </h1>
 
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500 sm:text-base">
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-[#60798C] sm:text-base">
               {t.welcomeDescription}
             </p>
+
           </div>
 
           <Link
             to="/complaints/new"
-            className="inline-flex w-fit items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 font-bold text-white shadow-lg shadow-blue-200 transition hover:-translate-y-0.5 hover:bg-blue-700"
+            className="inline-flex w-fit items-center gap-2 rounded-xl bg-[#1F5F8B] px-5 py-3 font-bold text-white shadow-lg shadow-[#1F5F8B]/20 transition hover:-translate-y-0.5 hover:bg-[#174D72]"
           >
             <FilePlus2 size={19} />
 
             {t.newComplaint}
           </Link>
+
         </section>
 
         {/* STATISTICS */}
@@ -797,14 +810,14 @@ function CitizenDashboard() {
             icon={<FileText size={22} />}
             title={t.totalComplaints}
             value={stats.total}
-            iconStyle="bg-blue-50 text-blue-600"
+            iconStyle="bg-[#EAF3F8] text-[#1F5F8B]"
           />
 
           <StatCard
             icon={<AlertCircle size={22} />}
             title={t.submitted}
             value={stats.submitted}
-            iconStyle="bg-indigo-50 text-indigo-600"
+            iconStyle="bg-[#E8F6F4] text-[#1B8A8F]"
           />
 
           <StatCard
@@ -820,6 +833,7 @@ function CitizenDashboard() {
             value={stats.resolved}
             iconStyle="bg-emerald-50 text-emerald-600"
           />
+
         </section>
 
         {/* QUICK ACTIONS */}
@@ -830,62 +844,69 @@ function CitizenDashboard() {
 
           <Link
             to="/complaints/new"
-            className="group rounded-2xl border border-slate-200 bg-white p-6 transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-lg"
+            className="group rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#8FC6CC] hover:shadow-lg hover:shadow-[#123B5D]/5"
           >
             <div className="flex items-center justify-between">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#EAF3F8] text-[#1F5F8B] transition group-hover:bg-[#1F5F8B] group-hover:text-white">
                 <FilePlus2 size={23} />
               </div>
 
               <ChevronRight
                 size={20}
-                className="text-slate-300 transition group-hover:translate-x-1 group-hover:text-blue-600"
+                className="text-[#B7C8D3] transition group-hover:translate-x-1 group-hover:text-[#1B8A8F]"
               />
+
             </div>
 
-            <h2 className="mt-5 font-bold">
+            <h2 className="mt-5 font-bold text-[#16324A]">
               {t.submitNewComplaint}
             </h2>
 
-            <p className="mt-2 text-sm leading-6 text-slate-500">
+            <p className="mt-2 text-sm leading-6 text-[#60798C]">
               {t.submitDescription}
             </p>
+
           </Link>
 
           {/* MY COMPLAINTS */}
 
           <Link
             to="/complaints"
-            className="group rounded-2xl border border-slate-200 bg-white p-6 transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-lg"
+            className="group rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#8FC6CC] hover:shadow-lg hover:shadow-[#123B5D]/5"
           >
             <div className="flex items-center justify-between">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#E8F6F4] text-[#1B8A8F] transition group-hover:bg-[#1B8A8F] group-hover:text-white">
                 <FileText size={23} />
               </div>
 
               <ChevronRight
                 size={20}
-                className="text-slate-300 transition group-hover:translate-x-1 group-hover:text-blue-600"
+                className="text-[#B7C8D3] transition group-hover:translate-x-1 group-hover:text-[#1B8A8F]"
               />
+
             </div>
 
-            <h2 className="mt-5 font-bold">
+            <h2 className="mt-5 font-bold text-[#16324A]">
               {t.myComplaints}
             </h2>
 
-            <p className="mt-2 text-sm leading-6 text-slate-500">
+            <p className="mt-2 text-sm leading-6 text-[#60798C]">
               {t.myComplaintsDescription}
             </p>
+
           </Link>
 
           {/* NOTIFICATIONS */}
 
           <Link
             to="/notifications"
-            className="group rounded-2xl border border-slate-200 bg-white p-6 transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-lg"
+            className="group rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#8FC6CC] hover:shadow-lg hover:shadow-[#123B5D]/5"
           >
             <div className="flex items-center justify-between">
-              <div className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+
+              <div className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 transition group-hover:bg-emerald-600 group-hover:text-white">
                 <Bell size={23} />
 
                 {unreadNotificationCount > 0 && (
@@ -899,11 +920,12 @@ function CitizenDashboard() {
 
               <ChevronRight
                 size={20}
-                className="text-slate-300 transition group-hover:translate-x-1 group-hover:text-blue-600"
+                className="text-[#B7C8D3] transition group-hover:translate-x-1 group-hover:text-[#1B8A8F]"
               />
+
             </div>
 
-            <h2 className="mt-5 flex items-center gap-2 font-bold">
+            <h2 className="mt-5 flex items-center gap-2 font-bold text-[#16324A]">
               {t.notificationTitle}
 
               {unreadNotificationCount > 0 && (
@@ -913,41 +935,45 @@ function CitizenDashboard() {
               )}
             </h2>
 
-            <p className="mt-2 text-sm leading-6 text-slate-500">
+            <p className="mt-2 text-sm leading-6 text-[#60798C]">
               {t.notificationDescription}
             </p>
+
           </Link>
+
         </section>
 
         {/* =====================================================
             RECENT COMPLAINTS
         ===================================================== */}
 
-        <section className="mt-8 overflow-hidden rounded-2xl border border-slate-200 bg-white">
+        <section className="mt-8 overflow-hidden rounded-2xl border border-[#D8E5EC] bg-white shadow-sm">
 
-          <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
+          <div className="flex items-center justify-between border-b border-[#D8E5EC] px-6 py-5">
+
             <div>
-              <h2 className="text-lg font-bold">
+              <h2 className="text-lg font-bold text-[#16324A]">
                 {t.recentComplaints}
               </h2>
 
-              <p className="mt-1 text-sm text-slate-500">
+              <p className="mt-1 text-sm text-[#60798C]">
                 {t.recentDescription}
               </p>
             </div>
 
             <Link
               to="/complaints"
-              className="text-sm font-bold text-blue-600 hover:text-blue-700"
+              className="text-sm font-bold text-[#1B8A8F] transition hover:text-[#176D72]"
             >
               {t.viewAll}
             </Link>
+
           </div>
 
           {/* LOADING */}
 
           {loading && (
-            <div className="px-6 py-12 text-center text-sm font-medium text-slate-500">
+            <div className="px-6 py-12 text-center text-sm font-medium text-[#60798C]">
               {t.loading}
             </div>
           )}
@@ -958,17 +984,18 @@ function CitizenDashboard() {
             recentComplaints.length === 0 && (
               <div className="px-6 py-12 text-center">
 
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-[#EAF3F8] text-[#1F5F8B]">
                   <FileText size={23} />
                 </div>
 
-                <p className="mt-4 font-bold text-slate-800">
+                <p className="mt-4 font-bold text-[#16324A]">
                   {t.noComplaints}
                 </p>
 
-                <p className="mt-1 text-sm text-slate-500">
+                <p className="mt-1 text-sm text-[#60798C]">
                   {t.noComplaintsDescription}
                 </p>
+
               </div>
             )}
 
@@ -981,7 +1008,7 @@ function CitizenDashboard() {
                 <table className="w-full text-left">
 
                   <thead>
-                    <tr className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+                    <tr className="border-b border-[#D8E5EC] bg-[#F6F9FB] text-xs uppercase tracking-wide text-[#60798C]">
 
                       <th className="px-6 py-4 font-semibold">
                         {t.complaint}
@@ -1002,10 +1029,12 @@ function CitizenDashboard() {
                       <th className="px-6 py-4 font-semibold">
                         {t.date}
                       </th>
+
                     </tr>
                   </thead>
 
                   <tbody>
+
                     {recentComplaints.map(
                       (complaint) => {
                         const complaintId =
@@ -1015,31 +1044,34 @@ function CitizenDashboard() {
                         return (
                           <tr
                             key={complaintId}
-                            className="border-b border-slate-100 last:border-b-0 hover:bg-slate-50"
+                            className="border-b border-[#EDF3F6] transition last:border-b-0 hover:bg-[#F8FBFC]"
                           >
+
                             <td className="px-6 py-5">
 
                               <Link
                                 to={`/complaints/${complaintId}`}
-                                className="font-semibold text-slate-800 hover:text-blue-600"
+                                className="font-semibold text-[#16324A] transition hover:text-[#1B8A8F]"
                               >
                                 {complaint.title}
                               </Link>
 
-                              <p className="mt-1 text-xs text-slate-400">
+                              <p className="mt-1 text-xs text-[#8A9EAC]">
                                 {getComplaintId(
                                   complaint
                                 )}
                               </p>
+
                             </td>
 
-                            <td className="px-6 py-5 text-sm text-slate-600">
+                            <td className="px-6 py-5 text-sm text-[#60798C]">
                               {getCategoryLabel(
                                 complaint.category
                               )}
                             </td>
 
                             <td className="px-6 py-5">
+
                               <span
                                 className={`rounded-full px-3 py-1 text-xs font-bold ${getPriorityStyle(
                                   complaint.priority
@@ -1049,9 +1081,11 @@ function CitizenDashboard() {
                                   complaint.priority
                                 )}
                               </span>
+
                             </td>
 
                             <td className="px-6 py-5">
+
                               <span
                                 className={`rounded-full px-3 py-1 text-xs font-bold ${getStatusStyle(
                                   complaint.status
@@ -1061,19 +1095,24 @@ function CitizenDashboard() {
                                   complaint.status
                                 )}
                               </span>
+
                             </td>
 
-                            <td className="px-6 py-5 text-sm text-slate-500">
+                            <td className="px-6 py-5 text-sm text-[#60798C]">
                               {formatDate(
                                 complaint.createdAt
                               )}
                             </td>
+
                           </tr>
                         );
                       }
                     )}
+
                   </tbody>
+
                 </table>
+
               </div>
             )}
 
@@ -1081,7 +1120,7 @@ function CitizenDashboard() {
 
           {!loading &&
             recentComplaints.length > 0 && (
-              <div className="divide-y divide-slate-100 md:hidden">
+              <div className="divide-y divide-[#EDF3F6] md:hidden">
 
                 {recentComplaints.map(
                   (complaint) => {
@@ -1093,26 +1132,30 @@ function CitizenDashboard() {
                       <Link
                         key={complaintId}
                         to={`/complaints/${complaintId}`}
-                        className="block p-5 transition hover:bg-slate-50"
+                        className="block p-5 transition hover:bg-[#F8FBFC]"
                       >
+
                         <div className="flex items-start justify-between gap-4">
 
                           <div>
-                            <p className="font-bold">
+
+                            <p className="font-bold text-[#16324A]">
                               {complaint.title}
                             </p>
 
-                            <p className="mt-1 text-xs text-slate-400">
+                            <p className="mt-1 text-xs text-[#8A9EAC]">
                               {getComplaintId(
                                 complaint
                               )}
                             </p>
+
                           </div>
 
                           <ChevronRight
                             size={18}
-                            className="text-slate-400"
+                            className="text-[#8A9EAC]"
                           />
+
                         </div>
 
                         <div className="mt-4 flex flex-wrap gap-2">
@@ -1136,9 +1179,10 @@ function CitizenDashboard() {
                               complaint.priority
                             )}
                           </span>
+
                         </div>
 
-                        <p className="mt-3 text-xs text-slate-400">
+                        <p className="mt-3 text-xs text-[#8A9EAC]">
                           {getCategoryLabel(
                             complaint.category
                           )}{" "}
@@ -1147,14 +1191,19 @@ function CitizenDashboard() {
                             complaint.createdAt
                           )}
                         </p>
+
                       </Link>
                     );
                   }
                 )}
+
               </div>
             )}
+
         </section>
+
       </main>
+
     </div>
   );
 }
@@ -1170,7 +1219,7 @@ function StatCard({
   iconStyle,
 }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm transition duration-200 hover:border-[#BFD9E6] hover:shadow-md">
 
       <div className="flex items-center justify-between">
 
@@ -1180,14 +1229,16 @@ function StatCard({
           {icon}
         </div>
 
-        <p className="text-3xl font-extrabold text-slate-900">
+        <p className="text-3xl font-extrabold text-[#16324A]">
           {value}
         </p>
+
       </div>
 
-      <p className="mt-4 text-sm font-semibold text-slate-600">
+      <p className="mt-4 text-sm font-semibold text-[#60798C]">
         {title}
       </p>
+
     </div>
   );
 }

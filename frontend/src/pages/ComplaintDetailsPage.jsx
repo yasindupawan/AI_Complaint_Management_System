@@ -104,16 +104,16 @@ const getStatusStyle = (status) => {
       return "bg-amber-50 text-amber-700";
 
     case "assigned":
-      return "bg-indigo-50 text-indigo-700";
+      return "bg-[#E8F6F4] text-[#176D72]";
 
     case "rejected":
       return "bg-red-50 text-red-700";
 
     case "duplicate":
-      return "bg-purple-50 text-purple-700";
+      return "bg-[#EDF5F5] text-[#176D72]";
 
     default:
-      return "bg-blue-50 text-blue-700";
+      return "bg-[#EAF3F8] text-[#1F5F8B]";
   }
 };
 
@@ -217,15 +217,15 @@ function ComplaintDetailsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen bg-[#F6F9FB]">
         <div className="flex min-h-screen items-center justify-center">
           <div className="text-center">
             <Loader2
               size={38}
-              className="mx-auto animate-spin text-blue-600"
+              className="mx-auto animate-spin text-[#1F5F8B]"
             />
 
-            <p className="mt-4 font-semibold text-slate-600">
+            <p className="mt-4 font-semibold text-[#60798C]">
               Loading complaint details...
             </p>
           </div>
@@ -240,17 +240,19 @@ function ComplaintDetailsPage() {
 
   if (error || !complaint) {
     return (
-      <div className="min-h-screen bg-slate-50 px-5 py-10">
+      <div className="min-h-screen bg-[#F6F9FB] px-5 py-10">
         <div className="mx-auto max-w-4xl">
+
           <Link
             to="/complaints"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-blue-600"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-[#60798C] transition hover:text-[#1B8A8F]"
           >
             <ArrowLeft size={17} />
             Back to My Complaints
           </Link>
 
           <div className="mt-8 rounded-2xl border border-red-200 bg-red-50 p-6">
+
             <div className="flex gap-3">
               <AlertCircle
                 size={22}
@@ -268,6 +270,7 @@ function ComplaintDetailsPage() {
                 </p>
               </div>
             </div>
+
           </div>
         </div>
       </div>
@@ -301,14 +304,15 @@ function ComplaintDetailsPage() {
   ========================================================= */
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="min-h-screen bg-[#F6F9FB] text-[#16324A]">
+
       <main className="mx-auto max-w-7xl px-5 py-8 lg:px-8 lg:py-10">
 
         {/* BACK */}
 
         <Link
           to="/complaints"
-          className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-blue-600"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-[#60798C] transition hover:text-[#1B8A8F]"
         >
           <ArrowLeft size={17} />
           Back to My Complaints
@@ -318,24 +322,26 @@ function ComplaintDetailsPage() {
             HEADER
         ===================================================== */}
 
-        <section className="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:p-8">
+        <section className="mt-6 rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm lg:p-8">
 
           <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-start">
 
             <div className="min-w-0">
-              <p className="text-sm font-semibold text-blue-600">
+
+              <p className="text-sm font-semibold text-[#1B8A8F]">
                 Complaint Details
               </p>
 
-              <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
+              <h1 className="mt-2 text-2xl font-bold tracking-tight text-[#16324A] sm:text-3xl">
                 {complaint.title}
               </h1>
 
-              <p className="mt-3 max-w-4xl leading-7 text-slate-500">
+              <p className="mt-3 max-w-4xl leading-7 text-[#60798C]">
                 {complaint.description}
               </p>
 
               <div className="mt-5 flex flex-wrap gap-2">
+
                 <span
                   className={`rounded-full px-3 py-1.5 text-xs font-bold ${getStatusStyle(
                     complaint.status
@@ -354,19 +360,24 @@ function ComplaintDetailsPage() {
                   )}{" "}
                   Priority
                 </span>
+
               </div>
             </div>
 
-            <div className="shrink-0 rounded-xl bg-slate-50 px-5 py-4">
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+            <div className="shrink-0 rounded-xl border border-[#D8E5EC] bg-[#F6F9FB] px-5 py-4">
+
+              <p className="text-xs font-semibold uppercase tracking-wide text-[#8A9EAC]">
                 Complaint ID
               </p>
 
-              <p className="mt-1 break-all text-sm font-bold text-slate-700">
+              <p className="mt-1 break-all text-sm font-bold text-[#425D70]">
                 {complaint._id}
               </p>
+
             </div>
+
           </div>
+
         </section>
 
         {/* =====================================================
@@ -383,9 +394,9 @@ function ComplaintDetailsPage() {
 
             {/* BASIC INFORMATION */}
 
-            <section className="rounded-2xl border border-slate-200 bg-white p-6">
+            <section className="rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm">
 
-              <h2 className="text-lg font-bold">
+              <h2 className="text-lg font-bold text-[#16324A]">
                 Complaint Information
               </h2>
 
@@ -424,41 +435,47 @@ function ComplaintDetailsPage() {
                       : "Not Available"
                   }
                 />
+
               </div>
+
             </section>
 
             {/* =================================================
                 IMAGES
             ================================================= */}
 
-            <section className="rounded-2xl border border-slate-200 bg-white p-6">
+            <section className="rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm">
 
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#EAF3F8] text-[#1F5F8B]">
                   <ImageIcon size={20} />
                 </div>
 
                 <div>
-                  <h2 className="font-bold">
+                  <h2 className="font-bold text-[#16324A]">
                     Supporting Images
                   </h2>
 
-                  <p className="text-sm text-slate-500">
+                  <p className="text-sm text-[#60798C]">
                     Images submitted with this complaint.
                   </p>
                 </div>
+
               </div>
 
               {images.length === 0 ? (
-                <div className="mt-5 rounded-xl border border-dashed border-slate-200 bg-slate-50 px-5 py-8 text-center">
+                <div className="mt-5 rounded-xl border border-dashed border-[#C8D8E2] bg-[#F6F9FB] px-5 py-8 text-center">
+
                   <ImageIcon
                     size={28}
-                    className="mx-auto text-slate-300"
+                    className="mx-auto text-[#B7C8D3]"
                   />
 
-                  <p className="mt-2 text-sm text-slate-500">
+                  <p className="mt-2 text-sm text-[#60798C]">
                     No supporting images were submitted.
                   </p>
+
                 </div>
               ) : (
                 <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3">
@@ -481,7 +498,7 @@ function ComplaintDetailsPage() {
                         href={imageUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="group overflow-hidden rounded-xl border border-slate-200 bg-slate-50"
+                        className="group overflow-hidden rounded-xl border border-[#D8E5EC] bg-[#F6F9FB] transition hover:border-[#8FC6CC]"
                       >
                         <img
                           src={imageUrl}
@@ -493,35 +510,39 @@ function ComplaintDetailsPage() {
                       </a>
                     );
                   })}
+
                 </div>
               )}
+
             </section>
 
             {/* =================================================
                 STATUS HISTORY
             ================================================= */}
 
-            <section className="rounded-2xl border border-slate-200 bg-white p-6">
+            <section className="rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm">
 
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#E8F6F4] text-[#1B8A8F]">
                   <History size={20} />
                 </div>
 
                 <div>
-                  <h2 className="font-bold">
+                  <h2 className="font-bold text-[#16324A]">
                     Complaint Tracking
                   </h2>
 
-                  <p className="text-sm text-slate-500">
+                  <p className="text-sm text-[#60798C]">
                     Follow the processing history of your
                     complaint.
                   </p>
                 </div>
+
               </div>
 
               {history.length === 0 ? (
-                <p className="mt-6 text-sm text-slate-500">
+                <p className="mt-6 text-sm text-[#60798C]">
                   No status history is available.
                 </p>
               ) : (
@@ -536,10 +557,11 @@ function ComplaintDetailsPage() {
                         key={item._id || index}
                         className="relative flex gap-4"
                       >
+
                         {/* LINE */}
 
                         {!isLast && (
-                          <div className="absolute left-5 top-10 h-full w-px bg-slate-200" />
+                          <div className="absolute left-5 top-10 h-full w-px bg-[#D8E5EC]" />
                         )}
 
                         {/* ICON */}
@@ -547,8 +569,8 @@ function ComplaintDetailsPage() {
                         <div
                           className={`relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${
                             isLast
-                              ? "bg-blue-600 text-white"
-                              : "bg-slate-100 text-slate-500"
+                              ? "bg-[#1B8A8F] text-white"
+                              : "bg-[#EAF3F8] text-[#1F5F8B]"
                           }`}
                         >
                           {getHistoryIcon(
@@ -567,42 +589,48 @@ function ComplaintDetailsPage() {
                         >
                           <div className="flex flex-col justify-between gap-1 sm:flex-row sm:items-center">
 
-                            <p className="font-bold">
+                            <p className="font-bold text-[#16324A]">
                               {formatStatus(
                                 item.newStatus
                               )}
                             </p>
 
-                            <p className="text-xs text-slate-400">
+                            <p className="text-xs text-[#8A9EAC]">
                               {formatDate(
                                 item.createdAt
                               )}
                             </p>
+
                           </div>
 
                           {item.remarks && (
-                            <p className="mt-2 text-sm leading-6 text-slate-500">
+                            <p className="mt-2 text-sm leading-6 text-[#60798C]">
                               {item.remarks}
                             </p>
                           )}
 
                           {item.changedBy && (
-                            <p className="mt-2 text-xs text-slate-400">
+                            <p className="mt-2 text-xs text-[#8A9EAC]">
                               Updated by{" "}
-                              <span className="font-semibold">
+                              <span className="font-semibold text-[#425D70]">
                                 {item.changedBy
                                   .fullName ||
                                   "System"}
                               </span>
                             </p>
                           )}
+
                         </div>
+
                       </div>
                     );
                   })}
+
                 </div>
               )}
+
             </section>
+
           </div>
 
           {/* ===================================================
@@ -613,9 +641,9 @@ function ComplaintDetailsPage() {
 
             {/* PROCESSING */}
 
-            <section className="rounded-2xl border border-slate-200 bg-white p-6">
+            <section className="rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm">
 
-              <h2 className="font-bold">
+              <h2 className="font-bold text-[#16324A]">
                 Processing Information
               </h2>
 
@@ -647,29 +675,33 @@ function ComplaintDetailsPage() {
                     complaint.status
                   )}
                 />
+
               </div>
+
             </section>
 
             {/* =================================================
                 AI ANALYSIS
             ================================================= */}
 
-            <section className="rounded-2xl border border-slate-200 bg-white p-6">
+            <section className="rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm">
 
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 text-purple-600">
+
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#E8F6F4] text-[#1B8A8F]">
                   <BrainCircuit size={20} />
                 </div>
 
                 <div>
-                  <h2 className="font-bold">
+                  <h2 className="font-bold text-[#16324A]">
                     AI Analysis
                   </h2>
 
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-[#60798C]">
                     Automated complaint analysis
                   </p>
                 </div>
+
               </div>
 
               <div className="mt-5 space-y-4">
@@ -722,23 +754,27 @@ function ComplaintDetailsPage() {
                       : "Not Required"
                   }
                 />
+
               </div>
+
             </section>
 
             {/* =================================================
                 DUPLICATE CHECK
             ================================================= */}
 
-            <section className="rounded-2xl border border-slate-200 bg-white p-6">
+            <section className="rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm">
 
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#EAF3F8] text-[#1F5F8B]">
                   <Copy size={19} />
                 </div>
 
-                <h2 className="font-bold">
+                <h2 className="font-bold text-[#16324A]">
                   Duplicate Detection
                 </h2>
+
               </div>
 
               <div className="mt-5 space-y-4">
@@ -772,40 +808,49 @@ function ComplaintDetailsPage() {
 
                 {complaint.duplicateInfo
                   ?.matchedComplaint && (
-                  <div className="rounded-xl bg-purple-50 p-4">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-purple-500">
+                  <div className="rounded-xl border border-[#B9DDDA] bg-[#E8F6F4] p-4">
+
+                    <p className="text-xs font-semibold uppercase tracking-wide text-[#1B8A8F]">
                       Matched Complaint
                     </p>
 
-                    <p className="mt-2 text-sm font-bold text-purple-800">
+                    <p className="mt-2 text-sm font-bold text-[#155E63]">
                       {complaint
                         .duplicateInfo
                         .matchedComplaint
                         .title ||
                         "Potential matching complaint"}
                     </p>
+
                   </div>
                 )}
+
               </div>
+
             </section>
 
             {/* ADMIN REMARKS */}
 
             {complaint.adminRemarks && (
-              <section className="rounded-2xl border border-slate-200 bg-white p-6">
+              <section className="rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm">
 
-                <h2 className="font-bold">
+                <h2 className="font-bold text-[#16324A]">
                   Processing Remarks
                 </h2>
 
-                <p className="mt-3 text-sm leading-6 text-slate-500">
+                <p className="mt-3 text-sm leading-6 text-[#60798C]">
                   {complaint.adminRemarks}
                 </p>
+
               </section>
             )}
+
           </div>
+
         </div>
+
       </main>
+
     </div>
   );
 }
@@ -820,21 +865,24 @@ function InfoItem({
   value,
 }) {
   return (
-    <div className="flex gap-3 rounded-xl bg-slate-50 p-4">
+    <div className="flex gap-3 rounded-xl border border-[#EDF3F6] bg-[#F6F9FB] p-4">
 
-      <div className="mt-0.5 text-blue-600">
+      <div className="mt-0.5 text-[#1B8A8F]">
         {icon}
       </div>
 
       <div className="min-w-0">
-        <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+
+        <p className="text-xs font-semibold uppercase tracking-wide text-[#8A9EAC]">
           {label}
         </p>
 
-        <p className="mt-1 break-words text-sm font-bold text-slate-700">
+        <p className="mt-1 break-words text-sm font-bold text-[#425D70]">
           {value}
         </p>
+
       </div>
+
     </div>
   );
 }
@@ -851,19 +899,22 @@ function SideInfoItem({
   return (
     <div className="flex items-start gap-3">
 
-      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-50 text-slate-500">
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#E8F6F4] text-[#1B8A8F]">
         {icon}
       </div>
 
       <div className="min-w-0">
-        <p className="text-xs text-slate-400">
+
+        <p className="text-xs text-[#8A9EAC]">
           {label}
         </p>
 
-        <p className="mt-0.5 break-words text-sm font-bold text-slate-700">
+        <p className="mt-0.5 break-words text-sm font-bold text-[#425D70]">
           {value}
         </p>
+
       </div>
+
     </div>
   );
 }
@@ -877,15 +928,16 @@ function DataRow({
   value,
 }) {
   return (
-    <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-3 last:border-b-0 last:pb-0">
+    <div className="flex items-start justify-between gap-4 border-b border-[#EDF3F6] pb-3 last:border-b-0 last:pb-0">
 
-      <p className="text-sm text-slate-500">
+      <p className="text-sm text-[#60798C]">
         {label}
       </p>
 
-      <p className="text-right text-sm font-bold text-slate-700">
+      <p className="text-right text-sm font-bold text-[#425D70]">
         {value}
       </p>
+
     </div>
   );
 }

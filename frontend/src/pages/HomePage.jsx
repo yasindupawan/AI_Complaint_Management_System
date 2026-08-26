@@ -148,17 +148,16 @@ function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-slate-900">
+    <div className="min-h-screen bg-[#F6F9FB] text-[#16324A]">
 
       {/* ==================================================
           HEADER
       ================================================== */}
 
-      <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
+      <header className="sticky top-0 z-50 border-b border-[#D8E5EC] bg-white/95 backdrop-blur">
 
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
 
-          {/* Logo */}
           <button
             type="button"
             onClick={() =>
@@ -166,22 +165,21 @@ function HomePage() {
             }
             className="flex items-center gap-3"
           >
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-600 text-white shadow-md shadow-blue-200">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#123B5D] text-white shadow-md shadow-[#123B5D]/15">
               <BrainCircuit size={25} />
             </div>
 
             <div className="text-left leading-tight">
-              <p className="text-[17px] font-bold text-slate-900">
+              <p className="text-[17px] font-bold text-[#16324A]">
                 {t.brand.title}
               </p>
 
-              <p className="text-xs font-medium text-blue-600">
+              <p className="text-xs font-medium text-[#1B8A8F]">
                 {t.brand.subtitle}
               </p>
             </div>
           </button>
 
-          {/* Desktop Navigation */}
           <nav className="hidden items-center gap-8 lg:flex">
 
             <button
@@ -189,7 +187,7 @@ function HomePage() {
               onClick={() =>
                 scrollToSection("home")
               }
-              className="text-sm font-medium text-slate-600 transition hover:text-blue-600"
+              className="text-sm font-medium text-[#60798C] transition hover:text-[#1F5F8B]"
             >
               {t.nav.home}
             </button>
@@ -201,7 +199,7 @@ function HomePage() {
                   "features"
                 )
               }
-              className="text-sm font-medium text-slate-600 transition hover:text-blue-600"
+              className="text-sm font-medium text-[#60798C] transition hover:text-[#1F5F8B]"
             >
               {t.nav.features}
             </button>
@@ -213,7 +211,7 @@ function HomePage() {
                   "how-it-works"
                 )
               }
-              className="text-sm font-medium text-slate-600 transition hover:text-blue-600"
+              className="text-sm font-medium text-[#60798C] transition hover:text-[#1F5F8B]"
             >
               {t.nav.howItWorks}
             </button>
@@ -223,22 +221,20 @@ function HomePage() {
               onClick={() =>
                 scrollToSection("about")
               }
-              className="text-sm font-medium text-slate-600 transition hover:text-blue-600"
+              className="text-sm font-medium text-[#60798C] transition hover:text-[#1F5F8B]"
             >
               {t.nav.about}
             </button>
 
           </nav>
 
-          {/* Desktop Right Section */}
           <div className="hidden items-center gap-3 lg:flex">
 
-            {/* Language Selector */}
-            <div className="flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 p-1">
+            <div className="flex items-center gap-1 rounded-lg border border-[#D8E5EC] bg-[#F6F9FB] p-1">
 
               <Globe2
                 size={16}
-                className="ml-2 text-slate-500"
+                className="ml-2 text-[#60798C]"
               />
 
               {languageOptions.map(
@@ -254,8 +250,8 @@ function HomePage() {
                     className={`rounded-md px-2.5 py-1.5 text-xs font-semibold transition ${
                       language ===
                       item.code
-                        ? "bg-white text-blue-600 shadow-sm"
-                        : "text-slate-500 hover:text-slate-900"
+                        ? "bg-white text-[#1F5F8B] shadow-sm"
+                        : "text-[#60798C] hover:text-[#16324A]"
                     }`}
                   >
                     {item.label}
@@ -267,21 +263,20 @@ function HomePage() {
 
             <Link
               to="/login"
-              className="rounded-lg px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+              className="rounded-lg px-4 py-2.5 text-sm font-semibold text-[#16324A] transition hover:bg-[#EAF3F8]"
             >
               {t.nav.login}
             </Link>
 
             <Link
               to="/register"
-              className="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-blue-200 transition hover:bg-blue-700"
+              className="rounded-lg bg-[#1F5F8B] px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-[#1F5F8B]/20 transition hover:bg-[#174D72]"
             >
               {t.nav.register}
             </Link>
 
           </div>
 
-          {/* Mobile Menu Button */}
           <button
             type="button"
             onClick={() =>
@@ -289,7 +284,7 @@ function HomePage() {
                 !menuOpen
               )
             }
-            className="rounded-lg border border-slate-200 p-2 text-slate-700 lg:hidden"
+            className="rounded-lg border border-[#D8E5EC] p-2 text-[#16324A] lg:hidden"
           >
             {menuOpen ? (
               <X size={22} />
@@ -300,9 +295,8 @@ function HomePage() {
 
         </div>
 
-        {/* Mobile Menu */}
         {menuOpen && (
-          <div className="border-t border-slate-200 bg-white px-5 py-5 lg:hidden">
+          <div className="border-t border-[#D8E5EC] bg-white px-5 py-5 lg:hidden">
 
             <div className="flex flex-col gap-2">
 
@@ -311,7 +305,7 @@ function HomePage() {
                 onClick={() =>
                   scrollToSection("home")
                 }
-                className="rounded-lg px-3 py-2 text-left text-sm font-medium hover:bg-slate-50"
+                className="rounded-lg px-3 py-2 text-left text-sm font-medium hover:bg-[#F6F9FB]"
               >
                 {t.nav.home}
               </button>
@@ -323,7 +317,7 @@ function HomePage() {
                     "features"
                   )
                 }
-                className="rounded-lg px-3 py-2 text-left text-sm font-medium hover:bg-slate-50"
+                className="rounded-lg px-3 py-2 text-left text-sm font-medium hover:bg-[#F6F9FB]"
               >
                 {t.nav.features}
               </button>
@@ -335,7 +329,7 @@ function HomePage() {
                     "how-it-works"
                   )
                 }
-                className="rounded-lg px-3 py-2 text-left text-sm font-medium hover:bg-slate-50"
+                className="rounded-lg px-3 py-2 text-left text-sm font-medium hover:bg-[#F6F9FB]"
               >
                 {t.nav.howItWorks}
               </button>
@@ -347,12 +341,12 @@ function HomePage() {
                     "about"
                   )
                 }
-                className="rounded-lg px-3 py-2 text-left text-sm font-medium hover:bg-slate-50"
+                className="rounded-lg px-3 py-2 text-left text-sm font-medium hover:bg-[#F6F9FB]"
               >
                 {t.nav.about}
               </button>
 
-              <div className="my-2 border-t border-slate-200" />
+              <div className="my-2 border-t border-[#D8E5EC]" />
 
               <div className="flex flex-wrap items-center gap-2 py-2">
 
@@ -371,8 +365,8 @@ function HomePage() {
                       className={`rounded-md px-3 py-2 text-xs font-semibold ${
                         language ===
                         item.code
-                          ? "bg-blue-50 text-blue-600"
-                          : "bg-slate-50 text-slate-600"
+                          ? "bg-[#E8F6F4] text-[#1B8A8F]"
+                          : "bg-[#F6F9FB] text-[#60798C]"
                       }`}
                     >
                       {item.label}
@@ -384,14 +378,14 @@ function HomePage() {
 
               <Link
                 to="/login"
-                className="rounded-lg border border-slate-200 px-4 py-2.5 text-center text-sm font-semibold"
+                className="rounded-lg border border-[#D8E5EC] px-4 py-2.5 text-center text-sm font-semibold"
               >
                 {t.nav.login}
               </Link>
 
               <Link
                 to="/register"
-                className="rounded-lg bg-blue-600 px-4 py-2.5 text-center text-sm font-semibold text-white"
+                className="rounded-lg bg-[#1F5F8B] px-4 py-2.5 text-center text-sm font-semibold text-white"
               >
                 {t.nav.register}
               </Link>
@@ -411,19 +405,18 @@ function HomePage() {
 
         <section
           id="home"
-          className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50"
+          className="relative overflow-hidden bg-gradient-to-br from-[#F6F9FB] via-white to-[#EAF3F8]"
         >
 
-          <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-blue-100/60 blur-3xl" />
+          <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-[#D9EDF2]/70 blur-3xl" />
 
-          <div className="absolute -bottom-40 left-20 h-80 w-80 rounded-full bg-indigo-100/50 blur-3xl" />
+          <div className="absolute -bottom-40 left-20 h-80 w-80 rounded-full bg-[#DDF3EE]/60 blur-3xl" />
 
           <div className="relative mx-auto grid min-h-[680px] max-w-7xl items-center gap-14 px-5 py-20 lg:grid-cols-2 lg:px-8">
 
-            {/* Hero Left */}
             <div>
 
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-600">
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#BFD9E6] bg-[#EAF3F8] px-4 py-2 text-sm font-semibold text-[#1F5F8B]">
 
                 <BrainCircuit size={17} />
 
@@ -431,11 +424,11 @@ function HomePage() {
 
               </div>
 
-              <h1 className="max-w-2xl text-5xl font-extrabold leading-[1.1] tracking-tight text-slate-900 md:text-6xl">
+              <h1 className="max-w-2xl text-5xl font-extrabold leading-[1.1] tracking-tight text-[#16324A] md:text-6xl">
 
                 {t.hero.title}
 
-                <span className="mt-2 block text-blue-600">
+                <span className="mt-2 block text-[#1B8A8F]">
                   {
                     t.hero
                       .titleHighlight
@@ -444,7 +437,7 @@ function HomePage() {
 
               </h1>
 
-              <p className="mt-7 max-w-xl text-lg leading-8 text-slate-600">
+              <p className="mt-7 max-w-xl text-lg leading-8 text-[#60798C]">
                 {
                   t.hero
                     .description
@@ -455,7 +448,7 @@ function HomePage() {
 
                 <Link
                   to="/register"
-                  className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-3.5 font-semibold text-white shadow-lg shadow-blue-200 transition hover:-translate-y-0.5 hover:bg-blue-700"
+                  className="inline-flex items-center gap-2 rounded-xl bg-[#1F5F8B] px-6 py-3.5 font-semibold text-white shadow-lg shadow-[#1F5F8B]/20 transition hover:-translate-y-0.5 hover:bg-[#174D72]"
                 >
                   {
                     t.hero
@@ -474,7 +467,7 @@ function HomePage() {
                       "how-it-works"
                     )
                   }
-                  className="rounded-xl border border-slate-300 bg-white px-6 py-3.5 font-semibold text-slate-700 transition hover:border-blue-300 hover:text-blue-600"
+                  className="rounded-xl border border-[#C8D8E2] bg-white px-6 py-3.5 font-semibold text-[#16324A] transition hover:border-[#1B8A8F] hover:text-[#1B8A8F]"
                 >
                   {
                     t.hero
@@ -486,63 +479,43 @@ function HomePage() {
 
               <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3">
 
-                <div className="flex items-center gap-2 text-sm text-slate-600">
-
+                <div className="flex items-center gap-2 text-sm text-[#60798C]">
                   <CheckCircle2
                     size={17}
-                    className="text-emerald-500"
+                    className="text-[#2E9B75]"
                   />
-
-                  {
-                    t.hero
-                      .multilingual
-                  }
-
+                  {t.hero.multilingual}
                 </div>
 
-                <div className="flex items-center gap-2 text-sm text-slate-600">
-
+                <div className="flex items-center gap-2 text-sm text-[#60798C]">
                   <CheckCircle2
                     size={17}
-                    className="text-emerald-500"
+                    className="text-[#2E9B75]"
                   />
-
-                  {
-                    t.hero
-                      .aiClassification
-                  }
-
+                  {t.hero.aiClassification}
                 </div>
 
-                <div className="flex items-center gap-2 text-sm text-slate-600">
-
+                <div className="flex items-center gap-2 text-sm text-[#60798C]">
                   <CheckCircle2
                     size={17}
-                    className="text-emerald-500"
+                    className="text-[#2E9B75]"
                   />
-
-                  {
-                    t.hero
-                      .statusTracking
-                  }
-
+                  {t.hero.statusTracking}
                 </div>
 
               </div>
 
             </div>
 
-            {/* Hero Visual */}
             <div className="relative">
 
-              <div className="absolute inset-0 translate-x-8 translate-y-8 rounded-[40px] bg-blue-100/50 blur-2xl" />
+              <div className="absolute inset-0 translate-x-8 translate-y-8 rounded-[40px] bg-[#CFE9EB]/50 blur-2xl" />
 
-              <div className="relative overflow-hidden rounded-[32px] border border-slate-200 bg-white p-6 shadow-2xl shadow-blue-100/60">
+              <div className="relative overflow-hidden rounded-[32px] border border-[#D8E5EC] bg-white p-6 shadow-2xl shadow-[#123B5D]/10">
 
-                <div className="relative min-h-[440px] overflow-hidden rounded-[24px] bg-gradient-to-br from-blue-600 to-indigo-700 p-8 text-white">
+                <div className="relative min-h-[440px] overflow-hidden rounded-[24px] bg-gradient-to-br from-[#123B5D] via-[#1F5F8B] to-[#1B8A8F] p-8 text-white">
 
                   <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-white/10" />
-
                   <div className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-white/10" />
 
                   <div className="relative">
@@ -550,21 +523,13 @@ function HomePage() {
                     <div className="flex items-center justify-between">
 
                       <div>
-
-                        <p className="text-sm font-medium text-blue-100">
-                          {
-                            t.hero
-                              .platform
-                          }
+                        <p className="text-sm font-medium text-[#D6EEF1]">
+                          {t.hero.platform}
                         </p>
 
                         <h2 className="mt-1 text-2xl font-bold">
-                          {
-                            t.hero
-                              .voiceTitle
-                          }
+                          {t.hero.voiceTitle}
                         </h2>
-
                       </div>
 
                       <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/15 backdrop-blur">
@@ -575,55 +540,38 @@ function HomePage() {
 
                     <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
 
-                      {/* Report Issue */}
-                      <div className="rounded-2xl bg-white p-5 text-slate-900 shadow-lg">
+                      <div className="rounded-2xl bg-white p-5 text-[#16324A] shadow-lg">
 
-                        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#EAF3F8] text-[#1F5F8B]">
                           <FileText size={22} />
                         </div>
 
                         <p className="mt-4 font-bold">
-                          {
-                            t.hero
-                              .reportIssue
-                          }
+                          {t.hero.reportIssue}
                         </p>
 
-                        <p className="mt-1 text-xs leading-5 text-slate-500">
-                          {
-                            t.hero
-                              .reportIssueDescription
-                          }
+                        <p className="mt-1 text-xs leading-5 text-[#60798C]">
+                          {t.hero.reportIssueDescription}
                         </p>
 
                       </div>
 
-                      {/* AI Assistance */}
                       <div className="rounded-2xl bg-white/15 p-5 backdrop-blur">
 
                         <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/15">
-                          <BrainCircuit
-                            size={22}
-                          />
+                          <BrainCircuit size={22} />
                         </div>
 
                         <p className="mt-4 font-bold">
-                          {
-                            t.hero
-                              .aiAssistance
-                          }
+                          {t.hero.aiAssistance}
                         </p>
 
-                        <p className="mt-1 text-xs leading-5 text-blue-100">
-                          {
-                            t.hero
-                              .aiAssistanceDescription
-                          }
+                        <p className="mt-1 text-xs leading-5 text-[#D6EEF1]">
+                          {t.hero.aiAssistanceDescription}
                         </p>
 
                       </div>
 
-                      {/* Department */}
                       <div className="rounded-2xl bg-white/15 p-5 backdrop-blur">
 
                         <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/15">
@@ -631,40 +579,27 @@ function HomePage() {
                         </div>
 
                         <p className="mt-4 font-bold">
-                          {
-                            t.hero
-                              .relevantDepartment
-                          }
+                          {t.hero.relevantDepartment}
                         </p>
 
-                        <p className="mt-1 text-xs leading-5 text-blue-100">
-                          {
-                            t.hero
-                              .relevantDepartmentDescription
-                          }
+                        <p className="mt-1 text-xs leading-5 text-[#D6EEF1]">
+                          {t.hero.relevantDepartmentDescription}
                         </p>
 
                       </div>
 
-                      {/* Notifications */}
-                      <div className="rounded-2xl bg-white p-5 text-slate-900 shadow-lg">
+                      <div className="rounded-2xl bg-white p-5 text-[#16324A] shadow-lg">
 
-                        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#E8F6F4] text-[#2E9B75]">
                           <BellRing size={22} />
                         </div>
 
                         <p className="mt-4 font-bold">
-                          {
-                            t.hero
-                              .stayUpdated
-                          }
+                          {t.hero.stayUpdated}
                         </p>
 
-                        <p className="mt-1 text-xs leading-5 text-slate-500">
-                          {
-                            t.hero
-                              .stayUpdatedDescription
-                          }
+                        <p className="mt-1 text-xs leading-5 text-[#60798C]">
+                          {t.hero.stayUpdatedDescription}
                         </p>
 
                       </div>
@@ -678,25 +613,18 @@ function HomePage() {
                         <Globe2 size={20} />
 
                         <div>
-
-                          <p className="text-xs text-blue-100">
-                            {
-                              t.hero
-                                .availableLanguages
-                            }
+                          <p className="text-xs text-[#D6EEF1]">
+                            {t.hero.availableLanguages}
                           </p>
 
                           <p className="text-sm font-semibold">
                             English · සිංහල · தமிழ்
                           </p>
-
                         </div>
 
                       </div>
 
-                      <ShieldCheck
-                        size={24}
-                      />
+                      <ShieldCheck size={24} />
 
                     </div>
 
@@ -725,19 +653,16 @@ function HomePage() {
 
             <div className="mx-auto max-w-2xl text-center">
 
-              <p className="text-sm font-bold uppercase tracking-widest text-blue-600">
+              <p className="text-sm font-bold uppercase tracking-widest text-[#1B8A8F]">
                 {t.features.label}
               </p>
 
-              <h2 className="mt-3 text-4xl font-bold tracking-tight text-slate-900">
+              <h2 className="mt-3 text-4xl font-bold tracking-tight text-[#16324A]">
                 {t.features.title}
               </h2>
 
-              <p className="mt-4 leading-7 text-slate-600">
-                {
-                  t.features
-                    .description
-                }
+              <p className="mt-4 leading-7 text-[#60798C]">
+                {t.features.description}
               </p>
 
             </div>
@@ -754,21 +679,19 @@ function HomePage() {
                       key={
                         feature.title
                       }
-                      className="group rounded-2xl border border-slate-200 bg-white p-7 transition duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-xl hover:shadow-slate-100"
+                      className="group rounded-2xl border border-[#D8E5EC] bg-white p-7 transition duration-300 hover:-translate-y-1 hover:border-[#8FC6CC] hover:shadow-xl hover:shadow-[#123B5D]/5"
                     >
 
-                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600 transition group-hover:bg-blue-600 group-hover:text-white">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#EAF3F8] text-[#1F5F8B] transition group-hover:bg-[#1B8A8F] group-hover:text-white">
                         <Icon size={23} />
                       </div>
 
-                      <h3 className="mt-5 text-lg font-bold text-slate-900">
+                      <h3 className="mt-5 text-lg font-bold text-[#16324A]">
                         {feature.title}
                       </h3>
 
-                      <p className="mt-2 text-sm leading-6 text-slate-600">
-                        {
-                          feature.description
-                        }
+                      <p className="mt-2 text-sm leading-6 text-[#60798C]">
+                        {feature.description}
                       </p>
 
                     </div>
@@ -788,26 +711,23 @@ function HomePage() {
 
         <section
           id="how-it-works"
-          className="bg-slate-50 py-24"
+          className="bg-[#F6F9FB] py-24"
         >
 
           <div className="mx-auto max-w-7xl px-5 lg:px-8">
 
             <div className="mx-auto max-w-2xl text-center">
 
-              <p className="text-sm font-bold uppercase tracking-widest text-blue-600">
+              <p className="text-sm font-bold uppercase tracking-widest text-[#1F5F8B]">
                 {t.process.label}
               </p>
 
-              <h2 className="mt-3 text-4xl font-bold tracking-tight text-slate-900">
+              <h2 className="mt-3 text-4xl font-bold tracking-tight text-[#16324A]">
                 {t.process.title}
               </h2>
 
-              <p className="mt-4 text-slate-600">
-                {
-                  t.process
-                    .description
-                }
+              <p className="mt-4 text-[#60798C]">
+                {t.process.description}
               </p>
 
             </div>
@@ -821,25 +741,23 @@ function HomePage() {
                 return (
                   <div
                     key={step.number}
-                    className="relative rounded-2xl border border-slate-200 bg-white p-7"
+                    className="relative rounded-2xl border border-[#D8E5EC] bg-white p-7"
                   >
 
-                    <span className="absolute right-5 top-4 text-4xl font-black text-slate-100">
+                    <span className="absolute right-5 top-4 text-4xl font-black text-[#EDF3F6]">
                       {step.number}
                     </span>
 
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 text-white">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#123B5D] text-white">
                       <Icon size={23} />
                     </div>
 
-                    <h3 className="mt-5 text-lg font-bold">
+                    <h3 className="mt-5 text-lg font-bold text-[#16324A]">
                       {step.title}
                     </h3>
 
-                    <p className="mt-2 text-sm leading-6 text-slate-600">
-                      {
-                        step.description
-                      }
+                    <p className="mt-2 text-sm leading-6 text-[#60798C]">
+                      {step.description}
                     </p>
 
                   </div>
@@ -853,7 +771,7 @@ function HomePage() {
         </section>
 
         {/* ==================================================
-            MULTILINGUAL SECTION
+            MULTILINGUAL
         ================================================== */}
 
         <section className="bg-white py-24">
@@ -864,22 +782,16 @@ function HomePage() {
 
               <div>
 
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#E8F6F4] text-[#1B8A8F]">
                   <Languages size={28} />
                 </div>
 
-                <h2 className="mt-6 text-4xl font-bold tracking-tight">
-                  {
-                    t.languageSection
-                      .title
-                  }
+                <h2 className="mt-6 text-4xl font-bold tracking-tight text-[#16324A]">
+                  {t.languageSection.title}
                 </h2>
 
-                <p className="mt-5 max-w-xl leading-7 text-slate-600">
-                  {
-                    t.languageSection
-                      .description
-                  }
+                <p className="mt-5 max-w-xl leading-7 text-[#60798C]">
+                  {t.languageSection.description}
                 </p>
 
                 <div className="mt-8 space-y-4">
@@ -892,10 +804,10 @@ function HomePage() {
                       >
                         <CheckCircle2
                           size={20}
-                          className="text-emerald-500"
+                          className="text-[#2E9B75]"
                         />
 
-                        <span className="text-sm font-medium text-slate-700">
+                        <span className="text-sm font-medium text-[#16324A]">
                           {item}
                         </span>
                       </div>
@@ -908,44 +820,24 @@ function HomePage() {
 
               <div className="grid gap-4 sm:grid-cols-3">
 
-                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-7 text-center">
-                  <p className="text-3xl font-bold text-blue-600">
-                    EN
-                  </p>
+                {[
+                  ["EN", t.languageSection.english],
+                  ["සිං", t.languageSection.sinhala],
+                  ["தமிழ்", t.languageSection.tamil],
+                ].map(([code, label]) => (
+                  <div
+                    key={code}
+                    className="rounded-2xl border border-[#D8E5EC] bg-[#F6F9FB] p-7 text-center transition hover:border-[#8FC6CC]"
+                  >
+                    <p className="text-3xl font-bold text-[#1F5F8B]">
+                      {code}
+                    </p>
 
-                  <p className="mt-2 font-semibold">
-                    {
-                      t.languageSection
-                        .english
-                    }
-                  </p>
-                </div>
-
-                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-7 text-center">
-                  <p className="text-3xl font-bold text-blue-600">
-                    සිං
-                  </p>
-
-                  <p className="mt-2 font-semibold">
-                    {
-                      t.languageSection
-                        .sinhala
-                    }
-                  </p>
-                </div>
-
-                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-7 text-center">
-                  <p className="text-3xl font-bold text-blue-600">
-                    தமிழ்
-                  </p>
-
-                  <p className="mt-2 font-semibold">
-                    {
-                      t.languageSection
-                        .tamil
-                    }
-                  </p>
-                </div>
+                    <p className="mt-2 font-semibold text-[#16324A]">
+                      {label}
+                    </p>
+                  </div>
+                ))}
 
               </div>
 
@@ -961,14 +853,14 @@ function HomePage() {
 
         <section
           id="about"
-          className="bg-slate-950 py-24 text-white"
+          className="bg-[#0E2C43] py-24 text-white"
         >
 
           <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 lg:grid-cols-2 lg:px-8">
 
             <div>
 
-              <p className="text-sm font-bold uppercase tracking-widest text-blue-400">
+              <p className="text-sm font-bold uppercase tracking-widest text-[#6FD0C7]">
                 {t.about.label}
               </p>
 
@@ -976,11 +868,8 @@ function HomePage() {
                 {t.about.title}
               </h2>
 
-              <p className="mt-5 max-w-xl leading-7 text-slate-400">
-                {
-                  t.about
-                    .description
-                }
+              <p className="mt-5 max-w-xl leading-7 text-[#B9CBD6]">
+                {t.about.description}
               </p>
 
             </div>
@@ -989,40 +878,28 @@ function HomePage() {
 
               <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
 
-                <Clock3 className="text-blue-400" />
+                <Clock3 className="text-[#6FD0C7]" />
 
                 <h3 className="mt-4 font-bold">
-                  {
-                    t.about
-                      .efficientTitle
-                  }
+                  {t.about.efficientTitle}
                 </h3>
 
-                <p className="mt-2 text-sm leading-6 text-slate-400">
-                  {
-                    t.about
-                      .efficientDescription
-                  }
+                <p className="mt-2 text-sm leading-6 text-[#B9CBD6]">
+                  {t.about.efficientDescription}
                 </p>
 
               </div>
 
               <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
 
-                <ShieldCheck className="text-blue-400" />
+                <ShieldCheck className="text-[#6FD0C7]" />
 
                 <h3 className="mt-4 font-bold">
-                  {
-                    t.about
-                      .transparentTitle
-                  }
+                  {t.about.transparentTitle}
                 </h3>
 
-                <p className="mt-2 text-sm leading-6 text-slate-400">
-                  {
-                    t.about
-                      .transparentDescription
-                  }
+                <p className="mt-2 text-sm leading-6 text-[#B9CBD6]">
+                  {t.about.transparentDescription}
                 </p>
 
               </div>
@@ -1037,7 +914,7 @@ function HomePage() {
             CTA
         ================================================== */}
 
-        <section className="bg-blue-600 py-16">
+        <section className="bg-gradient-to-r from-[#123B5D] via-[#1F5F8B] to-[#1B8A8F] py-16">
 
           <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-7 px-5 text-center md:flex-row md:text-left lg:px-8">
 
@@ -1047,18 +924,15 @@ function HomePage() {
                 {t.cta.title}
               </h2>
 
-              <p className="mt-2 text-blue-100">
-                {
-                  t.cta
-                    .description
-                }
+              <p className="mt-2 text-[#D6EEF1]">
+                {t.cta.description}
               </p>
 
             </div>
 
             <Link
               to="/register"
-              className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-white px-6 py-3.5 font-bold text-blue-600 shadow-lg transition hover:-translate-y-0.5"
+              className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-white px-6 py-3.5 font-bold text-[#1F5F8B] shadow-lg transition hover:-translate-y-0.5"
             >
               {t.cta.button}
 
@@ -1081,22 +955,21 @@ function HomePage() {
 
           <div className="grid gap-10 md:grid-cols-3">
 
-            {/* Footer Brand */}
             <div>
 
               <div className="flex items-center gap-3">
 
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#123B5D] text-white">
                   <BrainCircuit size={22} />
                 </div>
 
                 <div>
 
-                  <p className="font-bold">
+                  <p className="font-bold text-[#16324A]">
                     {t.brand.title}
                   </p>
 
-                  <p className="text-xs text-blue-600">
+                  <p className="text-xs text-[#1B8A8F]">
                     {t.brand.subtitle}
                   </p>
 
@@ -1104,32 +977,26 @@ function HomePage() {
 
               </div>
 
-              <p className="mt-4 max-w-sm text-sm leading-6 text-slate-500">
-                {
-                  t.footer
-                    .description
-                }
+              <p className="mt-4 max-w-sm text-sm leading-6 text-[#60798C]">
+                {t.footer.description}
               </p>
 
             </div>
 
-            {/* Quick Links */}
             <div>
 
-              <h3 className="font-bold">
+              <h3 className="font-bold text-[#16324A]">
                 {t.footer.quickLinks}
               </h3>
 
-              <div className="mt-4 flex flex-col gap-3 text-sm text-slate-500">
+              <div className="mt-4 flex flex-col gap-3 text-sm text-[#60798C]">
 
                 <button
                   type="button"
                   onClick={() =>
-                    scrollToSection(
-                      "features"
-                    )
+                    scrollToSection("features")
                   }
-                  className="w-fit hover:text-blue-600"
+                  className="w-fit hover:text-[#1B8A8F]"
                 >
                   {t.nav.features}
                 </button>
@@ -1137,11 +1004,9 @@ function HomePage() {
                 <button
                   type="button"
                   onClick={() =>
-                    scrollToSection(
-                      "how-it-works"
-                    )
+                    scrollToSection("how-it-works")
                   }
-                  className="w-fit hover:text-blue-600"
+                  className="w-fit hover:text-[#1B8A8F]"
                 >
                   {t.nav.howItWorks}
                 </button>
@@ -1149,11 +1014,9 @@ function HomePage() {
                 <button
                   type="button"
                   onClick={() =>
-                    scrollToSection(
-                      "about"
-                    )
+                    scrollToSection("about")
                   }
-                  className="w-fit hover:text-blue-600"
+                  className="w-fit hover:text-[#1B8A8F]"
                 >
                   {t.nav.about}
                 </button>
@@ -1162,10 +1025,9 @@ function HomePage() {
 
             </div>
 
-            {/* Footer Language Selector */}
             <div>
 
-              <h3 className="font-bold">
+              <h3 className="font-bold text-[#16324A]">
                 {t.footer.languages}
               </h3>
 
@@ -1184,8 +1046,8 @@ function HomePage() {
                       className={`rounded-lg border px-3 py-2 text-xs font-semibold ${
                         language ===
                         item.code
-                          ? "border-blue-600 bg-blue-50 text-blue-600"
-                          : "border-slate-200 text-slate-500"
+                          ? "border-[#1B8A8F] bg-[#E8F6F4] text-[#1B8A8F]"
+                          : "border-[#D8E5EC] text-[#60798C]"
                       }`}
                     >
                       {item.label}
@@ -1199,11 +1061,8 @@ function HomePage() {
 
           </div>
 
-          <div className="mt-10 border-t border-slate-200 pt-6 text-center text-sm text-slate-400">
-            {
-              t.footer
-                .copyright
-            }
+          <div className="mt-10 border-t border-[#D8E5EC] pt-6 text-center text-sm text-[#8A9EAC]">
+            {t.footer.copyright}
           </div>
 
         </div>

@@ -892,15 +892,6 @@ function NewComplaintPage() {
           formData.submittedLanguage
         );
 
-        /* ---------------------------------------------------
-           LOCATION PAYLOAD
-
-           Address can be manually entered.
-
-           Latitude / longitude are added when the citizen
-           selects a map location or uses current location.
-        --------------------------------------------------- */
-
         const locationPayload = {
           address:
             formData.location.trim(),
@@ -926,10 +917,6 @@ function NewComplaintPage() {
             locationPayload
           )
         );
-
-        /* ---------------------------------------------------
-           IMAGES
-        --------------------------------------------------- */
 
         images.forEach(
           (image) => {
@@ -1017,33 +1004,42 @@ function NewComplaintPage() {
   ========================================================= */
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
-      {/* HEADER */}
+    <div className="min-h-screen bg-[#F6F9FB] text-[#16324A]">
 
-      <header className="border-b border-slate-200 bg-white">
+      {/* =====================================================
+          HEADER
+      ===================================================== */}
+
+      <header className="border-b border-[#D8E5EC] bg-white/95 backdrop-blur">
+
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
+
           <Link
             to="/dashboard"
             className="flex items-center gap-3"
           >
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#123B5D] text-white shadow-sm shadow-[#123B5D]/15">
               <BrainCircuit
                 size={23}
               />
             </div>
 
             <div>
-              <p className="font-bold">
+
+              <p className="font-bold text-[#16324A]">
                 {t.brand}
               </p>
 
-              <p className="text-xs font-medium text-blue-600">
+              <p className="text-xs font-medium text-[#1B8A8F]">
                 {t.portal}
               </p>
+
             </div>
+
           </Link>
 
-          <div className="flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 p-1">
+          <div className="flex items-center gap-1 rounded-lg border border-[#D8E5EC] bg-[#F6F9FB] p-1">
+
             {[
               "EN",
               "සිං",
@@ -1060,27 +1056,33 @@ function NewComplaintPage() {
                       item
                     )
                   }
-                  className={`rounded-md px-3 py-2 text-xs font-bold ${
+                  className={`rounded-md px-3 py-2 text-xs font-bold transition ${
                     language ===
                     item
-                      ? "bg-white text-blue-600 shadow-sm"
-                      : "text-slate-500"
+                      ? "bg-white text-[#1F5F8B] shadow-sm"
+                      : "text-[#60798C] hover:text-[#16324A]"
                   }`}
                 >
                   {item}
                 </button>
               )
             )}
+
           </div>
+
         </div>
+
       </header>
 
-      {/* MAIN */}
+      {/* =====================================================
+          MAIN
+      ===================================================== */}
 
       <main className="mx-auto max-w-7xl px-5 py-8 lg:px-8 lg:py-12">
+
         <Link
           to="/dashboard"
-          className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-blue-600"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-[#60798C] transition hover:text-[#1B8A8F]"
         >
           <ArrowLeft
             size={17}
@@ -1090,27 +1092,34 @@ function NewComplaintPage() {
         </Link>
 
         <div className="mt-7 grid gap-8 lg:grid-cols-[1fr_360px]">
-          {/* FORM */}
 
-          <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+          {/* =================================================
+              FORM
+          ================================================= */}
+
+          <section className="rounded-3xl border border-[#D8E5EC] bg-white p-6 shadow-sm sm:p-8">
+
             <div>
-              <p className="text-sm font-bold text-blue-600">
+
+              <p className="text-sm font-bold text-[#1B8A8F]">
                 {t.pageLabel}
               </p>
 
-              <h1 className="mt-2 text-3xl font-bold tracking-tight">
+              <h1 className="mt-2 text-3xl font-bold tracking-tight text-[#16324A]">
                 {t.title}
               </h1>
 
-              <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-500">
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-[#60798C]">
                 {t.description}
               </p>
+
             </div>
 
             {/* ERROR */}
 
             {error && (
               <div className="mt-6 flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+
                 <AlertCircle
                   size={19}
                   className="mt-0.5 shrink-0"
@@ -1119,6 +1128,7 @@ function NewComplaintPage() {
                 <p>
                   {error}
                 </p>
+
               </div>
             )}
 
@@ -1126,6 +1136,7 @@ function NewComplaintPage() {
 
             {success && (
               <div className="mt-6 flex items-start gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-700">
+
                 <CheckCircle2
                   size={19}
                   className="mt-0.5 shrink-0"
@@ -1134,6 +1145,7 @@ function NewComplaintPage() {
                 <p>
                   {success}
                 </p>
+
               </div>
             )}
 
@@ -1143,12 +1155,14 @@ function NewComplaintPage() {
                 handleSubmit
               }
             >
+
               {/* TITLE */}
 
               <div>
+
                 <label
                   htmlFor="title"
-                  className="mb-2 block text-sm font-semibold text-slate-700"
+                  className="mb-2 block text-sm font-semibold text-[#425D70]"
                 >
                   {
                     t.complaintTitle
@@ -1156,9 +1170,10 @@ function NewComplaintPage() {
                 </label>
 
                 <div className="relative">
+
                   <FileText
                     size={19}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9EAC]"
                   />
 
                   <input
@@ -1177,17 +1192,20 @@ function NewComplaintPage() {
                     placeholder={
                       t.complaintTitlePlaceholder
                     }
-                    className="w-full rounded-xl border border-slate-300 bg-white py-3.5 pl-11 pr-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                    className="w-full rounded-xl border border-[#C8D8E2] bg-white py-3.5 pl-11 pr-4 text-sm text-[#16324A] outline-none transition placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:bg-[#F1F5F7]"
                   />
+
                 </div>
+
               </div>
 
               {/* DESCRIPTION */}
 
               <div>
+
                 <label
                   htmlFor="description"
-                  className="mb-2 block text-sm font-semibold text-slate-700"
+                  className="mb-2 block text-sm font-semibold text-[#425D70]"
                 >
                   {
                     t.complaintDescription
@@ -1210,25 +1228,29 @@ function NewComplaintPage() {
                   placeholder={
                     t.complaintDescriptionPlaceholder
                   }
-                  className="w-full resize-none rounded-xl border border-slate-300 bg-white px-4 py-3.5 text-sm outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                  className="w-full resize-none rounded-xl border border-[#C8D8E2] bg-white px-4 py-3.5 text-sm text-[#16324A] outline-none transition placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:bg-[#F1F5F7]"
                 />
+
               </div>
 
               {/* LANGUAGE + ADDRESS */}
 
               <div className="grid gap-5 sm:grid-cols-2">
+
                 <div>
+
                   <label
                     htmlFor="submittedLanguage"
-                    className="mb-2 block text-sm font-semibold text-slate-700"
+                    className="mb-2 block text-sm font-semibold text-[#425D70]"
                   >
                     {t.language}
                   </label>
 
                   <div className="relative">
+
                     <Languages
                       size={19}
-                      className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                      className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9EAC]"
                     />
 
                     <select
@@ -1243,7 +1265,7 @@ function NewComplaintPage() {
                       disabled={
                         loading
                       }
-                      className="w-full appearance-none rounded-xl border border-slate-300 bg-white py-3.5 pl-11 pr-4 text-sm outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                      className="w-full appearance-none rounded-xl border border-[#C8D8E2] bg-white py-3.5 pl-11 pr-4 text-sm text-[#16324A] outline-none transition focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:bg-[#F1F5F7]"
                     >
                       <option value="english">
                         {
@@ -1263,21 +1285,25 @@ function NewComplaintPage() {
                         }
                       </option>
                     </select>
+
                   </div>
+
                 </div>
 
                 <div>
+
                   <label
                     htmlFor="location"
-                    className="mb-2 block text-sm font-semibold text-slate-700"
+                    className="mb-2 block text-sm font-semibold text-[#425D70]"
                   >
                     {t.location}
                   </label>
 
                   <div className="relative">
+
                     <MapPin
                       size={19}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9EAC]"
                     />
 
                     <input
@@ -1296,36 +1322,48 @@ function NewComplaintPage() {
                       placeholder={
                         t.locationPlaceholder
                       }
-                      className="w-full rounded-xl border border-slate-300 bg-white py-3.5 pl-11 pr-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                      className="w-full rounded-xl border border-[#C8D8E2] bg-white py-3.5 pl-11 pr-4 text-sm text-[#16324A] outline-none transition placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:bg-[#F1F5F7]"
                     />
+
                   </div>
+
                 </div>
+
               </div>
 
-              {/* MAP LOCATION PICKER */}
+              {/* =================================================
+                  MAP LOCATION PICKER
+              ================================================= */}
 
-              <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
-                <div className="border-b border-slate-200 bg-white p-5">
+              <div className="overflow-hidden rounded-2xl border border-[#D8E5EC] bg-[#F6F9FB]">
+
+                <div className="border-b border-[#D8E5EC] bg-white p-5">
+
                   <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+
                     <div>
+
                       <div className="flex items-center gap-2">
+
                         <LocateFixed
                           size={19}
-                          className="text-blue-600"
+                          className="text-[#1B8A8F]"
                         />
 
-                        <p className="font-bold text-slate-800">
+                        <p className="font-bold text-[#16324A]">
                           {
                             t.mapTitle
                           }
                         </p>
+
                       </div>
 
-                      <p className="mt-2 max-w-xl text-xs leading-5 text-slate-500">
+                      <p className="mt-2 max-w-xl text-xs leading-5 text-[#60798C]">
                         {
                           t.mapDescription
                         }
                       </p>
+
                     </div>
 
                     <button
@@ -1337,7 +1375,7 @@ function NewComplaintPage() {
                         locationLoading ||
                         loading
                       }
-                      className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-blue-200 bg-blue-50 px-4 py-2.5 text-sm font-bold text-blue-700 transition hover:bg-blue-100 disabled:cursor-not-allowed disabled:opacity-60"
+                      className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-[#B9DDDA] bg-[#E8F6F4] px-4 py-2.5 text-sm font-bold text-[#176D72] transition hover:bg-[#D6EFEC] disabled:cursor-not-allowed disabled:opacity-60"
                     >
                       {locationLoading ? (
                         <>
@@ -1366,10 +1404,15 @@ function NewComplaintPage() {
                         </>
                       )}
                     </button>
+
                   </div>
+
                 </div>
 
+                {/* MAP */}
+
                 <div className="relative h-[360px] w-full">
+
                   <MapContainer
                     center={
                       SRI_LANKA_CENTER
@@ -1409,12 +1452,19 @@ function NewComplaintPage() {
                           10
                         }
                         pathOptions={{
+                          color:
+                            "#123B5D",
+
+                          fillColor:
+                            "#1B8A8F",
+
                           fillOpacity:
                             0.9,
                         }}
                       >
                         <Popup>
                           <div>
+
                             <strong>
                               {
                                 t.locationSelected
@@ -1432,27 +1482,38 @@ function NewComplaintPage() {
                             {
                               selectedLocation.longitude
                             }
+
                           </div>
                         </Popup>
                       </CircleMarker>
                     )}
+
                   </MapContainer>
+
                 </div>
 
+                {/* LOCATION DETAILS */}
+
                 <div className="bg-white p-5">
+
                   {!selectedLocation ? (
-                    <p className="flex items-center gap-2 text-xs text-slate-500">
+                    <p className="flex items-center gap-2 text-xs text-[#60798C]">
+
                       <MapPin
                         size={16}
+                        className="text-[#1B8A8F]"
                       />
 
                       {
                         t.mapInstruction
                       }
+
                     </p>
                   ) : (
                     <div>
+
                       <div className="flex items-center gap-2 text-sm font-bold text-emerald-700">
+
                         <CheckCircle2
                           size={
                             17
@@ -1463,70 +1524,86 @@ function NewComplaintPage() {
                           locationMessage ||
                           t.locationSelected
                         }
+
                       </div>
 
                       <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                        <div className="rounded-xl bg-slate-50 px-4 py-3">
-                          <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+
+                        <div className="rounded-xl border border-[#EDF3F6] bg-[#F6F9FB] px-4 py-3">
+
+                          <p className="text-xs font-semibold uppercase tracking-wide text-[#8A9EAC]">
                             {
                               t.latitude
                             }
                           </p>
 
-                          <p className="mt-1 text-sm font-bold text-slate-700">
+                          <p className="mt-1 text-sm font-bold text-[#425D70]">
                             {
                               selectedLocation.latitude
                             }
                           </p>
+
                         </div>
 
-                        <div className="rounded-xl bg-slate-50 px-4 py-3">
-                          <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                        <div className="rounded-xl border border-[#EDF3F6] bg-[#F6F9FB] px-4 py-3">
+
+                          <p className="text-xs font-semibold uppercase tracking-wide text-[#8A9EAC]">
                             {
                               t.longitude
                             }
                           </p>
 
-                          <p className="mt-1 text-sm font-bold text-slate-700">
+                          <p className="mt-1 text-sm font-bold text-[#425D70]">
                             {
                               selectedLocation.longitude
                             }
                           </p>
+
                         </div>
+
                       </div>
+
                     </div>
                   )}
+
                 </div>
+
               </div>
 
-              {/* IMAGES */}
+              {/* =================================================
+                  IMAGES
+              ================================================= */}
 
               <div>
+
                 <div className="mb-3">
-                  <p className="text-sm font-semibold text-slate-700">
+
+                  <p className="text-sm font-semibold text-[#425D70]">
                     {t.images}
                   </p>
 
-                  <p className="mt-1 text-xs text-slate-500">
+                  <p className="mt-1 text-xs text-[#60798C]">
                     {
                       t.imagesDescription
                     }
                   </p>
+
                 </div>
 
-                <label className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 px-5 py-8 text-center transition hover:border-blue-300 hover:bg-blue-50/40">
+                <label className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#C8D8E2] bg-[#F6F9FB] px-5 py-8 text-center transition hover:border-[#8FC6CC] hover:bg-[#E8F6F4]/50">
+
                   <ImagePlus
                     size={28}
-                    className="text-blue-600"
+                    className="text-[#1B8A8F]"
                   />
 
-                  <p className="mt-3 text-sm font-bold text-slate-700">
+                  <p className="mt-3 text-sm font-bold text-[#425D70]">
                     {
                       t.selectImages
                     }
                   </p>
 
-                  <p className="mt-1 text-xs text-slate-400">
+                  <p className="mt-1 text-xs text-[#8A9EAC]">
                     {
                       t.maxImages
                     }
@@ -1546,11 +1623,13 @@ function NewComplaintPage() {
                     }
                     className="hidden"
                   />
+
                 </label>
 
                 {imagePreviews.length >
                   0 && (
                   <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
+
                     {imagePreviews.map(
                       (
                         preview,
@@ -1558,8 +1637,9 @@ function NewComplaintPage() {
                       ) => (
                         <div
                           key={`${preview.file.name}-${index}`}
-                          className="relative aspect-square overflow-hidden rounded-xl border border-slate-200 bg-slate-100"
+                          className="relative aspect-square overflow-hidden rounded-xl border border-[#D8E5EC] bg-[#F6F9FB]"
                         >
+
                           <img
                             src={
                               preview.url
@@ -1578,7 +1658,7 @@ function NewComplaintPage() {
                             disabled={
                               loading
                             }
-                            className="absolute right-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-black/60 text-white transition hover:bg-red-600"
+                            className="absolute right-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-[#0E2C43]/75 text-white transition hover:bg-red-600"
                           >
                             <X
                               size={
@@ -1586,21 +1666,26 @@ function NewComplaintPage() {
                               }
                             />
                           </button>
+
                         </div>
                       )
                     )}
+
                   </div>
                 )}
+
               </div>
 
-              {/* SUBMIT */}
+              {/* =================================================
+                  SUBMIT
+              ================================================= */}
 
               <button
                 type="submit"
                 disabled={
                   loading
                 }
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-200 transition hover:-translate-y-0.5 hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#1F5F8B] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#1F5F8B]/20 transition hover:-translate-y-0.5 hover:bg-[#174D72] disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {loading ? (
                   <>
@@ -1629,25 +1714,31 @@ function NewComplaintPage() {
                   </>
                 )}
               </button>
+
             </form>
+
           </section>
 
-          {/* RIGHT INFO */}
+          {/* =================================================
+              RIGHT INFO
+          ================================================= */}
 
-          <aside className="h-fit rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+          <aside className="h-fit rounded-3xl border border-[#D8E5EC] bg-white p-6 shadow-sm">
+
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#E8F6F4] text-[#1B8A8F]">
               <BrainCircuit
                 size={22}
               />
             </div>
 
-            <h2 className="mt-5 text-lg font-bold">
+            <h2 className="mt-5 text-lg font-bold text-[#16324A]">
               {
                 t.noteTitle
               }
             </h2>
 
             <div className="mt-5 space-y-4">
+
               {[
                 t.note1,
                 t.note2,
@@ -1664,25 +1755,32 @@ function NewComplaintPage() {
                     }
                     className="flex gap-3"
                   >
-                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-50 text-xs font-bold text-blue-600">
+
+                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#EAF3F8] text-xs font-bold text-[#1F5F8B]">
                       {
                         index +
                         1
                       }
                     </div>
 
-                    <p className="text-sm leading-6 text-slate-600">
+                    <p className="text-sm leading-6 text-[#60798C]">
                       {
                         item
                       }
                     </p>
+
                   </div>
                 )
               )}
+
             </div>
+
           </aside>
+
         </div>
+
       </main>
+
     </div>
   );
 }

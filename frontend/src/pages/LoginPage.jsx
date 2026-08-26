@@ -279,10 +279,6 @@ function LoginPage() {
 
     setErrorMessage("");
 
-    /* ---------------------------------------------------------
-       1. FRONTEND VALIDATION
-    --------------------------------------------------------- */
-
     if (!formData.email.trim()) {
       setErrorMessage(
         t.emailRequired
@@ -302,10 +298,6 @@ function LoginPage() {
     try {
       setIsLoading(true);
 
-      /* -------------------------------------------------------
-         2. PREPARE LOGIN REQUEST
-      ------------------------------------------------------- */
-
       const loginData = {
         email:
           formData.email
@@ -316,11 +308,6 @@ function LoginPage() {
           formData.password,
       };
 
-      /* -------------------------------------------------------
-         3. BACKEND REQUEST
-         POST /api/auth/login
-      ------------------------------------------------------- */
-
       const response =
         await loginUser(loginData);
 
@@ -328,10 +315,6 @@ function LoginPage() {
         "Login response:",
         response
       );
-
-      /* -------------------------------------------------------
-         4. VALIDATE BACKEND RESPONSE
-      ------------------------------------------------------- */
 
       if (
         !response?.token ||
@@ -343,10 +326,6 @@ function LoginPage() {
             "Invalid login response received from server.",
         };
       }
-
-      /* -------------------------------------------------------
-         5. VALIDATE ROLE
-      ------------------------------------------------------- */
 
       const validRoles = [
         "citizen",
@@ -366,19 +345,11 @@ function LoginPage() {
         };
       }
 
-      /* -------------------------------------------------------
-         6. SAVE JWT + USER
-      ------------------------------------------------------- */
-
       storeAuthentication(
         response.token,
         response.user,
         formData.rememberMe
       );
-
-      /* -------------------------------------------------------
-         7. SAVE PREFERRED LANGUAGE
-      ------------------------------------------------------- */
 
       if (
         response.user
@@ -391,10 +362,6 @@ function LoginPage() {
         );
       }
 
-      /* -------------------------------------------------------
-         8. ROLE-BASED REDIRECT
-      ------------------------------------------------------- */
-
       redirectUserByRole(
         response.user.role
       );
@@ -404,17 +371,7 @@ function LoginPage() {
         error
       );
 
-      /*
-        Safety cleanup:
-        Failed login must not leave an old authenticated
-        session from another user.
-      */
-
       clearAuthentication();
-
-      /* -------------------------------------------------------
-         BACKEND VALIDATION ERRORS
-      ------------------------------------------------------- */
 
       if (
         Array.isArray(error?.errors) &&
@@ -446,13 +403,13 @@ function LoginPage() {
   ========================================================= */
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="min-h-screen bg-[#F6F9FB] text-[#16324A]">
 
       {/* =====================================================
           HEADER
       ===================================================== */}
 
-      <header className="border-b border-slate-200 bg-white">
+      <header className="border-b border-[#D8E5EC] bg-white/95 backdrop-blur">
 
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
 
@@ -463,17 +420,17 @@ function LoginPage() {
             className="flex items-center gap-3"
           >
 
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-600 text-white shadow-md shadow-blue-200">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#123B5D] text-white shadow-md shadow-[#123B5D]/15">
               <BrainCircuit size={25} />
             </div>
 
             <div className="leading-tight">
 
-              <p className="text-[17px] font-bold text-slate-900">
+              <p className="text-[17px] font-bold text-[#16324A]">
                 {t.brand}
               </p>
 
-              <p className="text-xs font-medium text-blue-600">
+              <p className="text-xs font-medium text-[#1B8A8F]">
                 {t.brandSub}
               </p>
 
@@ -483,11 +440,11 @@ function LoginPage() {
 
           {/* LANGUAGE SELECTOR */}
 
-          <div className="flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 p-1">
+          <div className="flex items-center gap-1 rounded-lg border border-[#D8E5EC] bg-[#F6F9FB] p-1">
 
             <Globe2
               size={16}
-              className="ml-2 hidden text-slate-500 sm:block"
+              className="ml-2 hidden text-[#60798C] sm:block"
             />
 
             {[
@@ -505,8 +462,8 @@ function LoginPage() {
                 }
                 className={`rounded-md px-2.5 py-1.5 text-xs font-semibold transition ${
                   language === item
-                    ? "bg-white text-blue-600 shadow-sm"
-                    : "text-slate-500 hover:text-slate-900"
+                    ? "bg-white text-[#1F5F8B] shadow-sm"
+                    : "text-[#60798C] hover:text-[#16324A]"
                 }`}
               >
                 {item}
@@ -526,9 +483,9 @@ function LoginPage() {
 
       <main className="relative overflow-hidden">
 
-        <div className="absolute -left-32 top-20 h-96 w-96 rounded-full bg-blue-100/60 blur-3xl" />
+        <div className="absolute -left-32 top-20 h-96 w-96 rounded-full bg-[#DCECF4]/80 blur-3xl" />
 
-        <div className="absolute -right-32 bottom-0 h-96 w-96 rounded-full bg-indigo-100/50 blur-3xl" />
+        <div className="absolute -right-32 bottom-0 h-96 w-96 rounded-full bg-[#DDF3EE]/70 blur-3xl" />
 
         <div className="relative mx-auto grid min-h-[calc(100vh-78px)] max-w-7xl items-center gap-16 px-5 py-12 lg:grid-cols-2 lg:px-8">
 
@@ -538,7 +495,7 @@ function LoginPage() {
 
           <div className="hidden lg:block">
 
-            <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-600">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#B9DDDA] bg-[#E8F6F4] px-4 py-2 text-sm font-semibold text-[#1B8A8F]">
 
               <ShieldCheck size={17} />
 
@@ -546,17 +503,17 @@ function LoginPage() {
 
             </div>
 
-            <h1 className="mt-7 max-w-xl text-5xl font-extrabold leading-[1.15] tracking-tight text-slate-900">
+            <h1 className="mt-7 max-w-xl text-5xl font-extrabold leading-[1.15] tracking-tight text-[#16324A]">
 
               {t.heroTitle1}
 
-              <span className="mt-1 block text-blue-600">
+              <span className="mt-1 block text-[#1B8A8F]">
                 {t.heroTitle2}
               </span>
 
             </h1>
 
-            <p className="mt-6 max-w-lg text-lg leading-8 text-slate-600">
+            <p className="mt-6 max-w-lg text-lg leading-8 text-[#60798C]">
               {t.heroDescription}
             </p>
 
@@ -564,19 +521,19 @@ function LoginPage() {
 
               {/* AI */}
 
-              <div className="flex items-start gap-4 rounded-2xl border border-slate-200 bg-white/80 p-5 shadow-sm backdrop-blur">
+              <div className="flex items-start gap-4 rounded-2xl border border-[#D8E5EC] bg-white/90 p-5 shadow-sm backdrop-blur">
 
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#EAF3F8] text-[#1F5F8B]">
                   <BrainCircuit size={22} />
                 </div>
 
                 <div>
 
-                  <h3 className="font-bold text-slate-900">
+                  <h3 className="font-bold text-[#16324A]">
                     {t.aiTitle}
                   </h3>
 
-                  <p className="mt-1 text-sm leading-6 text-slate-500">
+                  <p className="mt-1 text-sm leading-6 text-[#60798C]">
                     {t.aiDescription}
                   </p>
 
@@ -586,19 +543,19 @@ function LoginPage() {
 
               {/* TRACKING */}
 
-              <div className="flex items-start gap-4 rounded-2xl border border-slate-200 bg-white/80 p-5 shadow-sm backdrop-blur">
+              <div className="flex items-start gap-4 rounded-2xl border border-[#D8E5EC] bg-white/90 p-5 shadow-sm backdrop-blur">
 
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#E8F6F4] text-[#1B8A8F]">
                   <ShieldCheck size={22} />
                 </div>
 
                 <div>
 
-                  <h3 className="font-bold text-slate-900">
+                  <h3 className="font-bold text-[#16324A]">
                     {t.trackTitle}
                   </h3>
 
-                  <p className="mt-1 text-sm leading-6 text-slate-500">
+                  <p className="mt-1 text-sm leading-6 text-[#60798C]">
                     {t.trackDescription}
                   </p>
 
@@ -618,28 +575,28 @@ function LoginPage() {
 
             <Link
               to="/"
-              className="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-blue-600 lg:hidden"
+              className="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-[#60798C] transition hover:text-[#1B8A8F] lg:hidden"
             >
               <ArrowLeft size={17} />
 
               {t.backHome}
             </Link>
 
-            <div className="rounded-[28px] border border-slate-200 bg-white p-7 shadow-xl shadow-slate-200/60 sm:p-9">
+            <div className="rounded-[28px] border border-[#D8E5EC] bg-white p-7 shadow-xl shadow-[#123B5D]/10 sm:p-9">
 
               {/* LOGIN HEADER */}
 
               <div>
 
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#E8F6F4] text-[#1B8A8F]">
                   <LockKeyhole size={24} />
                 </div>
 
-                <h2 className="mt-5 text-3xl font-bold tracking-tight text-slate-900">
+                <h2 className="mt-5 text-3xl font-bold tracking-tight text-[#16324A]">
                   {t.signIn}
                 </h2>
 
-                <p className="mt-2 text-sm leading-6 text-slate-500">
+                <p className="mt-2 text-sm leading-6 text-[#60798C]">
                   {t.signInDescription}
                 </p>
 
@@ -681,7 +638,7 @@ function LoginPage() {
 
                   <label
                     htmlFor="email"
-                    className="mb-2 block text-sm font-semibold text-slate-700"
+                    className="mb-2 block text-sm font-semibold text-[#425D70]"
                   >
                     {t.email}
                   </label>
@@ -690,7 +647,7 @@ function LoginPage() {
 
                     <Mail
                       size={19}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9EAC]"
                     />
 
                     <input
@@ -709,7 +666,7 @@ function LoginPage() {
                       }
                       disabled={isLoading}
                       required
-                      className="w-full rounded-xl border border-slate-300 bg-white py-3.5 pl-11 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 disabled:cursor-not-allowed disabled:bg-slate-50"
+                      className="w-full rounded-xl border border-[#C8D8E2] bg-white py-3.5 pl-11 pr-4 text-sm text-[#16324A] outline-none transition placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:cursor-not-allowed disabled:bg-[#F1F5F7]"
                     />
 
                   </div>
@@ -724,14 +681,14 @@ function LoginPage() {
 
                     <label
                       htmlFor="password"
-                      className="text-sm font-semibold text-slate-700"
+                      className="text-sm font-semibold text-[#425D70]"
                     >
                       {t.password}
                     </label>
 
                     <Link
                       to="/forgot-password"
-                      className="text-right text-xs font-semibold text-blue-600 transition hover:text-blue-700"
+                      className="text-right text-xs font-semibold text-[#1B8A8F] transition hover:text-[#176D72]"
                     >
                       {t.forgotPassword}
                     </Link>
@@ -742,7 +699,7 @@ function LoginPage() {
 
                     <LockKeyhole
                       size={19}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9EAC]"
                     />
 
                     <input
@@ -765,7 +722,7 @@ function LoginPage() {
                       }
                       disabled={isLoading}
                       required
-                      className="w-full rounded-xl border border-slate-300 bg-white py-3.5 pl-11 pr-12 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 disabled:cursor-not-allowed disabled:bg-slate-50"
+                      className="w-full rounded-xl border border-[#C8D8E2] bg-white py-3.5 pl-11 pr-12 text-sm text-[#16324A] outline-none transition placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:cursor-not-allowed disabled:bg-[#F1F5F7]"
                     />
 
                     <button
@@ -777,7 +734,7 @@ function LoginPage() {
                             !previous
                         )
                       }
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-slate-700 disabled:cursor-not-allowed"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-[#8A9EAC] transition hover:text-[#425D70] disabled:cursor-not-allowed"
                       aria-label={
                         showPassword
                           ? "Hide password"
@@ -799,7 +756,7 @@ function LoginPage() {
 
                 {/* REMEMBER ME */}
 
-                <label className="flex w-fit cursor-pointer items-center gap-2 text-sm text-slate-600">
+                <label className="flex w-fit cursor-pointer items-center gap-2 text-sm text-[#60798C]">
 
                   <input
                     name="rememberMe"
@@ -811,7 +768,7 @@ function LoginPage() {
                       handleChange
                     }
                     disabled={isLoading}
-                    className="h-4 w-4 cursor-pointer rounded border-slate-300 accent-blue-600"
+                    className="h-4 w-4 cursor-pointer rounded border-[#C8D8E2] accent-[#1B8A8F]"
                   />
 
                   <span>
@@ -825,7 +782,7 @@ function LoginPage() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-200 transition hover:-translate-y-0.5 hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#1F5F8B] px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#1F5F8B]/20 transition hover:-translate-y-0.5 hover:bg-[#174D72] disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0"
                 >
 
                   {isLoading && (
@@ -845,15 +802,15 @@ function LoginPage() {
 
               {/* REGISTER */}
 
-              <div className="mt-7 border-t border-slate-200 pt-6 text-center">
+              <div className="mt-7 border-t border-[#D8E5EC] pt-6 text-center">
 
-                <p className="text-sm leading-6 text-slate-500">
+                <p className="text-sm leading-6 text-[#60798C]">
 
                   {t.noAccount}{" "}
 
                   <Link
                     to="/register"
-                    className="font-bold text-blue-600 transition hover:text-blue-700"
+                    className="font-bold text-[#1B8A8F] transition hover:text-[#176D72]"
                   >
                     {t.createAccount}
                   </Link>
@@ -864,7 +821,7 @@ function LoginPage() {
 
             </div>
 
-            <p className="mt-5 px-4 text-center text-xs leading-5 text-slate-400">
+            <p className="mt-5 px-4 text-center text-xs leading-5 text-[#8A9EAC]">
               {t.footer}
             </p>
 

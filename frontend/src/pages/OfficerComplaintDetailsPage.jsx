@@ -165,7 +165,7 @@ function OfficerComplaintDetailsPage() {
   const getStatusStyle = (status) => {
     switch (status) {
       case "assigned":
-        return "bg-indigo-50 text-indigo-700 border-indigo-100";
+        return "bg-[#E8F6F4] text-[#176D72] border-[#B9DDDA]";
 
       case "in_progress":
         return "bg-amber-50 text-amber-700 border-amber-100";
@@ -174,7 +174,7 @@ function OfficerComplaintDetailsPage() {
         return "bg-emerald-50 text-emerald-700 border-emerald-100";
 
       default:
-        return "bg-slate-100 text-slate-600 border-slate-200";
+        return "bg-[#F1F5F7] text-[#60798C] border-[#D8E5EC]";
     }
   };
 
@@ -194,7 +194,7 @@ function OfficerComplaintDetailsPage() {
         return "bg-emerald-50 text-emerald-700 border-emerald-100";
 
       default:
-        return "bg-slate-100 text-slate-600 border-slate-200";
+        return "bg-[#F1F5F7] text-[#60798C] border-[#D8E5EC]";
     }
   };
 
@@ -530,18 +530,22 @@ function OfficerComplaintDetailsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen bg-[#F6F9FB]">
         <div className="flex min-h-screen items-center justify-center">
+
           <div className="text-center">
+
             <Loader2
               size={38}
-              className="mx-auto animate-spin text-blue-600"
+              className="mx-auto animate-spin text-[#1F5F8B]"
             />
 
-            <p className="mt-4 text-sm font-semibold text-slate-500">
+            <p className="mt-4 text-sm font-semibold text-[#60798C]">
               Loading complaint details...
             </p>
+
           </div>
+
         </div>
       </div>
     );
@@ -553,8 +557,10 @@ function OfficerComplaintDetailsPage() {
 
   if (!complaint) {
     return (
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen bg-[#F6F9FB]">
+
         <main className="mx-auto max-w-4xl px-5 py-12 lg:px-8">
+
           <button
             type="button"
             onClick={() =>
@@ -562,7 +568,7 @@ function OfficerComplaintDetailsPage() {
                 "/officer/complaints"
               )
             }
-            className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-blue-600"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-[#60798C] transition hover:text-[#1B8A8F]"
           >
             <ArrowLeft
               size={17}
@@ -572,6 +578,7 @@ function OfficerComplaintDetailsPage() {
           </button>
 
           <div className="mt-8 rounded-2xl border border-red-200 bg-red-50 p-8 text-center">
+
             <AlertCircle
               size={40}
               className="mx-auto text-red-500"
@@ -585,15 +592,23 @@ function OfficerComplaintDetailsPage() {
               {error ||
                 "Complaint details could not be found."}
             </p>
+
           </div>
+
         </main>
+
       </div>
     );
-  }  return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+  }
+
+  return (
+    <div className="min-h-screen bg-[#F6F9FB] text-[#16324A]">
+
       <main className="mx-auto max-w-7xl px-5 py-8 lg:px-8 lg:py-10">
 
-        {/* BACK */}
+        {/* =====================================================
+            BACK
+        ===================================================== */}
 
         <button
           type="button"
@@ -602,7 +617,7 @@ function OfficerComplaintDetailsPage() {
               "/officer/complaints"
             )
           }
-          className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-blue-600"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-[#60798C] transition hover:text-[#1B8A8F]"
         >
           <ArrowLeft
             size={17}
@@ -611,28 +626,35 @@ function OfficerComplaintDetailsPage() {
           Back to Assigned Complaints
         </button>
 
-        {/* HEADER */}
+        {/* =====================================================
+            HEADER
+        ===================================================== */}
 
         <section className="mt-6">
+
           <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-start">
+
             <div>
-              <p className="text-sm font-semibold text-blue-600">
+
+              <p className="text-sm font-semibold text-[#1B8A8F]">
                 Officer Portal
               </p>
 
-              <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">
+              <h1 className="mt-1 text-3xl font-bold tracking-tight text-[#16324A] sm:text-4xl">
                 Complaint Details
               </h1>
 
-              <p className="mt-2 max-w-2xl text-slate-500">
+              <p className="mt-2 max-w-2xl text-[#60798C]">
                 Review the assigned complaint,
                 update its progress and
                 complete the complaint
                 resolution process.
               </p>
+
             </div>
 
             <div className="flex flex-wrap gap-2">
+
               <span
                 className={`rounded-full border px-4 py-2 text-xs font-bold ${getStatusStyle(
                   complaint.status
@@ -652,25 +674,35 @@ function OfficerComplaintDetailsPage() {
                   complaint.priority
                 )}
               </span>
+
             </div>
+
           </div>
+
         </section>
 
-        {/* MESSAGES */}
+        {/* =====================================================
+            MESSAGES
+        ===================================================== */}
 
         {error && (
           <div className="mt-6 flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+
             <AlertCircle
               size={20}
               className="mt-0.5 shrink-0"
             />
 
-            <p>{error}</p>
+            <p>
+              {error}
+            </p>
+
           </div>
         )}
 
         {successMessage && (
           <div className="mt-6 flex items-start gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-700">
+
             <CheckCircle2
               size={20}
               className="mt-0.5 shrink-0"
@@ -679,57 +711,79 @@ function OfficerComplaintDetailsPage() {
             <p>
               {successMessage}
             </p>
+
           </div>
         )}
 
+        {/* =====================================================
+            MAIN GRID
+        ===================================================== */}
+
         <div className="mt-8 grid gap-6 xl:grid-cols-[1.6fr_0.8fr]">
+
+          {/* =================================================
+              LEFT
+          ================================================= */}
+
           <div className="space-y-6">
 
-            {/* COMPLAINT INFORMATION */}
+            {/* =================================================
+                COMPLAINT INFORMATION
+            ================================================= */}
 
-            <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7">
+            <section className="rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm sm:p-7">
+
               <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#EAF3F8] text-[#1F5F8B]">
                   <FileText
                     size={22}
                   />
                 </div>
 
                 <div>
-                  <h2 className="text-lg font-bold">
+
+                  <h2 className="text-lg font-bold text-[#16324A]">
                     Complaint Information
                   </h2>
 
-                  <p className="text-sm text-slate-500">
+                  <p className="text-sm text-[#60798C]">
                     Main details of the assigned
                     complaint.
                   </p>
+
                 </div>
+
               </div>
 
               <div className="mt-7">
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+
+                <p className="text-xs font-bold uppercase tracking-wider text-[#8A9EAC]">
                   Complaint Title
                 </p>
 
-                <h3 className="mt-2 text-xl font-bold leading-8 text-slate-900">
+                <h3 className="mt-2 text-xl font-bold leading-8 text-[#16324A]">
                   {complaint.title ||
                     "Untitled Complaint"}
                 </h3>
+
               </div>
 
               <div className="mt-6">
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+
+                <p className="text-xs font-bold uppercase tracking-wider text-[#8A9EAC]">
                   Description
                 </p>
 
-                <p className="mt-2 whitespace-pre-wrap text-sm leading-7 text-slate-600">
+                <p className="mt-2 whitespace-pre-wrap text-sm leading-7 text-[#60798C]">
                   {complaint.description ||
                     "No description provided."}
                 </p>
+
               </div>
 
-              <div className="mt-7 grid gap-5 border-t border-slate-100 pt-6 sm:grid-cols-2">
+              <div className="mt-7 grid gap-5 border-t border-[#EDF3F6] pt-6 sm:grid-cols-2">
+
                 <InfoItem
                   icon={
                     <Tag
@@ -777,32 +831,42 @@ function OfficerComplaintDetailsPage() {
                     complaint.createdAt
                   )}
                 />
+
               </div>
+
             </section>
 
-            {/* LOCATION */}
+            {/* =================================================
+                LOCATION
+            ================================================= */}
 
-            <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7">
+            <section className="rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm sm:p-7">
+
               <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#E8F6F4] text-[#1B8A8F]">
                   <MapPin
                     size={22}
                   />
                 </div>
 
                 <div>
-                  <h2 className="text-lg font-bold">
+
+                  <h2 className="text-lg font-bold text-[#16324A]">
                     Location Information
                   </h2>
 
-                  <p className="text-sm text-slate-500">
+                  <p className="text-sm text-[#60798C]">
                     Exact location related to
                     this complaint.
                   </p>
+
                 </div>
+
               </div>
 
               <div className="mt-6 grid gap-5 sm:grid-cols-2">
+
                 <InfoItem
                   icon={
                     <MapPin
@@ -867,11 +931,14 @@ function OfficerComplaintDetailsPage() {
                     />
                   </>
                 )}
+
               </div>
 
               {hasMapCoordinates ? (
-                <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
+                <div className="mt-6 overflow-hidden rounded-2xl border border-[#D8E5EC] bg-[#F6F9FB]">
+
                   <div className="h-[320px] w-full">
+
                     <MapContainer
                       center={[
                         locationLatitude,
@@ -901,12 +968,19 @@ function OfficerComplaintDetailsPage() {
                         ]}
                         radius={10}
                         pathOptions={{
+                          color:
+                            "#123B5D",
+
+                          fillColor:
+                            "#1B8A8F",
+
                           fillOpacity:
                             0.9,
                         }}
                       >
                         <Popup>
                           <div>
+
                             <strong>
                               Complaint Location
                             </strong>
@@ -922,71 +996,93 @@ function OfficerComplaintDetailsPage() {
                             {locationLatitude.toFixed(
                               6
                             )}
+
                             {", "}
+
                             {locationLongitude.toFixed(
                               6
                             )}
+
                           </div>
                         </Popup>
                       </CircleMarker>
                     </MapContainer>
+
                   </div>
 
-                  <div className="border-t border-slate-200 bg-white px-4 py-3">
-                    <p className="flex items-start gap-2 text-xs leading-5 text-slate-500">
+                  <div className="border-t border-[#D8E5EC] bg-white px-4 py-3">
+
+                    <p className="flex items-start gap-2 text-xs leading-5 text-[#60798C]">
+
                       <MapPin
                         size={15}
-                        className="mt-0.5 shrink-0 text-violet-600"
+                        className="mt-0.5 shrink-0 text-[#1B8A8F]"
                       />
 
                       Exact complaint location
                       based on the coordinates
                       submitted by the citizen.
+
                     </p>
+
                   </div>
+
                 </div>
               ) : (
-                <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
+                <div className="mt-6 rounded-xl border border-[#D8E5EC] bg-[#F6F9FB] p-4">
+
                   <div className="flex gap-3">
+
                     <MapPin
                       size={18}
-                      className="mt-0.5 shrink-0 text-slate-400"
+                      className="mt-0.5 shrink-0 text-[#8A9EAC]"
                     />
 
-                    <p className="text-sm leading-6 text-slate-500">
+                    <p className="text-sm leading-6 text-[#60798C]">
                       GPS coordinates were not
                       provided for this complaint,
                       so a map preview is
                       unavailable.
                     </p>
+
                   </div>
+
                 </div>
               )}
+
             </section>
 
-            {/* CITIZEN INFORMATION */}
+            {/* =================================================
+                CITIZEN INFORMATION
+            ================================================= */}
 
-            <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7">
+            <section className="rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm sm:p-7">
+
               <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#EAF3F8] text-[#1F5F8B]">
                   <User
                     size={22}
                   />
                 </div>
 
                 <div>
-                  <h2 className="text-lg font-bold">
+
+                  <h2 className="text-lg font-bold text-[#16324A]">
                     Citizen Information
                   </h2>
 
-                  <p className="text-sm text-slate-500">
+                  <p className="text-sm text-[#60798C]">
                     Citizen who submitted
                     this complaint.
                   </p>
+
                 </div>
+
               </div>
 
               <div className="mt-6 grid gap-5 sm:grid-cols-2">
+
                 <InfoItem
                   icon={
                     <User
@@ -1014,17 +1110,23 @@ function OfficerComplaintDetailsPage() {
                     "Not available"
                   }
                 />
+
               </div>
+
             </section>
 
-            {/* SYSTEM INFORMATION */}
+            {/* =================================================
+                SYSTEM INFORMATION
+            ================================================= */}
 
-            <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7">
-              <h2 className="text-lg font-bold">
+            <section className="rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm sm:p-7">
+
+              <h2 className="text-lg font-bold text-[#16324A]">
                 System Information
               </h2>
 
               <div className="mt-6 grid gap-5 sm:grid-cols-2">
+
                 <InfoItem
                   icon={
                     <FileText
@@ -1049,15 +1151,27 @@ function OfficerComplaintDetailsPage() {
                     complaint.updatedAt
                   )}
                 />
+
               </div>
+
             </section>
+
           </div>
 
-          {/* RIGHT */}
+          {/* =================================================
+              RIGHT
+          ================================================= */}
 
           <div className="space-y-6">
-            <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+
+            {/* =================================================
+                UPDATE PROGRESS
+            ================================================= */}
+
+            <section className="rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm">
+
               <div className="flex items-center gap-3">
+
                 <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
                   <Clock3
                     size={22}
@@ -1065,20 +1179,24 @@ function OfficerComplaintDetailsPage() {
                 </div>
 
                 <div>
-                  <h2 className="font-bold">
+
+                  <h2 className="font-bold text-[#16324A]">
                     Update Progress
                   </h2>
 
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-[#60798C]">
                     Change complaint status
                   </p>
+
                 </div>
+
               </div>
 
               <div className="mt-6">
+
                 <label
                   htmlFor="status"
-                  className="mb-2 block text-sm font-semibold text-slate-700"
+                  className="mb-2 block text-sm font-semibold text-[#425D70]"
                 >
                   Complaint Status
                 </label>
@@ -1101,11 +1219,12 @@ function OfficerComplaintDetailsPage() {
                     );
 
                     setError("");
+
                     setSuccessMessage(
                       ""
                     );
                   }}
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100 disabled:cursor-not-allowed disabled:bg-slate-100"
+                  className="w-full rounded-xl border border-[#C8D8E2] bg-white px-4 py-3 text-sm text-[#16324A] outline-none transition focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:cursor-not-allowed disabled:bg-[#F1F5F7]"
                 >
                   <option value="assigned">
                     Assigned
@@ -1119,12 +1238,14 @@ function OfficerComplaintDetailsPage() {
                     Resolved
                   </option>
                 </select>
+
               </div>
 
               <div className="mt-5">
+
                 <label
                   htmlFor="remarks"
-                  className="mb-2 block text-sm font-semibold text-slate-700"
+                  className="mb-2 block text-sm font-semibold text-[#425D70]"
                 >
                   Officer Remarks
                 </label>
@@ -1146,19 +1267,23 @@ function OfficerComplaintDetailsPage() {
                     );
 
                     setError("");
+
                     setSuccessMessage(
                       ""
                     );
                   }}
                   placeholder="Add progress or resolution remarks..."
-                  className="w-full resize-none rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 disabled:cursor-not-allowed disabled:bg-slate-100"
+                  className="w-full resize-none rounded-xl border border-[#C8D8E2] bg-white px-4 py-3 text-sm text-[#16324A] outline-none transition placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:cursor-not-allowed disabled:bg-[#F1F5F7]"
                 />
+
               </div>
 
               {complaint.status ===
                 "resolved" && (
                 <div className="mt-5 rounded-xl border border-emerald-200 bg-emerald-50 p-4">
+
                   <div className="flex gap-3">
+
                     <CheckCircle2
                       size={19}
                       className="mt-0.5 shrink-0 text-emerald-600"
@@ -1168,7 +1293,9 @@ function OfficerComplaintDetailsPage() {
                       This complaint has
                       already been resolved.
                     </p>
+
                   </div>
+
                 </div>
               )}
 
@@ -1184,7 +1311,7 @@ function OfficerComplaintDetailsPage() {
                   selectedStatus ===
                     complaint.status
                 }
-                className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+                className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[#1F5F8B] px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#1F5F8B]/20 transition hover:-translate-y-0.5 hover:bg-[#174D72] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0"
               >
                 {updating ? (
                   <>
@@ -1205,14 +1332,25 @@ function OfficerComplaintDetailsPage() {
                   </>
                 )}
               </button>
+
             </section>
 
-            <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-              <h2 className="font-bold">
+            {/* =================================================
+                COMPLAINT PROGRESS
+            ================================================= */}
+
+            <section className="rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm">
+
+              <h2 className="font-bold text-[#16324A]">
                 Complaint Progress
               </h2>
 
+              <p className="mt-1 text-xs text-[#60798C]">
+                Current complaint processing journey.
+              </p>
+
               <div className="mt-6 space-y-5">
+
                 <ProgressItem
                   icon={
                     <CircleDot
@@ -1260,11 +1398,17 @@ function OfficerComplaintDetailsPage() {
                   }
                   last
                 />
+
               </div>
+
             </section>
+
           </div>
+
         </div>
+
       </main>
+
     </div>
   );
 }
@@ -1361,17 +1505,19 @@ function InfoItem({
 
   return (
     <div className="flex items-start gap-3">
-      <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-50 text-slate-500">
+
+      <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#E8F6F4] text-[#1B8A8F]">
         {icon}
       </div>
 
       <div className="min-w-0">
-        <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+
+        <p className="text-xs font-semibold uppercase tracking-wide text-[#8A9EAC]">
           {label}
         </p>
 
         <p
-          className={`mt-1 text-sm font-semibold text-slate-700 ${
+          className={`mt-1 text-sm font-semibold text-[#425D70] ${
             breakText
               ? "break-all"
               : ""
@@ -1379,7 +1525,9 @@ function InfoItem({
         >
           {getDisplayValue()}
         </p>
+
       </div>
+
     </div>
   );
 }
@@ -1397,41 +1545,45 @@ function ProgressItem({
 }) {
   return (
     <div className="relative flex gap-4">
+
       {!last && (
         <div
           className={`absolute left-[17px] top-9 h-[calc(100%+4px)] w-px ${
             active
-              ? "bg-blue-200"
-              : "bg-slate-200"
+              ? "bg-[#9FD5D1]"
+              : "bg-[#D8E5EC]"
           }`}
         />
       )}
 
       <div
-        className={`relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${
+        className={`relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition ${
           active
-            ? "bg-blue-600 text-white"
-            : "bg-slate-100 text-slate-400"
+            ? "bg-[#1B8A8F] text-white"
+            : "bg-[#F1F5F7] text-[#8A9EAC]"
         }`}
       >
         {icon}
       </div>
 
       <div className="pb-3">
+
         <p
           className={`text-sm font-bold ${
             active
-              ? "text-slate-900"
-              : "text-slate-400"
+              ? "text-[#16324A]"
+              : "text-[#8A9EAC]"
           }`}
         >
           {title}
         </p>
 
-        <p className="mt-1 text-xs leading-5 text-slate-500">
+        <p className="mt-1 text-xs leading-5 text-[#60798C]">
           {description}
         </p>
+
       </div>
+
     </div>
   );
 }

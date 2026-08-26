@@ -119,13 +119,6 @@ function AdminDashboard() {
     ).length,
   };
 
-  /*
-    Backend getAllComplaints() already sorts:
-    createdAt: -1
-
-    Therefore first five = newest complaints.
-  */
-
   const recentComplaints =
     complaints.slice(0, 5);
 
@@ -179,10 +172,10 @@ function AdminDashboard() {
   const getStatusStyle = (status) => {
     switch (status) {
       case "submitted":
-        return "bg-blue-50 text-blue-700";
+        return "bg-[#EAF3F8] text-[#1F5F8B]";
 
       case "assigned":
-        return "bg-indigo-50 text-indigo-700";
+        return "bg-[#E8F6F4] text-[#1B8A8F]";
 
       case "in_progress":
         return "bg-amber-50 text-amber-700";
@@ -194,7 +187,7 @@ function AdminDashboard() {
         return "bg-red-50 text-red-700";
 
       case "duplicate":
-        return "bg-purple-50 text-purple-700";
+        return "bg-[#EDF5F5] text-[#176D72]";
 
       default:
         return "bg-slate-100 text-slate-600";
@@ -306,27 +299,29 @@ function AdminDashboard() {
   ========================================================= */
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="min-h-screen bg-[#F6F9FB] text-[#16324A]">
+
       {/* =====================================================
           HEADER
       ===================================================== */}
 
-      <header className="border-b border-slate-200 bg-white">
+      <header className="border-b border-[#D8E5EC] bg-white">
         <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 lg:px-8">
+
           <Link
             to="/admin/dashboard"
             className="flex items-center gap-3"
           >
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#123B5D] text-white shadow-sm shadow-[#123B5D]/15">
               <BrainCircuit size={23} />
             </div>
 
             <div>
-              <p className="font-bold">
+              <p className="font-bold text-[#16324A]">
                 Public Complaint
               </p>
 
-              <p className="text-xs font-medium text-blue-600">
+              <p className="text-xs font-medium text-[#1B8A8F]">
                 Administration Portal
               </p>
             </div>
@@ -335,19 +330,20 @@ function AdminDashboard() {
           {/* DESKTOP HEADER */}
 
           <div className="hidden items-center gap-3 md:flex">
+
             <button
               type="button"
-              className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-600 transition hover:border-blue-200 hover:text-blue-600"
+              className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-[#D8E5EC] text-[#60798C] transition hover:border-[#8FC6CC] hover:bg-[#E8F6F4] hover:text-[#1B8A8F]"
             >
               <Bell size={19} />
             </button>
 
-            <div className="border-l border-slate-200 pl-4">
-              <p className="text-sm font-bold">
+            <div className="border-l border-[#D8E5EC] pl-4">
+              <p className="text-sm font-bold text-[#16324A]">
                 Administrator
               </p>
 
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-[#60798C]">
                 System Admin
               </p>
             </div>
@@ -356,10 +352,11 @@ function AdminDashboard() {
               type="button"
               onClick={logout}
               title="Logout"
-              className="flex h-10 w-10 items-center justify-center rounded-xl text-slate-500 transition hover:bg-red-50 hover:text-red-600"
+              className="flex h-10 w-10 items-center justify-center rounded-xl text-[#60798C] transition hover:bg-red-50 hover:text-red-600"
             >
               <LogOut size={19} />
             </button>
+
           </div>
 
           {/* MOBILE BUTTON */}
@@ -369,7 +366,7 @@ function AdminDashboard() {
             onClick={() =>
               setMenuOpen(!menuOpen)
             }
-            className="rounded-lg border border-slate-200 p-2 md:hidden"
+            className="rounded-lg border border-[#D8E5EC] p-2 text-[#16324A] md:hidden"
           >
             {menuOpen ? (
               <X size={21} />
@@ -377,19 +374,22 @@ function AdminDashboard() {
               <Menu size={21} />
             )}
           </button>
+
         </div>
 
         {/* MOBILE MENU */}
 
         {menuOpen && (
-          <div className="border-t border-slate-200 bg-white p-5 md:hidden">
+          <div className="border-t border-[#D8E5EC] bg-white p-5 md:hidden">
+
             <div className="flex flex-col gap-3">
-              <div className="rounded-lg bg-slate-50 px-4 py-3">
-                <p className="text-sm font-bold">
+
+              <div className="rounded-lg bg-[#F6F9FB] px-4 py-3">
+                <p className="text-sm font-bold text-[#16324A]">
                   Administrator
                 </p>
 
-                <p className="mt-1 text-xs text-slate-500">
+                <p className="mt-1 text-xs text-[#60798C]">
                   System Admin
                 </p>
               </div>
@@ -401,9 +401,12 @@ function AdminDashboard() {
               >
                 Logout
               </button>
+
             </div>
+
           </div>
         )}
+
       </header>
 
       {/* =====================================================
@@ -411,6 +414,7 @@ function AdminDashboard() {
       ===================================================== */}
 
       <main className="mx-auto max-w-7xl px-5 py-8 lg:px-8 lg:py-10">
+
         {/* ERROR */}
 
         {error && (
@@ -424,15 +428,15 @@ function AdminDashboard() {
         ===================================================== */}
 
         <section>
-          <p className="text-sm font-semibold text-blue-600">
+          <p className="text-sm font-semibold text-[#1B8A8F]">
             Administration Portal
           </p>
 
-          <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">
+          <h1 className="mt-1 text-3xl font-bold tracking-tight text-[#16324A] sm:text-4xl">
             Admin Dashboard
           </h1>
 
-          <p className="mt-2 max-w-2xl text-slate-500">
+          <p className="mt-2 max-w-2xl text-[#60798C]">
             Monitor complaints, manage
             departments and oversee complaint
             processing across the system.
@@ -444,6 +448,7 @@ function AdminDashboard() {
         ===================================================== */}
 
         <section className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+
           <StatCard
             icon={<FileText size={22} />}
             title="Total Complaints"
@@ -452,7 +457,7 @@ function AdminDashboard() {
                 ? "..."
                 : stats.total
             }
-            iconStyle="bg-blue-50 text-blue-600"
+            iconStyle="bg-[#EAF3F8] text-[#1F5F8B]"
           />
 
           <StatCard
@@ -465,7 +470,7 @@ function AdminDashboard() {
                 ? "..."
                 : stats.pending
             }
-            iconStyle="bg-indigo-50 text-indigo-600"
+            iconStyle="bg-[#E8F6F4] text-[#1B8A8F]"
           />
 
           <StatCard
@@ -491,6 +496,7 @@ function AdminDashboard() {
             }
             iconStyle="bg-emerald-50 text-emerald-600"
           />
+
         </section>
 
         {/* =====================================================
@@ -498,11 +504,13 @@ function AdminDashboard() {
         ===================================================== */}
 
         <section className="mt-8">
-          <h2 className="text-lg font-bold">
+
+          <h2 className="text-lg font-bold text-[#16324A]">
             System Management
           </h2>
 
           <div className="mt-4 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+
             <ManagementCard
               icon={
                 <FileText size={23} />
@@ -552,6 +560,7 @@ function AdminDashboard() {
                 )
               }
             />
+
           </div>
         </section>
 
@@ -559,14 +568,16 @@ function AdminDashboard() {
             RECENT COMPLAINTS
         ===================================================== */}
 
-        <section className="mt-8 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-          <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
+        <section className="mt-8 overflow-hidden rounded-2xl border border-[#D8E5EC] bg-white shadow-sm">
+
+          <div className="flex items-center justify-between border-b border-[#D8E5EC] px-6 py-5">
+
             <div>
-              <h2 className="text-lg font-bold">
+              <h2 className="text-lg font-bold text-[#16324A]">
                 Recent Complaints
               </h2>
 
-              <p className="mt-1 text-sm text-slate-500">
+              <p className="mt-1 text-sm text-[#60798C]">
                 Recently submitted complaints
                 requiring administrative
                 attention.
@@ -576,32 +587,33 @@ function AdminDashboard() {
             {complaints.length > 0 && (
               <Link
                 to="/admin/complaints"
-                className="text-sm font-bold text-blue-600 transition hover:text-blue-700"
+                className="text-sm font-bold text-[#1B8A8F] transition hover:text-[#176D72]"
               >
                 View All
               </Link>
             )}
+
           </div>
 
           {/* LOADING */}
 
           {loading && (
             <div className="flex flex-col items-center justify-center px-6 py-16 text-center">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-                <LayoutDashboard
-                  size={23}
-                />
+
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#EAF3F8] text-[#1F5F8B]">
+                <LayoutDashboard size={23} />
               </div>
 
-              <p className="mt-4 font-bold">
+              <p className="mt-4 font-bold text-[#16324A]">
                 Loading complaint
                 information
               </p>
 
-              <p className="mt-1 text-sm text-slate-500">
+              <p className="mt-1 text-sm text-[#60798C]">
                 Please wait while complaint
                 data is loaded.
               </p>
+
             </div>
           )}
 
@@ -611,18 +623,20 @@ function AdminDashboard() {
             recentComplaints.length ===
               0 && (
               <div className="flex flex-col items-center justify-center px-6 py-16 text-center">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#EAF3F8] text-[#1F5F8B]">
                   <FileText size={23} />
                 </div>
 
-                <p className="mt-4 font-bold">
+                <p className="mt-4 font-bold text-[#16324A]">
                   No complaints found
                 </p>
 
-                <p className="mt-1 text-sm text-slate-500">
+                <p className="mt-1 text-sm text-[#60798C]">
                   Submitted complaints will
                   appear here.
                 </p>
+
               </div>
             )}
 
@@ -634,9 +648,12 @@ function AdminDashboard() {
             recentComplaints.length >
               0 && (
               <div className="hidden overflow-x-auto md:block">
+
                 <table className="w-full text-left">
+
                   <thead>
-                    <tr className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+                    <tr className="border-b border-[#D8E5EC] bg-[#F6F9FB] text-xs uppercase tracking-wide text-[#60798C]">
+
                       <th className="px-6 py-4 font-semibold">
                         Complaint
                       </th>
@@ -660,10 +677,12 @@ function AdminDashboard() {
                       <th className="px-6 py-4 font-semibold">
                         Date
                       </th>
+
                     </tr>
                   </thead>
 
                   <tbody>
+
                     {recentComplaints.map(
                       (complaint) => {
                         const complaintId =
@@ -675,47 +694,52 @@ function AdminDashboard() {
                             key={
                               complaintId
                             }
-                            className="border-b border-slate-100 transition last:border-b-0 hover:bg-slate-50"
+                            className="border-b border-[#EDF3F6] transition last:border-b-0 hover:bg-[#F8FBFC]"
                           >
+
                             {/* COMPLAINT */}
 
                             <td className="px-6 py-5">
+
                               <Link
                                 to={`/admin/complaints/${complaintId}`}
-                                className="font-semibold text-slate-800 transition hover:text-blue-600"
+                                className="font-semibold text-[#16324A] transition hover:text-[#1B8A8F]"
                               >
                                 {complaint.title ||
                                   "Untitled Complaint"}
                               </Link>
 
-                              <p className="mt-1 text-xs text-slate-400">
+                              <p className="mt-1 text-xs text-[#8A9EAC]">
                                 {getComplaintId(
                                   complaint
                                 )}
                               </p>
+
                             </td>
 
                             {/* CITIZEN */}
 
                             <td className="px-6 py-5">
-                              <p className="text-sm font-medium text-slate-700">
+
+                              <p className="text-sm font-medium text-[#425D70]">
                                 {complaint
                                   .citizen
                                   ?.fullName ||
                                   "-"}
                               </p>
 
-                              <p className="mt-1 max-w-[180px] truncate text-xs text-slate-400">
+                              <p className="mt-1 max-w-[180px] truncate text-xs text-[#8A9EAC]">
                                 {complaint
                                   .citizen
                                   ?.email ||
                                   ""}
                               </p>
+
                             </td>
 
                             {/* CATEGORY */}
 
-                            <td className="px-6 py-5 text-sm text-slate-600">
+                            <td className="px-6 py-5 text-sm text-[#60798C]">
                               {formatCategory(
                                 complaint.category
                               )}
@@ -751,17 +775,21 @@ function AdminDashboard() {
 
                             {/* DATE */}
 
-                            <td className="px-6 py-5 text-sm text-slate-500">
+                            <td className="px-6 py-5 text-sm text-[#60798C]">
                               {formatDate(
                                 complaint.createdAt
                               )}
                             </td>
+
                           </tr>
                         );
                       }
                     )}
+
                   </tbody>
+
                 </table>
+
               </div>
             )}
 
@@ -772,7 +800,8 @@ function AdminDashboard() {
           {!loading &&
             recentComplaints.length >
               0 && (
-              <div className="divide-y divide-slate-100 md:hidden">
+              <div className="divide-y divide-[#EDF3F6] md:hidden">
+
                 {recentComplaints.map(
                   (complaint) => {
                     const complaintId =
@@ -783,29 +812,34 @@ function AdminDashboard() {
                       <Link
                         key={complaintId}
                         to={`/admin/complaints/${complaintId}`}
-                        className="block p-5 transition hover:bg-slate-50"
+                        className="block p-5 transition hover:bg-[#F8FBFC]"
                       >
+
                         <div className="flex items-start justify-between gap-4">
+
                           <div className="min-w-0">
-                            <p className="truncate font-bold text-slate-800">
+
+                            <p className="truncate font-bold text-[#16324A]">
                               {complaint.title ||
                                 "Untitled Complaint"}
                             </p>
 
-                            <p className="mt-1 text-xs text-slate-400">
+                            <p className="mt-1 text-xs text-[#8A9EAC]">
                               {getComplaintId(
                                 complaint
                               )}
                             </p>
+
                           </div>
 
                           <ChevronRight
                             size={18}
-                            className="shrink-0 text-slate-400"
+                            className="shrink-0 text-[#8A9EAC]"
                           />
+
                         </div>
 
-                        <p className="mt-3 text-sm text-slate-500">
+                        <p className="mt-3 text-sm text-[#60798C]">
                           {complaint
                             .citizen
                             ?.fullName ||
@@ -813,6 +847,7 @@ function AdminDashboard() {
                         </p>
 
                         <div className="mt-3 flex flex-wrap gap-2">
+
                           <span
                             className={`rounded-full px-3 py-1 text-xs font-bold ${getStatusStyle(
                               complaint.status
@@ -832,9 +867,10 @@ function AdminDashboard() {
                               complaint.priority
                             )}
                           </span>
+
                         </div>
 
-                        <p className="mt-3 text-xs text-slate-400">
+                        <p className="mt-3 text-xs text-[#8A9EAC]">
                           {formatCategory(
                             complaint.category
                           )}{" "}
@@ -843,14 +879,19 @@ function AdminDashboard() {
                             complaint.createdAt
                           )}
                         </p>
+
                       </Link>
                     );
                   }
                 )}
+
               </div>
             )}
+
         </section>
+
       </main>
+
     </div>
   );
 }
@@ -866,22 +907,26 @@ function StatCard({
   iconStyle,
 }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-[#D8E5EC] bg-white p-6 shadow-sm transition duration-200 hover:border-[#BFD9E6] hover:shadow-md">
+
       <div className="flex items-center justify-between">
+
         <div
           className={`flex h-11 w-11 items-center justify-center rounded-xl ${iconStyle}`}
         >
           {icon}
         </div>
 
-        <p className="text-3xl font-extrabold">
+        <p className="text-3xl font-extrabold text-[#16324A]">
           {value}
         </p>
+
       </div>
 
-      <p className="mt-4 text-sm font-semibold text-slate-600">
+      <p className="mt-4 text-sm font-semibold text-[#60798C]">
         {title}
       </p>
+
     </div>
   );
 }
@@ -900,19 +945,21 @@ function ManagementCard({
     <button
       type="button"
       onClick={onClick}
-      className="rounded-2xl border border-slate-200 bg-white p-6 text-left shadow-sm transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-lg"
+      className="group rounded-2xl border border-[#D8E5EC] bg-white p-6 text-left shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#8FC6CC] hover:shadow-lg hover:shadow-[#123B5D]/5"
     >
-      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+
+      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#E8F6F4] text-[#1B8A8F] transition group-hover:bg-[#1B8A8F] group-hover:text-white">
         {icon}
       </div>
 
-      <h3 className="mt-5 font-bold">
+      <h3 className="mt-5 font-bold text-[#16324A]">
         {title}
       </h3>
 
-      <p className="mt-2 text-sm leading-6 text-slate-500">
+      <p className="mt-2 text-sm leading-6 text-[#60798C]">
         {description}
       </p>
+
     </button>
   );
 }
