@@ -9,6 +9,72 @@ const API_URL =
   "http://localhost:5000/api";
 
 /* =========================================================
+   SEND REGISTRATION OTP
+   POST /api/auth/send-registration-otp
+========================================================= */
+
+export const sendRegistrationOtp = async (email) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/auth/send-registration-otp`,
+      {
+        email:
+          typeof email === "string"
+            ? email.trim().toLowerCase()
+            : email,
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    throw (
+      error.response?.data || {
+        success: false,
+        message:
+          "Unable to send the verification OTP.",
+      }
+    );
+  }
+};
+
+/* =========================================================
+   VERIFY REGISTRATION OTP
+   POST /api/auth/verify-registration-otp
+========================================================= */
+
+export const verifyRegistrationOtp = async (
+  email,
+  otp
+) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/auth/verify-registration-otp`,
+      {
+        email:
+          typeof email === "string"
+            ? email.trim().toLowerCase()
+            : email,
+
+        otp:
+          typeof otp === "string"
+            ? otp.trim()
+            : String(otp || "").trim(),
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    throw (
+      error.response?.data || {
+        success: false,
+        message:
+          "Unable to verify the registration OTP.",
+      }
+    );
+  }
+};
+
+/* =========================================================
    REGISTER USER
    POST /api/auth/register
 ========================================================= */
@@ -25,7 +91,8 @@ export const registerUser = async (userData) => {
     throw (
       error.response?.data || {
         success: false,
-        message: "Unable to connect to the server.",
+        message:
+          "Unable to connect to the server.",
       }
     );
   }
@@ -48,7 +115,8 @@ export const loginUser = async (loginData) => {
     throw (
       error.response?.data || {
         success: false,
-        message: "Unable to connect to the server.",
+        message:
+          "Unable to connect to the server.",
       }
     );
   }

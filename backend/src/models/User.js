@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
   {
+    /* =========================================================
+       BASIC INFORMATION
+    ========================================================= */
+
     fullName: {
       type: String,
       required: [true, "Full name is required"],
@@ -10,17 +14,49 @@ const userSchema = new mongoose.Schema(
       maxlength: 100,
     },
 
+    /* =========================================================
+       NIC
+       Required only for citizens
+    ========================================================= */
+
+    nic: {
+      type: String,
+
+      required: function () {
+        return this.role === "citizen";
+      },
+
+      trim: true,
+      uppercase: true,
+
+      // Citizens cannot share the same NIC.
+      // Officers/admins may have no NIC.
+      unique: true,
+      sparse: true,
+
+      default: undefined,
+    },
+
+    /* =========================================================
+       EMAIL
+    ========================================================= */
+
     email: {
       type: String,
       required: [true, "Email is required"],
       unique: true,
       lowercase: true,
       trim: true,
+
       match: [
         /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
         "Please provide a valid email address",
       ],
     },
+
+    /* =========================================================
+       PASSWORD
+    ========================================================= */
 
     password: {
       type: String,
@@ -29,11 +65,20 @@ const userSchema = new mongoose.Schema(
       select: false,
     },
 
+    /* =========================================================
+       ROLE
+    ========================================================= */
+
     role: {
       type: String,
       enum: ["citizen", "officer", "admin"],
       default: "citizen",
     },
+
+    /* =========================================================
+       DEPARTMENT
+       Used mainly for officers
+    ========================================================= */
 
     department: {
       type: mongoose.Schema.Types.ObjectId,
@@ -41,11 +86,19 @@ const userSchema = new mongoose.Schema(
       default: null,
     },
 
+    /* =========================================================
+       PREFERRED LANGUAGE
+    ========================================================= */
+
     preferredLanguage: {
       type: String,
       enum: ["english", "sinhala", "tamil"],
       default: "english",
     },
+
+    /* =========================================================
+       ACCOUNT STATUS
+    ========================================================= */
 
     isActive: {
       type: Boolean,
@@ -53,18 +106,30 @@ const userSchema = new mongoose.Schema(
     },
 
     /* =========================================================
+       EMAIL VERIFICATION
+       Used for public citizen registration
+    ========================================================= */
+
+    isEmailVerified: {
+      type: Boolean,
+      default: false,
+    },
+
+    emailVerifiedAt: {
+      type: Date,
+      default: null,
+    },
+
+    /* =========================================================
        PASSWORD RESET
     ========================================================= */
 
-    // Stores only the hashed reset token.
-    // The raw reset token is never saved in MongoDB.
     passwordResetToken: {
       type: String,
       select: false,
       default: null,
     },
 
-    // Password reset token expiry time.
     passwordResetExpires: {
       type: Date,
       select: false,
@@ -76,6 +141,9 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model(
+  "User",
+  userSchema
+);
 
 module.exports = User;

@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+
 import {
   BrainCircuit,
   Eye,
@@ -13,10 +14,18 @@ import {
   ArrowLeft,
   AlertCircle,
   LoaderCircle,
+  BadgeCheck,
+  Send,
+  ShieldCheck,
 } from "lucide-react";
+
 import { useState } from "react";
 
-import { registerUser } from "../api/authApi";
+import {
+  registerUser,
+  sendRegistrationOtp,
+  verifyRegistrationOtp,
+} from "../api/authApi";
 
 /* =========================================================
    TRANSLATIONS
@@ -33,35 +42,56 @@ const translations = {
     heroTitle2: "make your voice heard.",
 
     heroDescription:
-      "Create a citizen account to report public service issues, track complaint progress and receive important status notifications.",
+      "Create a verified citizen account to report public service issues, track complaint progress and receive important status notifications.",
 
-    easyTitle: "Easy Complaint Reporting",
+    easyTitle: "Verified Citizen Registration",
     easyDescription:
-      "Submit public complaints with issue details, location information and supporting images.",
+      "Your email address is securely verified using a one-time verification code before account creation.",
 
     smartTitle: "Smart Complaint Management",
     smartDescription:
       "AI helps classify complaints and supports efficient processing and routing.",
 
-    trackTitle: "Track Every Update",
+    trackTitle: "One NIC, One Account",
     trackDescription:
-      "Follow the progress of your complaints throughout the resolution process.",
+      "Each citizen NIC can only be associated with one citizen account to improve account integrity.",
 
     register: "Create Account",
     registerDescription:
-      "Enter your details below to create your citizen account.",
+      "Enter your details, verify your email address and create your citizen account.",
 
     fullName: "Full Name",
     fullNamePlaceholder: "Enter your full name",
 
+    nic: "NIC Number",
+    nicPlaceholder: "Example: 200012345678 or 991234567V",
+    nicHint:
+      "Enter a valid Sri Lankan old or new NIC number.",
+
     email: "Email Address",
     emailPlaceholder: "Enter your email",
+
+    sendOtp: "Send OTP",
+    sendingOtp: "Sending...",
+
+    otp: "Verification OTP",
+    otpPlaceholder: "Enter 6-digit OTP",
+
+    verifyOtp: "Verify OTP",
+    verifyingOtp: "Verifying...",
+
+    resendOtp: "Resend OTP",
+
+    emailVerified: "Email Verified",
+    otpSent:
+      "Verification OTP has been sent to your email address.",
 
     password: "Password",
     passwordPlaceholder: "Create a password",
 
     confirmPassword: "Confirm Password",
-    confirmPasswordPlaceholder: "Enter your password again",
+    confirmPasswordPlaceholder:
+      "Enter your password again",
 
     preferredLanguage: "Preferred Language",
 
@@ -77,14 +107,47 @@ const translations = {
     createButton: "Create Account",
     creatingButton: "Creating Account...",
 
+    verifyEmailFirst:
+      "Verify your email to enable account creation.",
+
     alreadyAccount: "Already have an account?",
     signIn: "Sign in",
 
     backHome: "Back to Home",
 
-    passwordMismatch: "Passwords do not match.",
+    fullNameRequired:
+      "Please enter your full name.",
+
+    nicRequired:
+      "Please enter your NIC number.",
+
+    emailRequired:
+      "Please enter your email address.",
+
+    otpRequired:
+      "Please enter the 6-digit OTP.",
+
+    passwordMismatch:
+      "Passwords do not match.",
+
     termsRequired:
       "Please accept the Terms and Conditions and Privacy Policy.",
+
+    emailNotVerified:
+      "Please verify your email address before creating your account.",
+
+    emailChanged:
+      "Email address changed. Please verify the new email address.",
+
+    otpSendFailed:
+      "Unable to send verification OTP.",
+
+    otpVerifyFailed:
+      "Unable to verify OTP.",
+
+    registrationFailed:
+      "Registration failed. Please try again.",
+
     registrationSuccess:
       "Account created successfully. Redirecting to login...",
 
@@ -102,35 +165,61 @@ const translations = {
     heroTitle2: "ඔබගේ හඬ ඉදිරිපත් කරන්න.",
 
     heroDescription:
-      "මහජන සේවා ගැටලු වාර්තා කිරීමට, පැමිණිලි ප්‍රගතිය නිරීක්ෂණය කිරීමට සහ වැදගත් තත්ත්ව දැනුම්දීම් ලබා ගැනීමට පුරවැසි ගිණුමක් සාදන්න.",
+      "මහජන සේවා ගැටලු වාර්තා කිරීමට, පැමිණිලි ප්‍රගතිය නිරීක්ෂණය කිරීමට සහ වැදගත් තත්ත්ව දැනුම්දීම් ලබා ගැනීමට තහවුරු කළ පුරවැසි ගිණුමක් සාදන්න.",
 
-    easyTitle: "පහසු පැමිණිලි වාර්තා කිරීම",
+    easyTitle: "තහවුරු කළ පුරවැසි ලියාපදිංචිය",
     easyDescription:
-      "ගැටලුවේ විස්තර, ස්ථාන තොරතුරු සහ අදාළ ඡායාරූප සමඟ මහජන පැමිණිලි ඉදිරිපත් කරන්න.",
+      "ගිණුම නිර්මාණය කිරීමට පෙර එක් වරක් භාවිතා කරන OTP කේතයක් මගින් ඔබගේ ඊමේල් ලිපිනය ආරක්ෂිතව තහවුරු කරයි.",
 
     smartTitle: "බුද්ධිමත් පැමිණිලි කළමනාකරණය",
     smartDescription:
       "AI තාක්ෂණය පැමිණිලි වර්ගීකරණයට සහ කාර්යක්ෂම සැකසීම හා යොමු කිරීම සඳහා සහාය වේ.",
 
-    trackTitle: "සෑම යාවත්කාලීනයක්ම නිරීක්ෂණය කරන්න",
+    trackTitle: "එක් NIC එකකට එක් ගිණුමක්",
     trackDescription:
-      "විසඳුම් ක්‍රියාවලිය පුරා ඔබගේ පැමිණිලිවල ප්‍රගතිය නිරීක්ෂණය කරන්න.",
+      "ගිණුම් ආරක්ෂාව වැඩි කිරීම සඳහා එක් පුරවැසි NIC අංකයකින් එක් ගිණුමක් පමණක් සාදාගත හැක.",
 
     register: "ගිණුමක් සාදන්න",
     registerDescription:
-      "ඔබගේ පුරවැසි ගිණුම නිර්මාණය කිරීමට පහත තොරතුරු ඇතුළත් කරන්න.",
+      "ඔබගේ තොරතුරු ඇතුළත් කර, ඊමේල් ලිපිනය තහවුරු කර පුරවැසි ගිණුම සාදන්න.",
 
     fullName: "සම්පූර්ණ නම",
-    fullNamePlaceholder: "ඔබගේ සම්පූර්ණ නම ඇතුළත් කරන්න",
+    fullNamePlaceholder:
+      "ඔබගේ සම්පූර්ණ නම ඇතුළත් කරන්න",
+
+    nic: "ජාතික හැඳුනුම්පත් අංකය",
+    nicPlaceholder:
+      "උදා: 200012345678 හෝ 991234567V",
+    nicHint:
+      "වලංගු පැරණි හෝ නව ශ්‍රී ලාංකික NIC අංකයක් ඇතුළත් කරන්න.",
 
     email: "ඊමේල් ලිපිනය",
-    emailPlaceholder: "ඔබගේ ඊමේල් ලිපිනය ඇතුළත් කරන්න",
+    emailPlaceholder:
+      "ඔබගේ ඊමේල් ලිපිනය ඇතුළත් කරන්න",
+
+    sendOtp: "OTP යවන්න",
+    sendingOtp: "යවමින්...",
+
+    otp: "තහවුරු කිරීමේ OTP",
+    otpPlaceholder:
+      "ඉලක්කම් 6ක OTP එක ඇතුළත් කරන්න",
+
+    verifyOtp: "OTP තහවුරු කරන්න",
+    verifyingOtp: "තහවුරු කරමින්...",
+
+    resendOtp: "OTP නැවත යවන්න",
+
+    emailVerified: "ඊමේල් ලිපිනය තහවුරු කර ඇත",
+
+    otpSent:
+      "තහවුරු කිරීමේ OTP එක ඔබගේ ඊමේල් ලිපිනයට යවා ඇත.",
 
     password: "මුරපදය",
     passwordPlaceholder: "මුරපදයක් සාදන්න",
 
     confirmPassword: "මුරපදය තහවුරු කරන්න",
-    confirmPasswordPlaceholder: "මුරපදය නැවත ඇතුළත් කරන්න",
+    confirmPasswordPlaceholder:
+      "මුරපදය නැවත ඇතුළත් කරන්න",
 
     preferredLanguage: "කැමති භාෂාව",
 
@@ -146,14 +235,47 @@ const translations = {
     createButton: "ගිණුම සාදන්න",
     creatingButton: "ගිණුම නිර්මාණය කරමින්...",
 
+    verifyEmailFirst:
+      "ගිණුම සෑදීම සක්‍රීය කිරීමට ඊමේල් ලිපිනය තහවුරු කරන්න.",
+
     alreadyAccount: "දැනටමත් ගිණුමක් තිබේද?",
     signIn: "පිවිසෙන්න",
 
     backHome: "මුල් පිටුවට",
 
-    passwordMismatch: "මුරපද දෙක සමාන නොවේ.",
+    fullNameRequired:
+      "කරුණාකර සම්පූර්ණ නම ඇතුළත් කරන්න.",
+
+    nicRequired:
+      "කරුණාකර NIC අංකය ඇතුළත් කරන්න.",
+
+    emailRequired:
+      "කරුණාකර ඊමේල් ලිපිනය ඇතුළත් කරන්න.",
+
+    otpRequired:
+      "කරුණාකර ඉලක්කම් 6ක OTP එක ඇතුළත් කරන්න.",
+
+    passwordMismatch:
+      "මුරපද දෙක සමාන නොවේ.",
+
     termsRequired:
       "කරුණාකර නියමයන් සහ කොන්දේසි හා පෞද්ගලිකත්ව ප්‍රතිපත්තිය පිළිගන්න.",
+
+    emailNotVerified:
+      "ගිණුම සෑදීමට පෙර ඔබගේ ඊමේල් ලිපිනය තහවුරු කරන්න.",
+
+    emailChanged:
+      "ඊමේල් ලිපිනය වෙනස් කර ඇත. නව ඊමේල් ලිපිනය නැවත තහවුරු කරන්න.",
+
+    otpSendFailed:
+      "OTP එක යැවීමට නොහැකි විය.",
+
+    otpVerifyFailed:
+      "OTP එක තහවුරු කිරීමට නොහැකි විය.",
+
+    registrationFailed:
+      "ලියාපදිංචිය අසාර්ථකයි. නැවත උත්සාහ කරන්න.",
+
     registrationSuccess:
       "ගිණුම සාර්ථකව නිර්මාණය විය. පිවිසුම් පිටුවට යොමු කරමින්...",
 
@@ -161,7 +283,7 @@ const translations = {
       "AI බලගැන්වූ බහුභාෂා මහජන පැමිණිලි කළමනාකරණ පද්ධතිය",
   },
 
-  "தமிழ்": {
+  தமிழ்: {
     brand: "பொது புகார்கள்",
     brandSub: "AI மேலாண்மை அமைப்பு",
 
@@ -171,35 +293,64 @@ const translations = {
     heroTitle2: "உங்கள் குரலை வெளிப்படுத்துங்கள்.",
 
     heroDescription:
-      "பொது சேவை பிரச்சினைகளைப் புகாரளிக்கவும், புகார் முன்னேற்றத்தைக் கண்காணிக்கவும் மற்றும் முக்கிய நிலை அறிவிப்புகளைப் பெறவும் குடிமக்கள் கணக்கை உருவாக்கவும்.",
+      "பொது சேவை பிரச்சினைகளைப் புகாரளிக்கவும், புகார் முன்னேற்றத்தைக் கண்காணிக்கவும் மற்றும் முக்கிய நிலை அறிவிப்புகளைப் பெறவும் சரிபார்க்கப்பட்ட குடிமக்கள் கணக்கை உருவாக்கவும்.",
 
-    easyTitle: "எளிதான புகார் பதிவு",
+    easyTitle: "சரிபார்க்கப்பட்ட குடிமக்கள் பதிவு",
     easyDescription:
-      "பிரச்சினை விவரங்கள், இருப்பிட தகவல் மற்றும் ஆதாரப் படங்களுடன் பொது புகார்களை சமர்ப்பிக்கவும்.",
+      "கணக்கு உருவாக்குவதற்கு முன் ஒருமுறை பயன்படுத்தப்படும் OTP மூலம் உங்கள் மின்னஞ்சல் முகவரி பாதுகாப்பாக சரிபார்க்கப்படும்.",
 
     smartTitle: "அறிவார்ந்த புகார் மேலாண்மை",
     smartDescription:
       "AI புகார்களை வகைப்படுத்தவும் திறமையான செயலாக்கம் மற்றும் வழிமாற்றத்திற்கு உதவுகிறது.",
 
-    trackTitle: "ஒவ்வொரு புதுப்பிப்பையும் கண்காணிக்கவும்",
+    trackTitle: "ஒரு NIC - ஒரு கணக்கு",
     trackDescription:
-      "தீர்வு செயல்முறை முழுவதும் உங்கள் புகார்களின் முன்னேற்றத்தைக் கண்காணிக்கவும்.",
+      "கணக்கு நம்பகத்தன்மையை மேம்படுத்த ஒவ்வொரு குடிமக்கள் NIC எண்ணுக்கும் ஒரு கணக்கு மட்டுமே அனுமதிக்கப்படுகிறது.",
 
     register: "கணக்கை உருவாக்கவும்",
     registerDescription:
-      "உங்கள் குடிமக்கள் கணக்கை உருவாக்க கீழே உள்ள விவரங்களை உள்ளிடவும்.",
+      "உங்கள் விவரங்களை உள்ளிட்டு, மின்னஞ்சலை சரிபார்த்து குடிமக்கள் கணக்கை உருவாக்கவும்.",
 
     fullName: "முழு பெயர்",
-    fullNamePlaceholder: "உங்கள் முழு பெயரை உள்ளிடவும்",
+    fullNamePlaceholder:
+      "உங்கள் முழு பெயரை உள்ளிடவும்",
+
+    nic: "NIC எண்",
+    nicPlaceholder:
+      "உதாரணம்: 200012345678 அல்லது 991234567V",
+    nicHint:
+      "செல்லுபடியாகும் பழைய அல்லது புதிய இலங்கை NIC எண்ணை உள்ளிடவும்.",
 
     email: "மின்னஞ்சல் முகவரி",
-    emailPlaceholder: "உங்கள் மின்னஞ்சலை உள்ளிடவும்",
+    emailPlaceholder:
+      "உங்கள் மின்னஞ்சலை உள்ளிடவும்",
+
+    sendOtp: "OTP அனுப்பவும்",
+    sendingOtp: "அனுப்பப்படுகிறது...",
+
+    otp: "சரிபார்ப்பு OTP",
+    otpPlaceholder:
+      "6 இலக்க OTP ஐ உள்ளிடவும்",
+
+    verifyOtp: "OTP சரிபார்க்கவும்",
+    verifyingOtp: "சரிபார்க்கப்படுகிறது...",
+
+    resendOtp: "OTP மீண்டும் அனுப்பவும்",
+
+    emailVerified:
+      "மின்னஞ்சல் சரிபார்க்கப்பட்டது",
+
+    otpSent:
+      "சரிபார்ப்பு OTP உங்கள் மின்னஞ்சலுக்கு அனுப்பப்பட்டது.",
 
     password: "கடவுச்சொல்",
-    passwordPlaceholder: "கடவுச்சொல்லை உருவாக்கவும்",
+    passwordPlaceholder:
+      "கடவுச்சொல்லை உருவாக்கவும்",
 
-    confirmPassword: "கடவுச்சொல்லை உறுதிப்படுத்தவும்",
-    confirmPasswordPlaceholder: "கடவுச்சொல்லை மீண்டும் உள்ளிடவும்",
+    confirmPassword:
+      "கடவுச்சொல்லை உறுதிப்படுத்தவும்",
+    confirmPasswordPlaceholder:
+      "கடவுச்சொல்லை மீண்டும் உள்ளிடவும்",
 
     preferredLanguage: "விருப்பமான மொழி",
 
@@ -213,16 +364,51 @@ const translations = {
     privacy: "தனியுரிமைக் கொள்கை",
 
     createButton: "கணக்கை உருவாக்கவும்",
-    creatingButton: "கணக்கு உருவாக்கப்படுகிறது...",
+    creatingButton:
+      "கணக்கு உருவாக்கப்படுகிறது...",
 
-    alreadyAccount: "ஏற்கனவே கணக்கு உள்ளதா?",
+    verifyEmailFirst:
+      "கணக்கு உருவாக்க மின்னஞ்சலை சரிபார்க்கவும்.",
+
+    alreadyAccount:
+      "ஏற்கனவே கணக்கு உள்ளதா?",
     signIn: "உள்நுழைக",
 
     backHome: "முகப்பிற்கு திரும்பு",
 
-    passwordMismatch: "கடவுச்சொற்கள் பொருந்தவில்லை.",
+    fullNameRequired:
+      "முழு பெயரை உள்ளிடவும்.",
+
+    nicRequired:
+      "NIC எண்ணை உள்ளிடவும்.",
+
+    emailRequired:
+      "மின்னஞ்சல் முகவரியை உள்ளிடவும்.",
+
+    otpRequired:
+      "6 இலக்க OTP ஐ உள்ளிடவும்.",
+
+    passwordMismatch:
+      "கடவுச்சொற்கள் பொருந்தவில்லை.",
+
     termsRequired:
       "விதிமுறைகள் மற்றும் தனியுரிமைக் கொள்கையை ஏற்றுக்கொள்ளவும்.",
+
+    emailNotVerified:
+      "கணக்கை உருவாக்குவதற்கு முன் உங்கள் மின்னஞ்சலை சரிபார்க்கவும்.",
+
+    emailChanged:
+      "மின்னஞ்சல் முகவரி மாற்றப்பட்டது. புதிய மின்னஞ்சலை மீண்டும் சரிபார்க்கவும்.",
+
+    otpSendFailed:
+      "சரிபார்ப்பு OTP ஐ அனுப்ப முடியவில்லை.",
+
+    otpVerifyFailed:
+      "OTP ஐ சரிபார்க்க முடியவில்லை.",
+
+    registrationFailed:
+      "பதிவு தோல்வியடைந்தது. மீண்டும் முயற்சிக்கவும்.",
+
     registrationSuccess:
       "கணக்கு வெற்றிகரமாக உருவாக்கப்பட்டது. உள்நுழைவு பக்கத்திற்கு செல்கிறது...",
 
@@ -238,7 +424,8 @@ const translations = {
 function RegisterPage() {
   const navigate = useNavigate();
 
-  const [language, setLanguage] = useState("EN");
+  const [language, setLanguage] =
+    useState("EN");
 
   const [showPassword, setShowPassword] =
     useState(false);
@@ -251,24 +438,86 @@ function RegisterPage() {
   const [isLoading, setIsLoading] =
     useState(false);
 
-  const [errorMessage, setErrorMessage] =
-    useState("");
+  const [
+    isSendingOtp,
+    setIsSendingOtp,
+  ] = useState(false);
+
+  const [
+    isVerifyingOtp,
+    setIsVerifyingOtp,
+  ] = useState(false);
+
+  const [
+    otpSent,
+    setOtpSent,
+  ] = useState(false);
+
+  const [
+    otp,
+    setOtp,
+  ] = useState("");
+
+  const [
+    isEmailVerified,
+    setIsEmailVerified,
+  ] = useState(false);
+
+  const [
+    verifiedEmail,
+    setVerifiedEmail,
+  ] = useState("");
+
+  const [
+    errorMessage,
+    setErrorMessage,
+  ] = useState("");
 
   const [
     successMessage,
     setSuccessMessage,
   ] = useState("");
 
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    preferredLanguage: "english",
-    acceptedTerms: false,
-  });
+  const [
+    otpMessage,
+    setOtpMessage,
+  ] = useState("");
 
-  const t = translations[language];
+  const [formData, setFormData] =
+    useState({
+      fullName: "",
+      nic: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      preferredLanguage:
+        "english",
+      acceptedTerms: false,
+    });
+
+  const t =
+    translations[language];
+
+  /* =========================================================
+     HELPERS
+  ========================================================= */
+
+  const normalizedEmail =
+    formData.email
+      .trim()
+      .toLowerCase();
+
+  const normalizedNic =
+    formData.nic
+      .trim()
+      .replace(/\s+/g, "")
+      .toUpperCase();
+
+  const canCreateAccount =
+    isEmailVerified &&
+    verifiedEmail ===
+      normalizedEmail &&
+    !isLoading;
 
   /* =========================================================
      FORM CHANGE
@@ -282,29 +531,236 @@ function RegisterPage() {
       checked,
     } = e.target;
 
-    setFormData((previous) => ({
-      ...previous,
+    const newValue =
+      type === "checkbox"
+        ? checked
+        : value;
 
-      [name]:
-        type === "checkbox"
-          ? checked
-          : value,
-    }));
+    setFormData(
+      (previous) => ({
+        ...previous,
+        [name]:
+          name === "nic"
+            ? String(
+                newValue
+              ).toUpperCase()
+            : newValue,
+      })
+    );
+
+    /*
+     * If the email is changed after verification,
+     * verification must be completed again.
+     */
+    if (name === "email") {
+      const newEmail =
+        String(value)
+          .trim()
+          .toLowerCase();
+
+      if (
+        isEmailVerified &&
+        newEmail !== verifiedEmail
+      ) {
+        setIsEmailVerified(false);
+        setVerifiedEmail("");
+        setOtpSent(false);
+        setOtp("");
+        setOtpMessage(
+          t.emailChanged
+        );
+      }
+    }
 
     if (errorMessage) {
       setErrorMessage("");
     }
+
+    if (successMessage) {
+      setSuccessMessage("");
+    }
   };
+
+  /* =========================================================
+     SEND OTP
+  ========================================================= */
+
+  const handleSendOtp = async () => {
+    setErrorMessage("");
+    setSuccessMessage("");
+    setOtpMessage("");
+
+    if (!normalizedEmail) {
+      setErrorMessage(
+        t.emailRequired
+      );
+
+      return;
+    }
+
+    try {
+      setIsSendingOtp(true);
+
+      const response =
+        await sendRegistrationOtp(
+          normalizedEmail
+        );
+
+      setOtpSent(true);
+      setIsEmailVerified(false);
+      setVerifiedEmail("");
+      setOtp("");
+
+      setOtpMessage(
+        response?.message ||
+          t.otpSent
+      );
+    } catch (error) {
+      console.error(
+        "Send registration OTP failed:",
+        error
+      );
+
+      setErrorMessage(
+        error?.message ||
+          t.otpSendFailed
+      );
+    } finally {
+      setIsSendingOtp(false);
+    }
+  };
+
+  /* =========================================================
+     VERIFY OTP
+  ========================================================= */
+
+  const handleVerifyOtp =
+    async () => {
+      setErrorMessage("");
+      setSuccessMessage("");
+
+      if (!normalizedEmail) {
+        setErrorMessage(
+          t.emailRequired
+        );
+
+        return;
+      }
+
+      if (
+        !/^\d{6}$/.test(
+          otp.trim()
+        )
+      ) {
+        setErrorMessage(
+          t.otpRequired
+        );
+
+        return;
+      }
+
+      try {
+        setIsVerifyingOtp(
+          true
+        );
+
+        const response =
+          await verifyRegistrationOtp(
+            normalizedEmail,
+            otp.trim()
+          );
+
+        if (
+          response?.verified ||
+          response?.success
+        ) {
+          setIsEmailVerified(
+            true
+          );
+
+          setVerifiedEmail(
+            normalizedEmail
+          );
+
+          setOtpMessage(
+            response?.message ||
+              t.emailVerified
+          );
+        }
+      } catch (error) {
+        console.error(
+          "Verify registration OTP failed:",
+          error
+        );
+
+        setIsEmailVerified(
+          false
+        );
+
+        setVerifiedEmail(
+          ""
+        );
+
+        setErrorMessage(
+          error?.message ||
+            t.otpVerifyFailed
+        );
+      } finally {
+        setIsVerifyingOtp(
+          false
+        );
+      }
+    };
 
   /* =========================================================
      REGISTER SUBMIT
   ========================================================= */
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (
+    e
+  ) => {
     e.preventDefault();
 
     setErrorMessage("");
     setSuccessMessage("");
+
+    if (
+      !formData.fullName.trim()
+    ) {
+      setErrorMessage(
+        t.fullNameRequired
+      );
+
+      return;
+    }
+
+    if (!normalizedNic) {
+      setErrorMessage(
+        t.nicRequired
+      );
+
+      return;
+    }
+
+    if (!normalizedEmail) {
+      setErrorMessage(
+        t.emailRequired
+      );
+
+      return;
+    }
+
+    if (
+      !isEmailVerified ||
+      verifiedEmail !==
+        normalizedEmail
+    ) {
+      setErrorMessage(
+        t.emailNotVerified
+      );
+
+      return;
+    }
 
     if (
       formData.password !==
@@ -317,7 +773,9 @@ function RegisterPage() {
       return;
     }
 
-    if (!formData.acceptedTerms) {
+    if (
+      !formData.acceptedTerms
+    ) {
       setErrorMessage(
         t.termsRequired
       );
@@ -332,10 +790,11 @@ function RegisterPage() {
         fullName:
           formData.fullName.trim(),
 
+        nic:
+          normalizedNic,
+
         email:
-          formData.email
-            .trim()
-            .toLowerCase(),
+          normalizedEmail,
 
         password:
           formData.password,
@@ -361,6 +820,7 @@ function RegisterPage() {
 
       setFormData({
         fullName: "",
+        nic: "",
         email: "",
         password: "",
         confirmPassword: "",
@@ -368,6 +828,12 @@ function RegisterPage() {
           "english",
         acceptedTerms: false,
       });
+
+      setOtp("");
+      setOtpSent(false);
+      setIsEmailVerified(false);
+      setVerifiedEmail("");
+      setOtpMessage("");
 
       setTimeout(() => {
         navigate("/login");
@@ -391,18 +857,23 @@ function RegisterPage() {
                 item.msg ||
                 item.message
             )
+            .filter(Boolean)
             .join(" ")
         );
       } else {
         setErrorMessage(
           error?.message ||
-            "Registration failed. Please try again."
+            t.registrationFailed
         );
       }
     } finally {
       setIsLoading(false);
     }
   };
+
+  /* =========================================================
+     PAGE
+  ========================================================= */
 
   return (
     <div className="min-h-screen bg-[#F6F9FB] text-[#16324A]">
@@ -419,9 +890,10 @@ function RegisterPage() {
             to="/"
             className="flex items-center gap-3"
           >
-
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#123B5D] text-white shadow-md shadow-[#123B5D]/15">
-              <BrainCircuit size={25} />
+              <BrainCircuit
+                size={25}
+              />
             </div>
 
             <div className="leading-tight">
@@ -435,10 +907,9 @@ function RegisterPage() {
               </p>
 
             </div>
-
           </Link>
 
-          {/* LANGUAGE SELECTOR */}
+          {/* LANGUAGE */}
 
           <div className="flex items-center gap-1 rounded-lg border border-[#D8E5EC] bg-[#F6F9FB] p-1">
 
@@ -451,25 +922,29 @@ function RegisterPage() {
               "EN",
               "සිං",
               "தமிழ்",
-            ].map((item) => (
-
-              <button
-                key={item}
-                type="button"
-                disabled={isLoading}
-                onClick={() =>
-                  setLanguage(item)
-                }
-                className={`rounded-md px-2.5 py-1.5 text-xs font-semibold transition ${
-                  language === item
-                    ? "bg-white text-[#1F5F8B] shadow-sm"
-                    : "text-[#60798C] hover:text-[#16324A]"
-                }`}
-              >
-                {item}
-              </button>
-
-            ))}
+            ].map(
+              (item) => (
+                <button
+                  key={item}
+                  type="button"
+                  disabled={
+                    isLoading
+                  }
+                  onClick={() =>
+                    setLanguage(
+                      item
+                    )
+                  }
+                  className={`rounded-md px-2.5 py-1.5 text-xs font-semibold transition ${
+                    language === item
+                      ? "bg-white text-[#1F5F8B] shadow-sm"
+                      : "text-[#60798C] hover:text-[#16324A]"
+                  }`}
+                >
+                  {item}
+                </button>
+              )
+            )}
 
           </div>
 
@@ -487,17 +962,19 @@ function RegisterPage() {
 
         <div className="absolute -right-32 bottom-0 h-96 w-96 rounded-full bg-[#DDF3EE]/70 blur-3xl" />
 
-        <div className="relative mx-auto grid min-h-[calc(100vh-78px)] max-w-7xl items-center gap-16 px-5 py-12 lg:grid-cols-2 lg:px-8">
+        <div className="relative mx-auto grid min-h-[calc(100vh-78px)] max-w-7xl items-start gap-16 px-5 py-12 lg:grid-cols-2 lg:px-8">
 
           {/* =================================================
-              LEFT SIDE
+              LEFT
           ================================================= */}
 
-          <div className="hidden lg:block">
+          <div className="hidden pt-12 lg:block">
 
             <div className="inline-flex items-center gap-2 rounded-full border border-[#B9DDDA] bg-[#E8F6F4] px-4 py-2 text-sm font-semibold text-[#1B8A8F]">
 
-              <UserPlus size={17} />
+              <UserPlus
+                size={17}
+              />
 
               {t.badge}
 
@@ -517,79 +994,52 @@ function RegisterPage() {
               {t.heroDescription}
             </p>
 
-            {/* FEATURE CARDS */}
-
             <div className="mt-9 grid max-w-lg gap-4">
 
-              {/* EASY COMPLAINT REPORTING */}
+              <FeatureCard
+                icon={
+                  <ShieldCheck
+                    size={22}
+                  />
+                }
+                iconClass="bg-[#EAF3F8] text-[#1F5F8B]"
+                title={
+                  t.easyTitle
+                }
+                description={
+                  t.easyDescription
+                }
+              />
 
-              <div className="flex items-start gap-4 rounded-2xl border border-[#D8E5EC] bg-white/90 p-5 shadow-sm backdrop-blur">
-
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#EAF3F8] text-[#1F5F8B]">
-                  <UserPlus size={22} />
-                </div>
-
-                <div>
-
-                  <h3 className="font-bold text-[#16324A]">
-                    {t.easyTitle}
-                  </h3>
-
-                  <p className="mt-1 text-sm leading-6 text-[#60798C]">
-                    {t.easyDescription}
-                  </p>
-
-                </div>
-
-              </div>
-
-              {/* AI */}
-
-              <div className="flex items-start gap-4 rounded-2xl border border-[#D8E5EC] bg-white/90 p-5 shadow-sm backdrop-blur">
-
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#E8F6F4] text-[#1B8A8F]">
+              <FeatureCard
+                icon={
                   <BrainCircuit
                     size={22}
                   />
-                </div>
+                }
+                iconClass="bg-[#E8F6F4] text-[#1B8A8F]"
+                title={
+                  t.smartTitle
+                }
+                description={
+                  t.smartDescription
+                }
+              />
 
-                <div>
-
-                  <h3 className="font-bold text-[#16324A]">
-                    {t.smartTitle}
-                  </h3>
-
-                  <p className="mt-1 text-sm leading-6 text-[#60798C]">
-                    {t.smartDescription}
-                  </p>
-
-                </div>
-
-              </div>
-
-              {/* TRACKING */}
-
-              <div className="flex items-start gap-4 rounded-2xl border border-[#D8E5EC] bg-white/90 p-5 shadow-sm backdrop-blur">
-
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
-                  <CheckCircle2
+              <FeatureCard
+                icon={
+                  <BadgeCheck
                     size={22}
                   />
-                </div>
-
-                <div>
-
-                  <h3 className="font-bold text-[#16324A]">
-                    {t.trackTitle}
-                  </h3>
-
-                  <p className="mt-1 text-sm leading-6 text-[#60798C]">
-                    {t.trackDescription}
-                  </p>
-
-                </div>
-
-              </div>
+                }
+                iconClass="bg-emerald-50 text-emerald-600"
+                title={
+                  t.trackTitle
+                }
+                description={
+                  t.trackDescription
+                }
+              />
 
             </div>
 
@@ -599,17 +1049,17 @@ function RegisterPage() {
               REGISTER FORM
           ================================================= */}
 
-          <div className="mx-auto w-full max-w-lg">
+          <div className="mx-auto w-full max-w-xl">
 
             <Link
               to="/"
               className="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-[#60798C] transition hover:text-[#1B8A8F] lg:hidden"
             >
-
-              <ArrowLeft size={17} />
+              <ArrowLeft
+                size={17}
+              />
 
               {t.backHome}
-
             </Link>
 
             <div className="rounded-[28px] border border-[#D8E5EC] bg-white p-7 shadow-xl shadow-[#123B5D]/10 sm:p-9">
@@ -619,7 +1069,9 @@ function RegisterPage() {
               <div>
 
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#E8F6F4] text-[#1B8A8F]">
-                  <UserPlus size={24} />
+                  <UserPlus
+                    size={24}
+                  />
                 </div>
 
                 <h2 className="mt-5 text-3xl font-bold tracking-tight text-[#16324A]">
@@ -632,12 +1084,9 @@ function RegisterPage() {
 
               </div>
 
-              {/* =================================================
-                  ALERTS
-              ================================================= */}
+              {/* ALERTS */}
 
               {errorMessage && (
-
                 <div className="mt-6 flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
 
                   <AlertCircle
@@ -650,11 +1099,9 @@ function RegisterPage() {
                   </p>
 
                 </div>
-
               )}
 
               {successMessage && (
-
                 <div className="mt-6 flex items-start gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-700">
 
                   <CheckCircle2
@@ -667,7 +1114,6 @@ function RegisterPage() {
                   </p>
 
                 </div>
-
               )}
 
               {/* =================================================
@@ -676,88 +1122,318 @@ function RegisterPage() {
 
               <form
                 className="mt-7 space-y-5"
-                onSubmit={handleSubmit}
+                onSubmit={
+                  handleSubmit
+                }
               >
 
-                {/* FULL NAME */}
+                {/* FULL NAME + NIC */}
 
-                <div>
+                <div className="grid gap-5 sm:grid-cols-2">
 
-                  <label
-                    htmlFor="fullName"
-                    className="mb-2 block text-sm font-semibold text-[#425D70]"
-                  >
-                    {t.fullName}
-                  </label>
+                  <div>
 
-                  <div className="relative">
+                    <label
+                      htmlFor="fullName"
+                      className="mb-2 block text-sm font-semibold text-[#425D70]"
+                    >
+                      {t.fullName}
+                    </label>
 
-                    <User
-                      size={19}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9EAC]"
-                    />
+                    <div className="relative">
 
-                    <input
-                      id="fullName"
-                      name="fullName"
-                      type="text"
-                      value={
-                        formData.fullName
-                      }
-                      onChange={
-                        handleChange
-                      }
-                      placeholder={
-                        t.fullNamePlaceholder
-                      }
-                      autoComplete="name"
-                      required
-                      disabled={isLoading}
-                      className="w-full rounded-xl border border-[#C8D8E2] bg-white py-3.5 pl-11 pr-4 text-sm text-[#16324A] outline-none transition placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:cursor-not-allowed disabled:bg-[#F1F5F7]"
-                    />
+                      <User
+                        size={19}
+                        className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9EAC]"
+                      />
+
+                      <input
+                        id="fullName"
+                        name="fullName"
+                        type="text"
+                        value={
+                          formData.fullName
+                        }
+                        onChange={
+                          handleChange
+                        }
+                        placeholder={
+                          t.fullNamePlaceholder
+                        }
+                        autoComplete="name"
+                        required
+                        disabled={
+                          isLoading
+                        }
+                        className="w-full rounded-xl border border-[#C8D8E2] bg-white py-3.5 pl-11 pr-4 text-sm text-[#16324A] outline-none transition placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:bg-[#F1F5F7]"
+                      />
+
+                    </div>
+
+                  </div>
+
+                  <div>
+
+                    <label
+                      htmlFor="nic"
+                      className="mb-2 block text-sm font-semibold text-[#425D70]"
+                    >
+                      {t.nic}
+                    </label>
+
+                    <div className="relative">
+
+                      <BadgeCheck
+                        size={19}
+                        className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9EAC]"
+                      />
+
+                      <input
+                        id="nic"
+                        name="nic"
+                        type="text"
+                        value={
+                          formData.nic
+                        }
+                        onChange={
+                          handleChange
+                        }
+                        placeholder={
+                          t.nicPlaceholder
+                        }
+                        required
+                        disabled={
+                          isLoading
+                        }
+                        className="w-full rounded-xl border border-[#C8D8E2] bg-white py-3.5 pl-11 pr-4 text-sm uppercase text-[#16324A] outline-none transition placeholder:normal-case placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:bg-[#F1F5F7]"
+                      />
+
+                    </div>
+
+                    <p className="mt-1.5 text-xs leading-5 text-[#8A9EAC]">
+                      {t.nicHint}
+                    </p>
 
                   </div>
 
                 </div>
 
-                {/* EMAIL */}
+                {/* EMAIL VERIFICATION */}
 
-                <div>
+                <div className="rounded-2xl border border-[#D8E5EC] bg-[#F8FBFC] p-4 sm:p-5">
 
-                  <label
-                    htmlFor="email"
-                    className="mb-2 block text-sm font-semibold text-[#425D70]"
-                  >
-                    {t.email}
-                  </label>
+                  <div className="flex items-center justify-between gap-3">
 
-                  <div className="relative">
+                    <div>
+                      <label
+                        htmlFor="email"
+                        className="block text-sm font-semibold text-[#425D70]"
+                      >
+                        {t.email}
+                      </label>
 
-                    <Mail
-                      size={19}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9EAC]"
-                    />
+                      {isEmailVerified && (
+                        <div className="mt-1 inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600">
 
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      value={
-                        formData.email
-                      }
-                      onChange={
-                        handleChange
-                      }
-                      placeholder={
-                        t.emailPlaceholder
-                      }
-                      autoComplete="email"
-                      required
-                      disabled={isLoading}
-                      className="w-full rounded-xl border border-[#C8D8E2] bg-white py-3.5 pl-11 pr-4 text-sm text-[#16324A] outline-none transition placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:cursor-not-allowed disabled:bg-[#F1F5F7]"
-                    />
+                          <CheckCircle2
+                            size={14}
+                          />
+
+                          {t.emailVerified}
+
+                        </div>
+                      )}
+                    </div>
+
+                    {isEmailVerified && (
+                      <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">
+                        ✓ Verified
+                      </span>
+                    )}
 
                   </div>
+
+                  <div className="mt-3 flex flex-col gap-3 sm:flex-row">
+
+                    <div className="relative flex-1">
+
+                      <Mail
+                        size={19}
+                        className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9EAC]"
+                      />
+
+                      <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        value={
+                          formData.email
+                        }
+                        onChange={
+                          handleChange
+                        }
+                        placeholder={
+                          t.emailPlaceholder
+                        }
+                        autoComplete="email"
+                        required
+                        disabled={
+                          isLoading
+                        }
+                        className={`w-full rounded-xl border bg-white py-3.5 pl-11 pr-4 text-sm text-[#16324A] outline-none transition placeholder:text-[#8A9EAC] focus:ring-4 disabled:bg-[#F1F5F7] ${
+                          isEmailVerified
+                            ? "border-emerald-300 focus:border-emerald-400 focus:ring-emerald-50"
+                            : "border-[#C8D8E2] focus:border-[#1B8A8F] focus:ring-[#E8F6F4]"
+                        }`}
+                      />
+
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={
+                        handleSendOtp
+                      }
+                      disabled={
+                        isSendingOtp ||
+                        isLoading ||
+                        !normalizedEmail
+                      }
+                      className="inline-flex min-w-[130px] items-center justify-center gap-2 rounded-xl border border-[#B9DDDA] bg-[#E8F6F4] px-4 py-3.5 text-sm font-bold text-[#176D72] transition hover:bg-[#D9F0EC] disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      {isSendingOtp ? (
+                        <>
+                          <LoaderCircle
+                            size={17}
+                            className="animate-spin"
+                          />
+
+                          {t.sendingOtp}
+                        </>
+                      ) : (
+                        <>
+                          <Send
+                            size={17}
+                          />
+
+                          {otpSent
+                            ? t.resendOtp
+                            : t.sendOtp}
+                        </>
+                      )}
+                    </button>
+
+                  </div>
+
+                  {otpMessage && (
+                    <p
+                      className={`mt-3 text-xs font-semibold leading-5 ${
+                        isEmailVerified
+                          ? "text-emerald-600"
+                          : "text-[#1B8A8F]"
+                      }`}
+                    >
+                      {otpMessage}
+                    </p>
+                  )}
+
+                  {/* OTP FIELD */}
+
+                  {otpSent &&
+                    !isEmailVerified && (
+                      <div className="mt-4 border-t border-[#D8E5EC] pt-4">
+
+                        <label
+                          htmlFor="otp"
+                          className="mb-2 block text-sm font-semibold text-[#425D70]"
+                        >
+                          {t.otp}
+                        </label>
+
+                        <div className="flex flex-col gap-3 sm:flex-row">
+
+                          <div className="relative flex-1">
+
+                            <ShieldCheck
+                              size={19}
+                              className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9EAC]"
+                            />
+
+                            <input
+                              id="otp"
+                              type="text"
+                              inputMode="numeric"
+                              maxLength={6}
+                              value={otp}
+                              onChange={(
+                                event
+                              ) => {
+                                const digits =
+                                  event.target.value.replace(
+                                    /\D/g,
+                                    ""
+                                  );
+
+                                setOtp(
+                                  digits
+                                );
+
+                                if (
+                                  errorMessage
+                                ) {
+                                  setErrorMessage(
+                                    ""
+                                  );
+                                }
+                              }}
+                              placeholder={
+                                t.otpPlaceholder
+                              }
+                              disabled={
+                                isVerifyingOtp ||
+                                isLoading
+                              }
+                              className="w-full rounded-xl border border-[#C8D8E2] bg-white py-3.5 pl-11 pr-4 text-sm font-semibold tracking-[0.2em] text-[#16324A] outline-none transition placeholder:tracking-normal placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4]"
+                            />
+
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={
+                              handleVerifyOtp
+                            }
+                            disabled={
+                              isVerifyingOtp ||
+                              otp.length !==
+                                6
+                            }
+                            className="inline-flex min-w-[130px] items-center justify-center gap-2 rounded-xl bg-[#1B8A8F] px-4 py-3.5 text-sm font-bold text-white transition hover:bg-[#176D72] disabled:cursor-not-allowed disabled:opacity-50"
+                          >
+                            {isVerifyingOtp ? (
+                              <>
+                                <LoaderCircle
+                                  size={17}
+                                  className="animate-spin"
+                                />
+
+                                {t.verifyingOtp}
+                              </>
+                            ) : (
+                              <>
+                                <CheckCircle2
+                                  size={17}
+                                />
+
+                                {t.verifyOtp}
+                              </>
+                            )}
+                          </button>
+
+                        </div>
+
+                      </div>
+                    )}
 
                 </div>
 
@@ -765,141 +1441,63 @@ function RegisterPage() {
 
                 <div className="grid gap-5 sm:grid-cols-2">
 
-                  {/* PASSWORD */}
+                  <PasswordField
+                    id="password"
+                    name="password"
+                    label={
+                      t.password
+                    }
+                    placeholder={
+                      t.passwordPlaceholder
+                    }
+                    value={
+                      formData.password
+                    }
+                    onChange={
+                      handleChange
+                    }
+                    show={
+                      showPassword
+                    }
+                    toggleShow={() =>
+                      setShowPassword(
+                        (previous) =>
+                          !previous
+                      )
+                    }
+                    disabled={
+                      isLoading
+                    }
+                  />
 
-                  <div>
-
-                    <label
-                      htmlFor="password"
-                      className="mb-2 block text-sm font-semibold text-[#425D70]"
-                    >
-                      {t.password}
-                    </label>
-
-                    <div className="relative">
-
-                      <LockKeyhole
-                        size={18}
-                        className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9EAC]"
-                      />
-
-                      <input
-                        id="password"
-                        name="password"
-                        type={
-                          showPassword
-                            ? "text"
-                            : "password"
-                        }
-                        value={
-                          formData.password
-                        }
-                        onChange={
-                          handleChange
-                        }
-                        placeholder={
-                          t.passwordPlaceholder
-                        }
-                        autoComplete="new-password"
-                        required
-                        disabled={isLoading}
-                        className="w-full rounded-xl border border-[#C8D8E2] bg-white py-3.5 pl-11 pr-11 text-sm text-[#16324A] outline-none transition placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:cursor-not-allowed disabled:bg-[#F1F5F7]"
-                      />
-
-                      <button
-                        type="button"
-                        disabled={isLoading}
-                        onClick={() =>
-                          setShowPassword(
-                            !showPassword
-                          )
-                        }
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8A9EAC] transition hover:text-[#425D70]"
-                      >
-
-                        {showPassword ? (
-                          <EyeOff
-                            size={18}
-                          />
-                        ) : (
-                          <Eye
-                            size={18}
-                          />
-                        )}
-
-                      </button>
-
-                    </div>
-
-                  </div>
-
-                  {/* CONFIRM PASSWORD */}
-
-                  <div>
-
-                    <label
-                      htmlFor="confirmPassword"
-                      className="mb-2 block text-sm font-semibold text-[#425D70]"
-                    >
-                      {t.confirmPassword}
-                    </label>
-
-                    <div className="relative">
-
-                      <LockKeyhole
-                        size={18}
-                        className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9EAC]"
-                      />
-
-                      <input
-                        id="confirmPassword"
-                        name="confirmPassword"
-                        type={
-                          showConfirmPassword
-                            ? "text"
-                            : "password"
-                        }
-                        value={
-                          formData.confirmPassword
-                        }
-                        onChange={
-                          handleChange
-                        }
-                        placeholder={
-                          t.confirmPasswordPlaceholder
-                        }
-                        autoComplete="new-password"
-                        required
-                        disabled={isLoading}
-                        className="w-full rounded-xl border border-[#C8D8E2] bg-white py-3.5 pl-11 pr-11 text-sm text-[#16324A] outline-none transition placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:cursor-not-allowed disabled:bg-[#F1F5F7]"
-                      />
-
-                      <button
-                        type="button"
-                        disabled={isLoading}
-                        onClick={() =>
-                          setShowConfirmPassword(
-                            !showConfirmPassword
-                          )
-                        }
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8A9EAC] transition hover:text-[#425D70]"
-                      >
-
-                        {showConfirmPassword ? (
-                          <EyeOff
-                            size={18}
-                          />
-                        ) : (
-                          <Eye
-                            size={18}
-                          />
-                        )}
-
-                      </button>
-
-                    </div>
-
-                  </div>
+                  <PasswordField
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    label={
+                      t.confirmPassword
+                    }
+                    placeholder={
+                      t.confirmPasswordPlaceholder
+                    }
+                    value={
+                      formData.confirmPassword
+                    }
+                    onChange={
+                      handleChange
+                    }
+                    show={
+                      showConfirmPassword
+                    }
+                    toggleShow={() =>
+                      setShowConfirmPassword(
+                        (previous) =>
+                          !previous
+                      )
+                    }
+                    disabled={
+                      isLoading
+                    }
+                  />
 
                 </div>
 
@@ -930,8 +1528,10 @@ function RegisterPage() {
                       onChange={
                         handleChange
                       }
-                      disabled={isLoading}
-                      className="w-full appearance-none rounded-xl border border-[#C8D8E2] bg-white py-3.5 pl-11 pr-4 text-sm text-[#16324A] outline-none transition focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:cursor-not-allowed disabled:bg-[#F1F5F7]"
+                      disabled={
+                        isLoading
+                      }
+                      className="w-full appearance-none rounded-xl border border-[#C8D8E2] bg-white py-3.5 pl-11 pr-4 text-sm text-[#16324A] outline-none transition focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:bg-[#F1F5F7]"
                     >
 
                       <option value="english">
@@ -965,7 +1565,9 @@ function RegisterPage() {
                     onChange={
                       handleChange
                     }
-                    disabled={isLoading}
+                    disabled={
+                      isLoading
+                    }
                     className="mt-1 h-4 w-4 shrink-0 cursor-pointer rounded border-[#C8D8E2] accent-[#1B8A8F]"
                   />
 
@@ -993,12 +1595,31 @@ function RegisterPage() {
 
                 </label>
 
+                {/* VERIFICATION NOTICE */}
+
+                {!isEmailVerified && (
+                  <div className="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4">
+
+                    <ShieldCheck
+                      size={18}
+                      className="mt-0.5 shrink-0 text-amber-600"
+                    />
+
+                    <p className="text-xs font-semibold leading-5 text-amber-700">
+                      {t.verifyEmailFirst}
+                    </p>
+
+                  </div>
+                )}
+
                 {/* CREATE ACCOUNT */}
 
                 <button
                   type="submit"
-                  disabled={isLoading}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#1F5F8B] px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#1F5F8B]/20 transition hover:-translate-y-0.5 hover:bg-[#174D72] disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0"
+                  disabled={
+                    !canCreateAccount
+                  }
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#1F5F8B] px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#1F5F8B]/20 transition hover:-translate-y-0.5 hover:bg-[#174D72] disabled:cursor-not-allowed disabled:bg-[#A9BBC7] disabled:shadow-none disabled:hover:translate-y-0"
                 >
 
                   {isLoading && (
@@ -1016,7 +1637,7 @@ function RegisterPage() {
 
               </form>
 
-              {/* LOGIN LINK */}
+              {/* LOGIN */}
 
               <div className="mt-7 border-t border-[#D8E5EC] pt-6 text-center">
 
@@ -1046,6 +1667,120 @@ function RegisterPage() {
         </div>
 
       </main>
+
+    </div>
+  );
+}
+
+/* =========================================================
+   FEATURE CARD
+========================================================= */
+
+function FeatureCard({
+  icon,
+  iconClass,
+  title,
+  description,
+}) {
+  return (
+    <div className="flex items-start gap-4 rounded-2xl border border-[#D8E5EC] bg-white/90 p-5 shadow-sm backdrop-blur">
+
+      <div
+        className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${iconClass}`}
+      >
+        {icon}
+      </div>
+
+      <div>
+
+        <h3 className="font-bold text-[#16324A]">
+          {title}
+        </h3>
+
+        <p className="mt-1 text-sm leading-6 text-[#60798C]">
+          {description}
+        </p>
+
+      </div>
+
+    </div>
+  );
+}
+
+/* =========================================================
+   PASSWORD FIELD
+========================================================= */
+
+function PasswordField({
+  id,
+  name,
+  label,
+  placeholder,
+  value,
+  onChange,
+  show,
+  toggleShow,
+  disabled,
+}) {
+  return (
+    <div>
+
+      <label
+        htmlFor={id}
+        className="mb-2 block text-sm font-semibold text-[#425D70]"
+      >
+        {label}
+      </label>
+
+      <div className="relative">
+
+        <LockKeyhole
+          size={18}
+          className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9EAC]"
+        />
+
+        <input
+          id={id}
+          name={name}
+          type={
+            show
+              ? "text"
+              : "password"
+          }
+          value={value}
+          onChange={onChange}
+          placeholder={
+            placeholder
+          }
+          autoComplete="new-password"
+          required
+          minLength={8}
+          disabled={disabled}
+          className="w-full rounded-xl border border-[#C8D8E2] bg-white py-3.5 pl-11 pr-11 text-sm text-[#16324A] outline-none transition placeholder:text-[#8A9EAC] focus:border-[#1B8A8F] focus:ring-4 focus:ring-[#E8F6F4] disabled:bg-[#F1F5F7]"
+        />
+
+        <button
+          type="button"
+          disabled={disabled}
+          onClick={
+            toggleShow
+          }
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8A9EAC] transition hover:text-[#425D70]"
+        >
+
+          {show ? (
+            <EyeOff
+              size={18}
+            />
+          ) : (
+            <Eye
+              size={18}
+            />
+          )}
+
+        </button>
+
+      </div>
 
     </div>
   );
