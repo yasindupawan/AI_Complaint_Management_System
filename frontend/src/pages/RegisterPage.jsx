@@ -1,31 +1,37 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
 
 import {
+  AlertCircle,
+  ArrowLeft,
+  BadgeCheck,
   BrainCircuit,
+  CheckCircle2,
   Eye,
   EyeOff,
   Globe2,
+  Languages,
+  LoaderCircle,
   LockKeyhole,
   Mail,
-  User,
-  Languages,
-  UserPlus,
-  CheckCircle2,
-  ArrowLeft,
-  AlertCircle,
-  LoaderCircle,
-  BadgeCheck,
   Send,
   ShieldCheck,
+  User,
+  UserPlus,
 } from "lucide-react";
-
-import { useState } from "react";
 
 import {
   registerUser,
   sendRegistrationOtp,
   verifyRegistrationOtp,
 } from "../api/authApi";
+
+/* =========================================================
+   CONSTANTS
+========================================================= */
+
+const OTP_LENGTH = 6;
+const OTP_RESEND_SECONDS = 60;
 
 /* =========================================================
    TRANSLATIONS
@@ -73,6 +79,8 @@ const translations = {
 
     sendOtp: "Send OTP",
     sendingOtp: "Sending...",
+    resendOtp: "Resend OTP",
+    resendIn: "Resend in",
 
     otp: "Verification OTP",
     otpPlaceholder: "Enter 6-digit OTP",
@@ -80,9 +88,9 @@ const translations = {
     verifyOtp: "Verify OTP",
     verifyingOtp: "Verifying...",
 
-    resendOtp: "Resend OTP",
-
     emailVerified: "Email Verified",
+    verified: "Verified",
+
     otpSent:
       "Verification OTP has been sent to your email address.",
 
@@ -90,8 +98,10 @@ const translations = {
     passwordPlaceholder: "Create a password",
 
     confirmPassword: "Confirm Password",
-    confirmPasswordPlaceholder:
-      "Enter your password again",
+    confirmPasswordPlaceholder: "Enter your password again",
+
+    passwordHint:
+      "Password must contain at least 8 characters.",
 
     preferredLanguage: "Preferred Language",
 
@@ -121,11 +131,23 @@ const translations = {
     nicRequired:
       "Please enter your NIC number.",
 
+    invalidNic:
+      "Please enter a valid Sri Lankan NIC number.",
+
     emailRequired:
       "Please enter your email address.",
 
+    invalidEmail:
+      "Please enter a valid email address.",
+
     otpRequired:
       "Please enter the 6-digit OTP.",
+
+    passwordRequired:
+      "Please enter a password.",
+
+    passwordTooShort:
+      "Password must contain at least 8 characters.",
 
     passwordMismatch:
       "Passwords do not match.",
@@ -199,6 +221,8 @@ const translations = {
 
     sendOtp: "OTP යවන්න",
     sendingOtp: "යවමින්...",
+    resendOtp: "OTP නැවත යවන්න",
+    resendIn: "නැවත යවන්න",
 
     otp: "තහවුරු කිරීමේ OTP",
     otpPlaceholder:
@@ -207,9 +231,8 @@ const translations = {
     verifyOtp: "OTP තහවුරු කරන්න",
     verifyingOtp: "තහවුරු කරමින්...",
 
-    resendOtp: "OTP නැවත යවන්න",
-
     emailVerified: "ඊමේල් ලිපිනය තහවුරු කර ඇත",
+    verified: "තහවුරු කර ඇත",
 
     otpSent:
       "තහවුරු කිරීමේ OTP එක ඔබගේ ඊමේල් ලිපිනයට යවා ඇත.",
@@ -220,6 +243,9 @@ const translations = {
     confirmPassword: "මුරපදය තහවුරු කරන්න",
     confirmPasswordPlaceholder:
       "මුරපදය නැවත ඇතුළත් කරන්න",
+
+    passwordHint:
+      "මුරපදය අවම වශයෙන් අක්ෂර 8ක් විය යුතුය.",
 
     preferredLanguage: "කැමති භාෂාව",
 
@@ -249,11 +275,23 @@ const translations = {
     nicRequired:
       "කරුණාකර NIC අංකය ඇතුළත් කරන්න.",
 
+    invalidNic:
+      "කරුණාකර වලංගු ශ්‍රී ලාංකික NIC අංකයක් ඇතුළත් කරන්න.",
+
     emailRequired:
       "කරුණාකර ඊමේල් ලිපිනය ඇතුළත් කරන්න.",
 
+    invalidEmail:
+      "කරුණාකර වලංගු ඊමේල් ලිපිනයක් ඇතුළත් කරන්න.",
+
     otpRequired:
       "කරුණාකර ඉලක්කම් 6ක OTP එක ඇතුළත් කරන්න.",
+
+    passwordRequired:
+      "කරුණාකර මුරපදයක් ඇතුළත් කරන්න.",
+
+    passwordTooShort:
+      "මුරපදය අවම වශයෙන් අක්ෂර 8ක් විය යුතුය.",
 
     passwordMismatch:
       "මුරපද දෙක සමාන නොවේ.",
@@ -327,6 +365,8 @@ const translations = {
 
     sendOtp: "OTP அனுப்பவும்",
     sendingOtp: "அனுப்பப்படுகிறது...",
+    resendOtp: "OTP மீண்டும் அனுப்பவும்",
+    resendIn: "மீண்டும் அனுப்ப",
 
     otp: "சரிபார்ப்பு OTP",
     otpPlaceholder:
@@ -335,10 +375,9 @@ const translations = {
     verifyOtp: "OTP சரிபார்க்கவும்",
     verifyingOtp: "சரிபார்க்கப்படுகிறது...",
 
-    resendOtp: "OTP மீண்டும் அனுப்பவும்",
-
     emailVerified:
       "மின்னஞ்சல் சரிபார்க்கப்பட்டது",
+    verified: "சரிபார்க்கப்பட்டது",
 
     otpSent:
       "சரிபார்ப்பு OTP உங்கள் மின்னஞ்சலுக்கு அனுப்பப்பட்டது.",
@@ -351,6 +390,9 @@ const translations = {
       "கடவுச்சொல்லை உறுதிப்படுத்தவும்",
     confirmPasswordPlaceholder:
       "கடவுச்சொல்லை மீண்டும் உள்ளிடவும்",
+
+    passwordHint:
+      "கடவுச்சொல் குறைந்தது 8 எழுத்துகள் கொண்டிருக்க வேண்டும்.",
 
     preferredLanguage: "விருப்பமான மொழி",
 
@@ -382,11 +424,23 @@ const translations = {
     nicRequired:
       "NIC எண்ணை உள்ளிடவும்.",
 
+    invalidNic:
+      "செல்லுபடியாகும் இலங்கை NIC எண்ணை உள்ளிடவும்.",
+
     emailRequired:
       "மின்னஞ்சல் முகவரியை உள்ளிடவும்.",
 
+    invalidEmail:
+      "செல்லுபடியாகும் மின்னஞ்சல் முகவரியை உள்ளிடவும்.",
+
     otpRequired:
       "6 இலக்க OTP ஐ உள்ளிடவும்.",
+
+    passwordRequired:
+      "கடவுச்சொல்லை உள்ளிடவும்.",
+
+    passwordTooShort:
+      "கடவுச்சொல் குறைந்தது 8 எழுத்துகள் கொண்டிருக்க வேண்டும்.",
 
     passwordMismatch:
       "கடவுச்சொற்கள் பொருந்தவில்லை.",
@@ -415,6 +469,36 @@ const translations = {
     footer:
       "AI ஆதரவு பன்மொழி பொது புகார் மேலாண்மை அமைப்பு",
   },
+};
+
+/* =========================================================
+   VALIDATION HELPERS
+========================================================= */
+
+const isValidEmail = (email) => {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+};
+
+const isValidSriLankanNic = (nic) => {
+  const cleanedNic = nic
+    .trim()
+    .replace(/\s+/g, "")
+    .toUpperCase();
+
+  /*
+   * Old NIC:
+   * 9 digits + V/X
+   *
+   * New NIC:
+   * 12 digits
+   */
+  const oldNicPattern = /^\d{9}[VX]$/;
+  const newNicPattern = /^\d{12}$/;
+
+  return (
+    oldNicPattern.test(cleanedNic) ||
+    newNicPattern.test(cleanedNic)
+  );
 };
 
 /* =========================================================
@@ -448,15 +532,11 @@ function RegisterPage() {
     setIsVerifyingOtp,
   ] = useState(false);
 
-  const [
-    otpSent,
-    setOtpSent,
-  ] = useState(false);
+  const [otpSent, setOtpSent] =
+    useState(false);
 
-  const [
-    otp,
-    setOtp,
-  ] = useState("");
+  const [otp, setOtp] =
+    useState("");
 
   const [
     isEmailVerified,
@@ -467,6 +547,11 @@ function RegisterPage() {
     verifiedEmail,
     setVerifiedEmail,
   ] = useState("");
+
+  const [
+    resendSeconds,
+    setResendSeconds,
+  ] = useState(0);
 
   const [
     errorMessage,
@@ -490,111 +575,166 @@ function RegisterPage() {
       email: "",
       password: "",
       confirmPassword: "",
-      preferredLanguage:
-        "english",
+      preferredLanguage: "english",
       acceptedTerms: false,
     });
 
-  const t =
-    translations[language];
+  const t = translations[language];
 
   /* =========================================================
-     HELPERS
+     NORMALISED VALUES
   ========================================================= */
 
-  const normalizedEmail =
-    formData.email
-      .trim()
-      .toLowerCase();
+  const normalizedEmail = useMemo(
+    () =>
+      formData.email
+        .trim()
+        .toLowerCase(),
+    [formData.email]
+  );
 
-  const normalizedNic =
-    formData.nic
-      .trim()
-      .replace(/\s+/g, "")
-      .toUpperCase();
+  const normalizedNic = useMemo(
+    () =>
+      formData.nic
+        .trim()
+        .replace(/\s+/g, "")
+        .toUpperCase(),
+    [formData.nic]
+  );
+
+  /* =========================================================
+     OTP RESEND TIMER
+  ========================================================= */
+
+  useEffect(() => {
+    if (resendSeconds <= 0) {
+      return undefined;
+    }
+
+    const timer = setInterval(() => {
+      setResendSeconds((previous) =>
+        previous > 0
+          ? previous - 1
+          : 0
+      );
+    }, 1000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [resendSeconds]);
+
+  /* =========================================================
+     ACCOUNT BUTTON STATUS
+  ========================================================= */
 
   const canCreateAccount =
     isEmailVerified &&
-    verifiedEmail ===
-      normalizedEmail &&
+    verifiedEmail === normalizedEmail &&
+    formData.fullName.trim().length >= 2 &&
+    isValidSriLankanNic(normalizedNic) &&
+    formData.password.length >= 8 &&
+    formData.confirmPassword.length >= 8 &&
+    formData.password ===
+      formData.confirmPassword &&
+    formData.acceptedTerms &&
     !isLoading;
+
+  /* =========================================================
+     CLEAR ALERTS
+  ========================================================= */
+
+  const clearAlerts = () => {
+    setErrorMessage("");
+    setSuccessMessage("");
+  };
+
+  /* =========================================================
+     RESET EMAIL VERIFICATION
+  ========================================================= */
+
+  const resetEmailVerification = (
+    message = ""
+  ) => {
+    setIsEmailVerified(false);
+    setVerifiedEmail("");
+    setOtpSent(false);
+    setOtp("");
+    setOtpMessage(message);
+    setResendSeconds(0);
+  };
 
   /* =========================================================
      FORM CHANGE
   ========================================================= */
 
-  const handleChange = (e) => {
+  const handleChange = (event) => {
     const {
       name,
       value,
       type,
       checked,
-    } = e.target;
+    } = event.target;
 
     const newValue =
       type === "checkbox"
         ? checked
         : value;
 
-    setFormData(
-      (previous) => ({
-        ...previous,
-        [name]:
-          name === "nic"
-            ? String(
-                newValue
-              ).toUpperCase()
-            : newValue,
-      })
-    );
+    setFormData((previous) => ({
+      ...previous,
+
+      [name]:
+        name === "nic"
+          ? String(newValue).toUpperCase()
+          : newValue,
+    }));
 
     /*
-     * If the email is changed after verification,
-     * verification must be completed again.
+     * Changing the email after verification
+     * invalidates the previous verification.
      */
     if (name === "email") {
-      const newEmail =
-        String(value)
-          .trim()
-          .toLowerCase();
+      const newEmail = String(value)
+        .trim()
+        .toLowerCase();
 
       if (
         isEmailVerified &&
         newEmail !== verifiedEmail
       ) {
-        setIsEmailVerified(false);
-        setVerifiedEmail("");
-        setOtpSent(false);
-        setOtp("");
-        setOtpMessage(
+        resetEmailVerification(
           t.emailChanged
         );
       }
     }
 
-    if (errorMessage) {
-      setErrorMessage("");
-    }
-
-    if (successMessage) {
-      setSuccessMessage("");
-    }
+    clearAlerts();
   };
 
   /* =========================================================
-     SEND OTP
+     SEND REGISTRATION OTP
   ========================================================= */
 
   const handleSendOtp = async () => {
-    setErrorMessage("");
-    setSuccessMessage("");
+    clearAlerts();
     setOtpMessage("");
 
     if (!normalizedEmail) {
       setErrorMessage(
         t.emailRequired
       );
+      return;
+    }
 
+    if (!isValidEmail(normalizedEmail)) {
+      setErrorMessage(
+        t.invalidEmail
+      );
+      return;
+    }
+
+    if (resendSeconds > 0) {
       return;
     }
 
@@ -610,6 +750,18 @@ function RegisterPage() {
       setIsEmailVerified(false);
       setVerifiedEmail("");
       setOtp("");
+
+      /*
+       * Backend currently returns
+       * resendAfterSeconds: 60.
+       *
+       * If unavailable, default to 60 seconds.
+       */
+      setResendSeconds(
+        Number(
+          response?.resendAfterSeconds
+        ) || OTP_RESEND_SECONDS
+      );
 
       setOtpMessage(
         response?.message ||
@@ -631,124 +783,156 @@ function RegisterPage() {
   };
 
   /* =========================================================
-     VERIFY OTP
+     VERIFY REGISTRATION OTP
   ========================================================= */
 
-  const handleVerifyOtp =
-    async () => {
-      setErrorMessage("");
-      setSuccessMessage("");
-
-      if (!normalizedEmail) {
-        setErrorMessage(
-          t.emailRequired
-        );
-
-        return;
-      }
-
-      if (
-        !/^\d{6}$/.test(
-          otp.trim()
-        )
-      ) {
-        setErrorMessage(
-          t.otpRequired
-        );
-
-        return;
-      }
-
-      try {
-        setIsVerifyingOtp(
-          true
-        );
-
-        const response =
-          await verifyRegistrationOtp(
-            normalizedEmail,
-            otp.trim()
-          );
-
-        if (
-          response?.verified ||
-          response?.success
-        ) {
-          setIsEmailVerified(
-            true
-          );
-
-          setVerifiedEmail(
-            normalizedEmail
-          );
-
-          setOtpMessage(
-            response?.message ||
-              t.emailVerified
-          );
-        }
-      } catch (error) {
-        console.error(
-          "Verify registration OTP failed:",
-          error
-        );
-
-        setIsEmailVerified(
-          false
-        );
-
-        setVerifiedEmail(
-          ""
-        );
-
-        setErrorMessage(
-          error?.message ||
-            t.otpVerifyFailed
-        );
-      } finally {
-        setIsVerifyingOtp(
-          false
-        );
-      }
-    };
-
-  /* =========================================================
-     REGISTER SUBMIT
-  ========================================================= */
-
-  const handleSubmit = async (
-    e
-  ) => {
-    e.preventDefault();
-
-    setErrorMessage("");
-    setSuccessMessage("");
-
-    if (
-      !formData.fullName.trim()
-    ) {
-      setErrorMessage(
-        t.fullNameRequired
-      );
-
-      return;
-    }
-
-    if (!normalizedNic) {
-      setErrorMessage(
-        t.nicRequired
-      );
-
-      return;
-    }
+  const handleVerifyOtp = async () => {
+    clearAlerts();
 
     if (!normalizedEmail) {
       setErrorMessage(
         t.emailRequired
       );
-
       return;
     }
+
+    if (!isValidEmail(normalizedEmail)) {
+      setErrorMessage(
+        t.invalidEmail
+      );
+      return;
+    }
+
+    if (
+      !new RegExp(
+        `^\\d{${OTP_LENGTH}}$`
+      ).test(otp.trim())
+    ) {
+      setErrorMessage(
+        t.otpRequired
+      );
+      return;
+    }
+
+    try {
+      setIsVerifyingOtp(true);
+
+      const response =
+        await verifyRegistrationOtp(
+          normalizedEmail,
+          otp.trim()
+        );
+
+      if (
+        response?.verified === true ||
+        response?.success === true
+      ) {
+        setIsEmailVerified(true);
+        setVerifiedEmail(
+          normalizedEmail
+        );
+
+        setOtpMessage(
+          response?.message ||
+            t.emailVerified
+        );
+      } else {
+        setErrorMessage(
+          response?.message ||
+            t.otpVerifyFailed
+        );
+      }
+    } catch (error) {
+      console.error(
+        "Verify registration OTP failed:",
+        error
+      );
+
+      setIsEmailVerified(false);
+      setVerifiedEmail("");
+
+      setErrorMessage(
+        error?.message ||
+          t.otpVerifyFailed
+      );
+    } finally {
+      setIsVerifyingOtp(false);
+    }
+  };
+
+  /* =========================================================
+     REGISTER USER
+  ========================================================= */
+
+  const handleSubmit = async (
+    event
+  ) => {
+    event.preventDefault();
+
+    clearAlerts();
+
+    /* ---------------------------------------------------------
+       FULL NAME
+    --------------------------------------------------------- */
+
+    if (
+      formData.fullName
+        .trim()
+        .length < 2
+    ) {
+      setErrorMessage(
+        t.fullNameRequired
+      );
+      return;
+    }
+
+    /* ---------------------------------------------------------
+       NIC
+    --------------------------------------------------------- */
+
+    if (!normalizedNic) {
+      setErrorMessage(
+        t.nicRequired
+      );
+      return;
+    }
+
+    if (
+      !isValidSriLankanNic(
+        normalizedNic
+      )
+    ) {
+      setErrorMessage(
+        t.invalidNic
+      );
+      return;
+    }
+
+    /* ---------------------------------------------------------
+       EMAIL
+    --------------------------------------------------------- */
+
+    if (!normalizedEmail) {
+      setErrorMessage(
+        t.emailRequired
+      );
+      return;
+    }
+
+    if (
+      !isValidEmail(
+        normalizedEmail
+      )
+    ) {
+      setErrorMessage(
+        t.invalidEmail
+      );
+      return;
+    }
+
+    /* ---------------------------------------------------------
+       EMAIL VERIFICATION
+    --------------------------------------------------------- */
 
     if (
       !isEmailVerified ||
@@ -758,7 +942,26 @@ function RegisterPage() {
       setErrorMessage(
         t.emailNotVerified
       );
+      return;
+    }
 
+    /* ---------------------------------------------------------
+       PASSWORD
+    --------------------------------------------------------- */
+
+    if (!formData.password) {
+      setErrorMessage(
+        t.passwordRequired
+      );
+      return;
+    }
+
+    if (
+      formData.password.length < 8
+    ) {
+      setErrorMessage(
+        t.passwordTooShort
+      );
       return;
     }
 
@@ -769,9 +972,12 @@ function RegisterPage() {
       setErrorMessage(
         t.passwordMismatch
       );
-
       return;
     }
+
+    /* ---------------------------------------------------------
+       TERMS
+    --------------------------------------------------------- */
 
     if (
       !formData.acceptedTerms
@@ -779,9 +985,12 @@ function RegisterPage() {
       setErrorMessage(
         t.termsRequired
       );
-
       return;
     }
+
+    /* ---------------------------------------------------------
+       CREATE ACCOUNT
+    --------------------------------------------------------- */
 
     try {
       setIsLoading(true);
@@ -790,8 +999,7 @@ function RegisterPage() {
         fullName:
           formData.fullName.trim(),
 
-        nic:
-          normalizedNic,
+        nic: normalizedNic,
 
         email:
           normalizedEmail,
@@ -808,16 +1016,14 @@ function RegisterPage() {
           registrationData
         );
 
-      console.log(
-        "Registration response:",
-        response
-      );
-
       setSuccessMessage(
         response?.message ||
           t.registrationSuccess
       );
 
+      /*
+       * Clear form after successful registration.
+       */
       setFormData({
         fullName: "",
         nic: "",
@@ -834,7 +1040,11 @@ function RegisterPage() {
       setIsEmailVerified(false);
       setVerifiedEmail("");
       setOtpMessage("");
+      setResendSeconds(0);
 
+      /*
+       * Redirect citizen to login.
+       */
       setTimeout(() => {
         navigate("/login");
       }, 1500);
@@ -850,22 +1060,28 @@ function RegisterPage() {
         ) &&
         error.errors.length > 0
       ) {
-        setErrorMessage(
+        const validationMessages =
           error.errors
             .map(
               (item) =>
-                item.msg ||
-                item.message
+                item?.msg ||
+                item?.message
             )
             .filter(Boolean)
-            .join(" ")
-        );
-      } else {
+            .join(" ");
+
         setErrorMessage(
-          error?.message ||
+          validationMessages ||
             t.registrationFailed
         );
+
+        return;
       }
+
+      setErrorMessage(
+        error?.message ||
+          t.registrationFailed
+      );
     } finally {
       setIsLoading(false);
     }
@@ -909,7 +1125,7 @@ function RegisterPage() {
             </div>
           </Link>
 
-          {/* LANGUAGE */}
+          {/* LANGUAGE SWITCHER */}
 
           <div className="flex items-center gap-1 rounded-lg border border-[#D8E5EC] bg-[#F6F9FB] p-1">
 
@@ -922,29 +1138,25 @@ function RegisterPage() {
               "EN",
               "සිං",
               "தமிழ்",
-            ].map(
-              (item) => (
-                <button
-                  key={item}
-                  type="button"
-                  disabled={
-                    isLoading
-                  }
-                  onClick={() =>
-                    setLanguage(
-                      item
-                    )
-                  }
-                  className={`rounded-md px-2.5 py-1.5 text-xs font-semibold transition ${
-                    language === item
-                      ? "bg-white text-[#1F5F8B] shadow-sm"
-                      : "text-[#60798C] hover:text-[#16324A]"
-                  }`}
-                >
-                  {item}
-                </button>
-              )
-            )}
+            ].map((item) => (
+              <button
+                key={item}
+                type="button"
+                disabled={
+                  isLoading
+                }
+                onClick={() =>
+                  setLanguage(item)
+                }
+                className={`rounded-md px-2.5 py-1.5 text-xs font-semibold transition ${
+                  language === item
+                    ? "bg-white text-[#1F5F8B] shadow-sm"
+                    : "text-[#60798C] hover:text-[#16324A]"
+                }`}
+              >
+                {item}
+              </button>
+            ))}
 
           </div>
 
@@ -965,7 +1177,7 @@ function RegisterPage() {
         <div className="relative mx-auto grid min-h-[calc(100vh-78px)] max-w-7xl items-start gap-16 px-5 py-12 lg:grid-cols-2 lg:px-8">
 
           {/* =================================================
-              LEFT
+              LEFT INFORMATION
           ================================================= */}
 
           <div className="hidden pt-12 lg:block">
@@ -1046,7 +1258,7 @@ function RegisterPage() {
           </div>
 
           {/* =================================================
-              REGISTER FORM
+              REGISTRATION FORM
           ================================================= */}
 
           <div className="mx-auto w-full max-w-xl">
@@ -1084,7 +1296,9 @@ function RegisterPage() {
 
               </div>
 
-              {/* ALERTS */}
+              {/* =================================================
+                  ALERTS
+              ================================================= */}
 
               {errorMessage && (
                 <div className="mt-6 flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
@@ -1127,9 +1341,13 @@ function RegisterPage() {
                 }
               >
 
-                {/* FULL NAME + NIC */}
+                {/* =================================================
+                    FULL NAME + NIC
+                ================================================= */}
 
                 <div className="grid gap-5 sm:grid-cols-2">
+
+                  {/* FULL NAME */}
 
                   <div>
 
@@ -1162,6 +1380,8 @@ function RegisterPage() {
                         }
                         autoComplete="name"
                         required
+                        minLength={2}
+                        maxLength={100}
                         disabled={
                           isLoading
                         }
@@ -1171,6 +1391,8 @@ function RegisterPage() {
                     </div>
 
                   </div>
+
+                  {/* NIC */}
 
                   <div>
 
@@ -1201,7 +1423,9 @@ function RegisterPage() {
                         placeholder={
                           t.nicPlaceholder
                         }
+                        autoComplete="off"
                         required
+                        maxLength={12}
                         disabled={
                           isLoading
                         }
@@ -1218,13 +1442,16 @@ function RegisterPage() {
 
                 </div>
 
-                {/* EMAIL VERIFICATION */}
+                {/* =================================================
+                    EMAIL VERIFICATION
+                ================================================= */}
 
                 <div className="rounded-2xl border border-[#D8E5EC] bg-[#F8FBFC] p-4 sm:p-5">
 
                   <div className="flex items-center justify-between gap-3">
 
                     <div>
+
                       <label
                         htmlFor="email"
                         className="block text-sm font-semibold text-[#425D70]"
@@ -1243,15 +1470,18 @@ function RegisterPage() {
 
                         </div>
                       )}
+
                     </div>
 
                     {isEmailVerified && (
                       <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">
-                        ✓ Verified
+                        ✓ {t.verified}
                       </span>
                     )}
 
                   </div>
+
+                  {/* EMAIL + SEND OTP */}
 
                   <div className="mt-3 flex flex-col gap-3 sm:flex-row">
 
@@ -1297,10 +1527,12 @@ function RegisterPage() {
                       disabled={
                         isSendingOtp ||
                         isLoading ||
-                        !normalizedEmail
+                        !normalizedEmail ||
+                        resendSeconds > 0
                       }
-                      className="inline-flex min-w-[130px] items-center justify-center gap-2 rounded-xl border border-[#B9DDDA] bg-[#E8F6F4] px-4 py-3.5 text-sm font-bold text-[#176D72] transition hover:bg-[#D9F0EC] disabled:cursor-not-allowed disabled:opacity-50"
+                      className="inline-flex min-w-[140px] items-center justify-center gap-2 rounded-xl border border-[#B9DDDA] bg-[#E8F6F4] px-4 py-3.5 text-sm font-bold text-[#176D72] transition hover:bg-[#D9F0EC] disabled:cursor-not-allowed disabled:opacity-50"
                     >
+
                       {isSendingOtp ? (
                         <>
                           <LoaderCircle
@@ -1309,6 +1541,15 @@ function RegisterPage() {
                           />
 
                           {t.sendingOtp}
+                        </>
+                      ) : resendSeconds > 0 ? (
+                        <>
+                          <ShieldCheck
+                            size={17}
+                          />
+
+                          {t.resendIn}{" "}
+                          {resendSeconds}s
                         </>
                       ) : (
                         <>
@@ -1321,9 +1562,12 @@ function RegisterPage() {
                             : t.sendOtp}
                         </>
                       )}
+
                     </button>
 
                   </div>
+
+                  {/* OTP MESSAGE */}
 
                   {otpMessage && (
                     <p
@@ -1337,7 +1581,9 @@ function RegisterPage() {
                     </p>
                   )}
 
-                  {/* OTP FIELD */}
+                  {/* =================================================
+                      OTP INPUT
+                  ================================================= */}
 
                   {otpSent &&
                     !isEmailVerified && (
@@ -1363,16 +1609,24 @@ function RegisterPage() {
                               id="otp"
                               type="text"
                               inputMode="numeric"
-                              maxLength={6}
+                              autoComplete="one-time-code"
+                              maxLength={
+                                OTP_LENGTH
+                              }
                               value={otp}
                               onChange={(
                                 event
                               ) => {
                                 const digits =
-                                  event.target.value.replace(
-                                    /\D/g,
-                                    ""
-                                  );
+                                  event.target.value
+                                    .replace(
+                                      /\D/g,
+                                      ""
+                                    )
+                                    .slice(
+                                      0,
+                                      OTP_LENGTH
+                                    );
 
                                 setOtp(
                                   digits
@@ -1405,11 +1659,13 @@ function RegisterPage() {
                             }
                             disabled={
                               isVerifyingOtp ||
+                              isLoading ||
                               otp.length !==
-                                6
+                                OTP_LENGTH
                             }
-                            className="inline-flex min-w-[130px] items-center justify-center gap-2 rounded-xl bg-[#1B8A8F] px-4 py-3.5 text-sm font-bold text-white transition hover:bg-[#176D72] disabled:cursor-not-allowed disabled:opacity-50"
+                            className="inline-flex min-w-[140px] items-center justify-center gap-2 rounded-xl bg-[#1B8A8F] px-4 py-3.5 text-sm font-bold text-white transition hover:bg-[#176D72] disabled:cursor-not-allowed disabled:opacity-50"
                           >
+
                             {isVerifyingOtp ? (
                               <>
                                 <LoaderCircle
@@ -1428,6 +1684,7 @@ function RegisterPage() {
                                 {t.verifyOtp}
                               </>
                             )}
+
                           </button>
 
                         </div>
@@ -1437,7 +1694,9 @@ function RegisterPage() {
 
                 </div>
 
-                {/* PASSWORDS */}
+                {/* =================================================
+                    PASSWORDS
+                ================================================= */}
 
                 <div className="grid gap-5 sm:grid-cols-2">
 
@@ -1501,7 +1760,13 @@ function RegisterPage() {
 
                 </div>
 
-                {/* PREFERRED LANGUAGE */}
+                <p className="-mt-2 text-xs text-[#8A9EAC]">
+                  {t.passwordHint}
+                </p>
+
+                {/* =================================================
+                    PREFERRED LANGUAGE
+                ================================================= */}
 
                 <div>
 
@@ -1552,7 +1817,9 @@ function RegisterPage() {
 
                 </div>
 
-                {/* TERMS */}
+                {/* =================================================
+                    TERMS
+                ================================================= */}
 
                 <label className="flex cursor-pointer items-start gap-3">
 
@@ -1595,7 +1862,9 @@ function RegisterPage() {
 
                 </label>
 
-                {/* VERIFICATION NOTICE */}
+                {/* =================================================
+                    EMAIL VERIFICATION NOTICE
+                ================================================= */}
 
                 {!isEmailVerified && (
                   <div className="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4">
@@ -1612,7 +1881,9 @@ function RegisterPage() {
                   </div>
                 )}
 
-                {/* CREATE ACCOUNT */}
+                {/* =================================================
+                    CREATE ACCOUNT
+                ================================================= */}
 
                 <button
                   type="submit"
@@ -1637,7 +1908,9 @@ function RegisterPage() {
 
               </form>
 
-              {/* LOGIN */}
+              {/* =================================================
+                  LOGIN LINK
+              ================================================= */}
 
               <div className="mt-7 border-t border-[#D8E5EC] pt-6 text-center">
 
@@ -1765,7 +2038,12 @@ function PasswordField({
           onClick={
             toggleShow
           }
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8A9EAC] transition hover:text-[#425D70]"
+          aria-label={
+            show
+              ? "Hide password"
+              : "Show password"
+          }
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8A9EAC] transition hover:text-[#425D70] disabled:cursor-not-allowed"
         >
 
           {show ? (

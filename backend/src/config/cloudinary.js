@@ -1,13 +1,19 @@
-const cloudinary = require("cloudinary").v2;
+const cloudinary =
+  require("cloudinary").v2;
 
 // =========================================================
 // CLOUDINARY CONFIGURATION
 // =========================================================
 
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+  cloud_name:
+    process.env.CLOUDINARY_CLOUD_NAME,
+
+  api_key:
+    process.env.CLOUDINARY_API_KEY,
+
+  api_secret:
+    process.env.CLOUDINARY_API_SECRET,
 });
 
 // =========================================================
@@ -24,6 +30,8 @@ const validateCloudinaryConfig = () => {
       "Cloudinary environment variables are missing"
     );
   }
+
+  return true;
 };
 
 // =========================================================

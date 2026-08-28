@@ -1,65 +1,96 @@
+const axios = require("axios");
+const FormData = require("form-data");
+
 const {
-  cloudinary,
   validateCloudinaryConfig,
 } = require("../config/cloudinary");
 
-
 // =========================================================
-// UPLOAD BUFFER TO CLOUDINARY
+// UPLOAD BUFFER TO CLOUDINARY USING BASIC AUTH
 // =========================================================
 
-const uploadBufferToCloudinary = (
-  fileBuffer,
-  options = {}
+const uploadBufferToCloudinary = async (
+  fileBuffer
 ) => {
-  return new Promise(
-    (resolve, reject) => {
-      const uploadStream =
-        cloudinary.uploader.upload_stream(
-          {
-            folder:
-              "ai-complaint-management/complaints",
+  validateCloudinaryConfig();
 
-            resource_type:
-              "image",
+  const cloudName =
+    process.env.CLOUDINARY_CLOUD_NAME;
 
-            transformation: [
-              {
-                width: 1600,
-                height: 1600,
-                crop: "limit",
-              },
-              {
-                quality: "auto",
-                fetch_format: "auto",
-              },
-            ],
+  const apiKey =
+    process.env.CLOUDINARY_API_KEY;
 
-            ...options,
-          },
+  const apiSecret =
+    process.env.CLOUDINARY_API_SECRET;
 
-          (error, result) => {
-            if (error) {
-              return reject(error);
-            }
+  const formData =
+    new FormData();
 
-            resolve({
-              url:
-                result.secure_url,
-
-              publicId:
-                result.public_id,
-            });
-          }
-        );
-
-      uploadStream.end(
-        fileBuffer
-      );
+  // Image file
+  formData.append(
+    "file",
+    fileBuffer,
+    {
+      filename: "complaint-image.jpg",
+      contentType: "image/jpeg",
     }
   );
-};
 
+  // Cloudinary folder
+  formData.append(
+    "folder",
+    "ai-complaint-management/complaints"
+  );
+
+  // Incoming transformation
+  formData.append(
+    "transformation",
+    "c_limit,w_1600,h_1600/f_auto,q_auto"
+  );
+
+  try {
+    const response =
+      await axios.post(
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+        formData,
+        {
+          headers: {
+            ...formData.getHeaders(),
+          },
+
+          auth: {
+            username: apiKey,
+            password: apiSecret,
+          },
+
+          maxContentLength:
+            Infinity,
+
+          maxBodyLength:
+            Infinity,
+        }
+      );
+
+    return {
+      url:
+        response.data.secure_url,
+
+      publicId:
+        response.data.public_id,
+    };
+  } catch (error) {
+    console.error(
+      "Cloudinary upload failed:",
+      error.response?.data ||
+        error.message
+    );
+
+    throw new Error(
+      error.response?.data?.error?.message ||
+        "Cloudinary image upload failed"
+    );
+  }
+};
 
 // =========================================================
 // UPLOAD COMPLAINT IMAGES
@@ -83,14 +114,10 @@ const uploadComplaintImagesToCloudinary =
         )
       );
 
-    const uploadedImages =
-      await Promise.all(
-        uploadPromises
-      );
-
-    return uploadedImages;
+    return Promise.all(
+      uploadPromises
+    );
   };
-
 
 // =========================================================
 // DELETE IMAGE FROM CLOUDINARY
@@ -104,17 +131,47 @@ const deleteImageFromCloudinary =
       return null;
     }
 
-    const result =
-      await cloudinary.uploader.destroy(
-        publicId,
-        {
-          resource_type: "image",
-        }
+    const cloudName =
+      process.env.CLOUDINARY_CLOUD_NAME;
+
+    const apiKey =
+      process.env.CLOUDINARY_API_KEY;
+
+    const apiSecret =
+      process.env.CLOUDINARY_API_SECRET;
+
+    try {
+      const response =
+        await axios.delete(
+          `https://api.cloudinary.com/v1_1/${cloudName}/resources/image/upload`,
+          {
+            auth: {
+              username: apiKey,
+              password: apiSecret,
+            },
+
+            data: {
+              public_ids: [
+                publicId,
+              ],
+            },
+          }
+        );
+
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Cloudinary delete failed:",
+        error.response?.data ||
+          error.message
       );
 
-    return result;
+      throw new Error(
+        error.response?.data?.error?.message ||
+          "Cloudinary image deletion failed"
+      );
+    }
   };
-
 
 // =========================================================
 // DELETE MULTIPLE IMAGES
@@ -143,19 +200,15 @@ const deleteMultipleImagesFromCloudinary =
       return [];
     }
 
-    const deletePromises =
+    return Promise.all(
       publicIds.map(
         (publicId) =>
           deleteImageFromCloudinary(
             publicId
           )
-      );
-
-    return Promise.all(
-      deletePromises
+      )
     );
   };
-
 
 // =========================================================
 // EXPORTS
